@@ -128,7 +128,6 @@ bool	CDirectX::Reset(int x, int y)
 
 	// Release the old views, as they hold references to the buffers we
 	// will be destroying.  Also release the old depth/stencil buffer.
-
 	SafeRelease(_pD3D11RenderTargetView);
 	SafeRelease(_pD3D11DepthStencilView);
 	SafeRelease(_pD3D11Texture2D);
@@ -220,7 +219,7 @@ ID3D11DeviceContext*	CDirectX::GetContext(void)
 #pragma region Begin/End rendering
 bool	CDirectX::BeginRender(void)
 {
-	float backcolor[] = { 0.0f, 0.0f, 0.0f, 1.0f }; 
+	float backcolor[4] = { 0 }; 
 	_pD3D11DeviceContext->ClearRenderTargetView(
 		_pD3D11RenderTargetView,
 		reinterpret_cast<const float*>(backcolor));

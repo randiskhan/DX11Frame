@@ -6,12 +6,15 @@
 #include "common.h"
 #include "CWin32.h"
 #include "CDirectX.h"
+#include "CInput.h"
 
+// Base class for "root" class/object in executable.
 class CAppBase : public ICWin32App
 {
 private:
 	unique_ptr<CWin32>		_pCWin32;
 	unique_ptr<CDirectX>	_pCDirectX;
+	unique_ptr<CInput>		_pCInput;
 
 public:
 	CAppBase(void);
@@ -27,7 +30,9 @@ public:
 	virtual void	Shutdown(void) = 0;
 
 	// Gets/Sets
-	HWND			GetWindow(void);
+	CWin32*			GetCWin32(void);
+	CDirectX*		GetCDirectX(void);
+	CInput*			GetCInput(void);
 
 	// Win32 message handler override from implementing interface ICWin32App.
 	LRESULT CALLBACK	ICWin32App_MsgProc(HWND, UINT, WPARAM, LPARAM);
