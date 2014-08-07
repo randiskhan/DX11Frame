@@ -5,11 +5,13 @@
 
 #include "common.h"
 #include "CWin32.h"
+#include "CDirectX.h"
 
 class CAppBase : public ICWin32App
 {
 private:
-	unique_ptr<CWin32>	_pCWin32;
+	unique_ptr<CWin32>		_pCWin32;
+	unique_ptr<CDirectX>	_pCDirectX;
 
 public:
 	CAppBase(void);

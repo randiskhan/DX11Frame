@@ -8,6 +8,9 @@
     <ClInclude Include="Classes\CWin32.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Classes\CDirectX.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -15,6 +18,9 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="Classes\CWin32.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\CDirectX.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>

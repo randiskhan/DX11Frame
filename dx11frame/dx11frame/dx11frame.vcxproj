@@ -79,11 +79,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Classes\CAppBase.cpp" />
+    <ClCompile Include="Classes\CDirectX.cpp" />
     <ClCompile Include="Classes\CWin32.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes\CAppBase.h" />
+    <ClInclude Include="Classes\CDirectX.h" />
     <ClInclude Include="Classes\CWin32.h" />
     <ClInclude Include="common.h" />
   </ItemGroup>

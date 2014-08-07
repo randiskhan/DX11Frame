@@ -12,9 +12,6 @@
 
 using namespace std;
 
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "dxguid.lib")
-
 #define WIN32_LEAN_AND_MEAN
 
 #if defined(DEBUG) | defined(_DEBUG)

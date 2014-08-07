@@ -52,7 +52,11 @@ bool CAppBase::InitBase(void)
 	if(!_pCWin32) good &= false;
 	if (good) _pCWin32->Init();
 
-	return true;
+	_pCDirectX.reset(new CDirectX());
+	if(!_pCDirectX) good &= false;
+	if (good) _pCDirectX->Init(GetWindow(),800,600);
+
+	return good;
 }
 
 bool CAppBase::UpdateBase(void)
@@ -62,12 +66,20 @@ bool CAppBase::UpdateBase(void)
 
 bool CAppBase::RenderBase(void)
 {
-	return Render();
+	bool good = true;
+
+	good &= _pCDirectX->BeginRender();
+	if (good) good &= Render();
+	if (good) good &= _pCDirectX->EndRender();
+
+	return good;
 }
 
 void CAppBase::ShutdownBase(void)
 {
 	Shutdown();
+	_pCDirectX.release();
+	_pCWin32.release();
 }
 
 HWND CAppBase::GetWindow(void)

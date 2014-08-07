@@ -18,7 +18,7 @@ CWin32::CWin32(ICWin32App *pApp)
 }
 CWin32::~CWin32(void)
 {
-	_pICWin32App = nullptr;
+	Shutdown();
 }
 #pragma endregion
 
@@ -89,6 +89,11 @@ HWND CWin32::Init(void)
 
 	_IsInit = true;
 	return _HWnd;
+}
+
+void CWin32::Shutdown(void)
+{
+	_pICWin32App = nullptr;
 }
 #pragma endregion
 

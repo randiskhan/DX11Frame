@@ -45,6 +45,8 @@ public:
 
 	// Initialization of all Win32 objects & logic.
 	HWND		Init(void);
+	void		Shutdown(void);
+
 	// Method for clearing the Win32 message queue.
 	bool		MsgQueueProc(void);
 
