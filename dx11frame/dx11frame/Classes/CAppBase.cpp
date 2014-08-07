@@ -3,6 +3,7 @@
 
 #include "CAppBase.h"
 
+#pragma region Construction/destruction
 CAppBase::CAppBase(void) :
 	_pCWin32(nullptr)
 {
@@ -11,7 +12,9 @@ CAppBase::CAppBase(void) :
 CAppBase::~CAppBase(void)
 {
 }
+#pragma endregion
 
+#pragma region Base methods
 WPARAM CAppBase::Run(void)
 {
 	WPARAM ret = 0;
@@ -30,9 +33,7 @@ WPARAM CAppBase::Run(void)
 
 bool CAppBase::MainLoopIteration(void)
 {
-	static bool good = true;
-
-	good = true;
+	bool good = true;
 
 	// Clear the message queue.
 	if (good &= _pCWin32->MsgQueueProc())
@@ -50,11 +51,15 @@ bool CAppBase::InitBase(void)
 
 	_pCWin32.reset(new CWin32(this));
 	if(!_pCWin32) good &= false;
-	if (good) _pCWin32->Init();
+	if (good) GetCWin32()->Init();
 
 	_pCDirectX.reset(new CDirectX());
 	if(!_pCDirectX) good &= false;
-	if (good) _pCDirectX->Init(GetWindow(),800,600);
+	if (good) _pCDirectX->Init(GetCWin32()->GetWindow(),800,600);
+
+	_pCInput.reset(new CInput());
+	if(!_pCInput) good &= false;
+	if (good) GetCInput()->Init();
 
 	return good;
 }
@@ -79,13 +84,27 @@ void CAppBase::ShutdownBase(void)
 {
 	Shutdown();
 	_pCDirectX.release();
+	_pCInput.release();
 	_pCWin32.release();
 }
+#pragma endregion
 
-HWND CAppBase::GetWindow(void)
+#pragma region Object reference getters
+CWin32* CAppBase::GetCWin32(void)
 {
-	return _pCWin32->GetWindow();
+	return _pCWin32.get();
 }
+
+CDirectX* CAppBase::GetCDirectX(void)
+{
+	return _pCDirectX.get();
+}
+
+CInput* CAppBase::GetCInput(void)
+{
+	return _pCInput.get();
+}
+#pragma endregion
 
 #pragma region Win32 message processing
 LRESULT CALLBACK	CAppBase::ICWin32App_MsgProc(
