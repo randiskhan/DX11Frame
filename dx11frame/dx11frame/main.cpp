@@ -1,8 +1,8 @@
 //	main.cpp
-//
 //	Home of WinMain.
 
-#include "main.h"
+#include "common.h"
+#include "CApp.h"
 
 int WINAPI WinMain(
 	HINSTANCE /*hInstance*/,

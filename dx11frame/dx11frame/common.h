@@ -1,5 +1,4 @@
 //	common.h
-//
 //	Header file with code common to all files.
 
 #pragma once
@@ -7,7 +6,6 @@
 #pragma region Includes & defines
 
 #include <windows.h>
-#include <windowsx.h>
 #include <memory>
 #include <iostream>
 #include <sstream>
