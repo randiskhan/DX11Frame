@@ -40,11 +40,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;..\TestGame;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;..\TestGame;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;..\TestGame;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Include;..\TestGame;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\Microsoft DirectX SDK %28June 2010%29\Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -78,14 +78,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CAppBase.cpp" />
-    <ClCompile Include="CWin32.cpp" />
+    <ClCompile Include="Classes\CAppBase.cpp" />
+    <ClCompile Include="Classes\CWin32.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CAppBase.h" />
+    <ClInclude Include="Classes\CAppBase.h" />
+    <ClInclude Include="Classes\CWin32.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="CWin32.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

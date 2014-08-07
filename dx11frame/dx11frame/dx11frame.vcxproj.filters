@@ -1,13 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="CAppBase.h" />
     <ClInclude Include="common.h" />
-    <ClInclude Include="CWin32.h" />
+    <ClInclude Include="Classes\CAppBase.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Classes\CWin32.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="CAppBase.cpp" />
-    <ClCompile Include="CWin32.cpp" />
+    <ClCompile Include="Classes\CAppBase.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\CWin32.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Classes">
+      <UniqueIdentifier>{ef69ad6a-6d37-4dbc-a98f-9e27513af936}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
