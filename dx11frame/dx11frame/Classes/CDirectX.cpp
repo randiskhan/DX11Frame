@@ -5,7 +5,7 @@
 
 #pragma region Construction/Destruction
 
-CDirectX::CDirectX(void) :
+CDirectX::CDirectX(CDirectXData dd) :
 	_pD3D11Device(nullptr),
 	_pD3D11DeviceContext(nullptr),
 	_pDXGISwapChain(nullptr),
@@ -14,7 +14,8 @@ CDirectX::CDirectX(void) :
 	_pD3D11DepthStencilView(nullptr),
 	_pDXGIDevice(nullptr),
 	_pDXGIAdapter(nullptr),
-	_pDXGIFactory(nullptr)
+	_pDXGIFactory(nullptr),
+	_CDirectXData(dd)
 {
 	ZeroMemory(&_ScreenViewport, sizeof(D3D11_VIEWPORT));
 }
@@ -42,7 +43,7 @@ void CDirectX::Shutdown(void)
 #pragma endregion
 
 #pragma region Initialization
-bool	CDirectX::Init(HWND hWnd, int x, int y)
+bool	CDirectX::Init(void)
 {
 	HRESULT hr;
 
@@ -77,8 +78,8 @@ bool	CDirectX::Init(HWND hWnd, int x, int y)
 	}
 
 	DXGI_SWAP_CHAIN_DESC sd;
-	sd.BufferDesc.Width  = x;
-	sd.BufferDesc.Height = y;
+	sd.BufferDesc.Width  = _CDirectXData.width;
+	sd.BufferDesc.Height = _CDirectXData.height;
 	sd.BufferDesc.RefreshRate.Numerator = 60;
 	sd.BufferDesc.RefreshRate.Denominator = 1;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -90,7 +91,7 @@ bool	CDirectX::Init(HWND hWnd, int x, int y)
 
 	sd.BufferUsage  = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.BufferCount  = 1;
-	sd.OutputWindow = hWnd;
+	sd.OutputWindow = _CDirectXData.hwnd;
 	sd.Windowed     = true;
 	sd.SwapEffect   = DXGI_SWAP_EFFECT_DISCARD;
 	sd.Flags        = 0;
@@ -114,10 +115,10 @@ bool	CDirectX::Init(HWND hWnd, int x, int y)
 	if(SUCCEEDED(hr))
 	{
 		// Block alt-enter for fullscreen toggle, for now.
-		_pDXGIFactory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER);
+		_pDXGIFactory->MakeWindowAssociation(_CDirectXData.hwnd, DXGI_MWA_NO_ALT_ENTER);
 	}
 	if(SUCCEEDED(hr))
-		Reset(x, y);
+		Reset(_CDirectXData.width, _CDirectXData.height);
 
 	return true;
 }

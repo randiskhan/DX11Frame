@@ -3,11 +3,25 @@
 
 #pragma once
 
-#include "common.h"
 #include <d3d11.h>
+#include "common.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxguid.lib")
+
+struct CDirectXData
+{
+	int		width;
+	int		height;
+	HWND	hwnd;
+
+	CDirectXData()
+	{
+		width = 800;
+		height = 600;
+		hwnd = nullptr;
+	}
+};
 
 // Class for all DirectX rendering objects.
 class CDirectX
@@ -25,11 +39,13 @@ private:
 	IDXGIFactory*				_pDXGIFactory;
 	D3D11_VIEWPORT				_ScreenViewport;
 
+	CDirectXData				_CDirectXData;
+
 public:
-	CDirectX(void);
+	CDirectX(CDirectXData dd);
 	virtual ~CDirectX(void);
 
-	bool	Init(HWND, int, int);
+	bool	Init(void);
 	bool	Reset(int x, int y);
 	void	Shutdown(void);
 

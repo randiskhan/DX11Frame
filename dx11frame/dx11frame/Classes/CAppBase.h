@@ -18,6 +18,7 @@ private:
 
 protected:
 	CWin32Data				_CWin32Data;
+	CDirectXData			_CDirectXData;
 
 public:
 	CAppBase(void);

@@ -52,13 +52,17 @@ bool CAppBase::InitBase(void)
 {
 	static bool good; good = true;
 
+	_CDirectXData.width = _CWin32Data.width;
+	_CDirectXData.height = _CWin32Data.height;
+	_CDirectXData.hwnd = GetCWin32()->GetWindow();
+
 	_pCWin32.reset(new CWin32(_CWin32Data));
 	if(!_pCWin32) good &= false;
 	if (good) good &= GetCWin32()->Init();
 
-	if (good) _pCDirectX.reset(new CDirectX());
+	if (good) _pCDirectX.reset(new CDirectX(_CDirectXData));
 	if(!_pCDirectX) good &= false;
-	if (good) good &= GetCDirectX()->Init(GetCWin32()->GetWindow(),800,600);
+	if (good) good &= GetCDirectX()->Init();
 
 	if (good) _pCInput.reset(new CInput());
 	if(!_pCInput) good &= false;

@@ -35,15 +35,17 @@ bool CWin32::Init(void)
 	wc.lpszMenuName  = 0;
 	wc.lpszClassName = _CWin32Data.wndClassName.c_str();
 
-	good &= (bool)RegisterClass(&wc);
+	ATOM atom = RegisterClass(&wc);
+	if (!atom) good &= false;
 
 	RECT rect = { 0, 0, _CWin32Data.width, _CWin32Data.height };
 
+	// Added the extra evaluation operator to clear warning for mixing 'bool' and 'BOOL' types.
 	if (good)
-		good &= AdjustWindowRect(
+		good &= !(0 == AdjustWindowRect(
 			&rect,
 			_CWin32Data.windowStyle,
-			false);
+			false));
 
 	if (good)
 		_HWnd = CreateWindow(
