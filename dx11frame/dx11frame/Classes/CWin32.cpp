@@ -117,11 +117,11 @@ bool CWin32::MsgQueueProc(void)
 	{
 		// This WM_DESTROY case left here to handle messages from window destruction
 		// just to be safe
-		case WM_DESTROY:
-			{
-				PostQuitMessage(0);
-				return 0;
-			}
+	case WM_DESTROY:
+		{
+			PostQuitMessage(0);
+			return 0;
+		}
 	}
 	// Only dispatch a message to the CWin32 object for this window
 	//	if it has a reference to one in its GWL_USERDATA.
