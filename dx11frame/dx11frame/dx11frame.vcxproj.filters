@@ -16,7 +16,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="Classes\CAppBase.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
