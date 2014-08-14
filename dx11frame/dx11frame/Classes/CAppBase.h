@@ -42,4 +42,6 @@ protected:
 	bool			UpdateBase(void);
 	bool			RenderBase(void);
 	void			ShutdownBase(void);
+
+	void			PostQuit(void);
 };

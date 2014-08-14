@@ -6,6 +6,7 @@
 #pragma region Includes & defines
 
 #include <windows.h>
+#include <windowsx.h>
 #include <memory>
 #include <iostream>
 #include <sstream>

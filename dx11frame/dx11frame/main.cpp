@@ -2,6 +2,7 @@
 //	Home of WinMain.
 
 #include "common.h"
+#include "CAppBase.h"
 #include "CApp.h"
 
 int WINAPI WinMain(
@@ -14,7 +15,7 @@ int WINAPI WinMain(
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 	WPARAM exitmsg = NULL;
-	unique_ptr<CApp> pCApp(new CApp());
+	unique_ptr<CAppBase> pCApp(new CApp());
 	if(pCApp) exitmsg = pCApp->Run();
 	return exitmsg;
 }

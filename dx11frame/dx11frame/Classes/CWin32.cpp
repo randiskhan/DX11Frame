@@ -90,7 +90,6 @@ HWND CWin32::Init(void)
 	_IsInit = true;
 	return _HWnd;
 }
-
 void CWin32::Shutdown(void)
 {
 	_pICWin32App = nullptr;
@@ -116,17 +115,13 @@ bool CWin32::MsgQueueProc(void)
 {
 	switch( msg )
 	{
-	case WM_DESTROY:
-		{
-			PostQuitMessage(0);
-			return 0;
-		}
-	case WM_GETMINMAXINFO:
-		{
-			MINMAXINFO* pMinMaxInfo = reinterpret_cast<MINMAXINFO *>(lParam);
-			pMinMaxInfo->ptMinTrackSize.x = 200;
-			pMinMaxInfo->ptMinTrackSize.y = 200;
-		}
+		// This WM_DESTROY case left here to handle messages from window destruction
+		// just to be safe
+		case WM_DESTROY:
+			{
+				PostQuitMessage(0);
+				return 0;
+			}
 	}
 	// Only dispatch a message to the CWin32 object for this window
 	//	if it has a reference to one in its GWL_USERDATA.

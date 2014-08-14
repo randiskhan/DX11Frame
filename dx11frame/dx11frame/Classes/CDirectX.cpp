@@ -219,7 +219,7 @@ ID3D11DeviceContext*	CDirectX::GetContext(void)
 #pragma region Begin/End rendering
 bool	CDirectX::BeginRender(void)
 {
-	float backcolor[4] = { 0 }; 
+	float backcolor[4] = { 0 };
 	_pD3D11DeviceContext->ClearRenderTargetView(
 		_pD3D11RenderTargetView,
 		reinterpret_cast<const float*>(backcolor));
