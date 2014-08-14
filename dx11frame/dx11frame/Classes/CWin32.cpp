@@ -43,23 +43,23 @@ bool CWin32::Init(void)
 	// Added the extra evaluation operator to clear warning for mixing 'bool' and 'BOOL' types.
 	if (good)
 		good &= !(0 == AdjustWindowRect(
-			&rect,
-			_CWin32Data.windowStyle,
-			false));
+		&rect,
+		_CWin32Data.windowStyle,
+		false));
 
 	if (good)
 		_HWnd = CreateWindow(
-			_CWin32Data.wndClassName.c_str(),
-			_CWin32Data.wndTitle.c_str(),
-			_CWin32Data.windowStyle,
-			CW_USEDEFAULT,
-			CW_USEDEFAULT,
-			_CWin32Data.width,
-			_CWin32Data.height,
-			0,
-			0,
-			HINST_THISCOMPONENT,
-			0);
+		_CWin32Data.wndClassName.c_str(),
+		_CWin32Data.wndTitle.c_str(),
+		_CWin32Data.windowStyle,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
+		_CWin32Data.width,
+		_CWin32Data.height,
+		0,
+		0,
+		HINST_THISCOMPONENT,
+		0);
 	if( !_HWnd ) good &= false;
 
 	// Store a reference to this CWin32 object in the window's GWL_USERDATA

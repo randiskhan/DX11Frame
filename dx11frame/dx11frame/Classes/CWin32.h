@@ -43,10 +43,10 @@ struct CWin32Data
 		width = 800;
 		height = 600;
 		windowStyle = (WS_OVERLAPPED/* |
-						WS_CAPTION |
-						WS_SYSMENU |
-						WS_MINIMIZEBOX |
-						WS_THICKFRAME*/);
+									WS_CAPTION |
+									WS_SYSMENU |
+									WS_MINIMIZEBOX |
+									WS_THICKFRAME*/);
 	}
 };
 
