@@ -16,6 +16,9 @@ private:
 	unique_ptr<CDirectX>	_pCDirectX;
 	unique_ptr<CInput>		_pCInput;
 
+protected:
+	CWin32Data				_CWin32Data;
+
 public:
 	CAppBase(void);
 	virtual ~CAppBase(void);

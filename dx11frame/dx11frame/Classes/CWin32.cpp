@@ -4,17 +4,12 @@
 #include "CWin32.h"
 
 #pragma region Construction/Destruction
-CWin32::CWin32(void) :
+CWin32::CWin32(CWin32Data wd) :
 	_HWnd(nullptr),
-	_pICWin32App(nullptr),
 	_IsInit(false)
 {
 	ZeroMemory(&_msg, sizeof(MSG));
-}
-CWin32::CWin32(ICWin32App *pApp)
-{
-	CWin32();
-	_pICWin32App = pApp;
+	_CWin32Data = wd;
 }
 CWin32::~CWin32(void)
 {
@@ -23,9 +18,9 @@ CWin32::~CWin32(void)
 #pragma endregion
 
 #pragma region Initialization
-HWND CWin32::Init(void)
+bool CWin32::Init(void)
 {
-	_IsInit = false;
+	bool good = true;
 	_HWnd = nullptr;
 
 	WNDCLASS wc;
@@ -38,61 +33,50 @@ HWND CWin32::Init(void)
 	wc.hCursor       = LoadCursor(0, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
 	wc.lpszMenuName  = 0;
-	wc.lpszClassName = L"WndClassName";
+	wc.lpszClassName = _CWin32Data.wndClassName.c_str();
 
-	if( !RegisterClass(&wc) )
-	{
-		MessageBox(0, L"RegisterClass Failed.", 0, 0);
-		return false;
-	}
+	good &= (bool)RegisterClass(&wc);
 
-	RECT rect = { 0, 0, 800, 600 };
-	DWORD windowStyle =
-		(WS_OVERLAPPED/* |
-					  WS_CAPTION |
-					  WS_SYSMENU |
-					  WS_MINIMIZEBOX |
-					  WS_THICKFRAME*/);
-	AdjustWindowRect(
-		&rect,
-		windowStyle,
-		false);
-	int width  = rect.right - rect.left;
-	int height = rect.bottom - rect.top;
+	RECT rect = { 0, 0, _CWin32Data.width, _CWin32Data.height };
 
-	_HWnd = CreateWindow(
-		L"WndClassName",
-		L"DirectX 11 Framework",
-		windowStyle,
-		CW_USEDEFAULT,
-		CW_USEDEFAULT,
-		width,
-		height,
-		0,
-		0,
-		HINST_THISCOMPONENT,
-		0);
-	if( !_HWnd )
-	{
-		MessageBox(0, L"CreateWindow Failed.", 0, 0);
-		return false;
-	}
+	if (good)
+		good &= AdjustWindowRect(
+			&rect,
+			_CWin32Data.windowStyle,
+			false);
+
+	if (good)
+		_HWnd = CreateWindow(
+			_CWin32Data.wndClassName.c_str(),
+			_CWin32Data.wndTitle.c_str(),
+			_CWin32Data.windowStyle,
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
+			_CWin32Data.width,
+			_CWin32Data.height,
+			0,
+			0,
+			HINST_THISCOMPONENT,
+			0);
+	if( !_HWnd ) good &= false;
 
 	// Store a reference to this CWin32 object in the window's GWL_USERDATA
 	//	so we can call a member method to handle Win32 messages.
-	SetLastError(0);
-	LONG lresult = SetWindowLong(_HWnd, GWL_USERDATA, (LONG)this);
-	if(lresult == 0 && GetLastError() != 0) return nullptr;
+	if (good)
+	{
+		SetLastError(0);
+		LONG lresult = SetWindowLong(_HWnd, GWL_USERDATA, (LONG)this);
+		if(lresult == 0 && GetLastError() != 0) good &= false;
+	}
 
 	ShowWindow(_HWnd, SW_SHOW);
-	UpdateWindow(_HWnd);
+	// Removing this UpdateWindow call for now.
+	//if (good) good &= UpdateWindow(_HWnd);
 
-	_IsInit = true;
-	return _HWnd;
+	return _IsInit = good;
 }
 void CWin32::Shutdown(void)
 {
-	_pICWin32App = nullptr;
 }
 #pragma endregion
 
@@ -138,8 +122,8 @@ LRESULT CALLBACK CWin32::MsgProc(
 	LPARAM lParam)
 {
 	// Only dispatch a message to the ICWin32App object if we have a reference.
-	if(_pICWin32App)
-		return _pICWin32App->ICWin32App_MsgProc(hwnd, msg, wParam, lParam);
+	if(_CWin32Data.pICWin32App)
+		return _CWin32Data.pICWin32App->ICWin32App_MsgProc(hwnd, msg, wParam, lParam);
 	else
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 }

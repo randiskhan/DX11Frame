@@ -9,6 +9,7 @@ CAppBase::CAppBase(void) :
 	_pCDirectX(nullptr),
 	_pCInput(nullptr)
 {
+	_CWin32Data.pICWin32App = this;
 }
 
 CAppBase::~CAppBase(void)
@@ -49,19 +50,21 @@ bool CAppBase::MainLoopIteration(void)
 
 bool CAppBase::InitBase(void)
 {
-	bool good = true;
+	static bool good; good = true;
 
-	_pCWin32.reset(new CWin32(this));
+	_pCWin32.reset(new CWin32(_CWin32Data));
 	if(!_pCWin32) good &= false;
-	if (good) GetCWin32()->Init();
+	if (good) good &= GetCWin32()->Init();
 
-	_pCDirectX.reset(new CDirectX());
+	if (good) _pCDirectX.reset(new CDirectX());
 	if(!_pCDirectX) good &= false;
-	if (good) good &= _pCDirectX->Init(GetCWin32()->GetWindow(),800,600);
+	if (good) good &= GetCDirectX()->Init(GetCWin32()->GetWindow(),800,600);
 
-	_pCInput.reset(new CInput());
+	if (good) _pCInput.reset(new CInput());
 	if(!_pCInput) good &= false;
 	if (good) good &= GetCInput()->Init();
+
+	if (good) good &= Init();
 
 	return good;
 }
@@ -70,7 +73,7 @@ bool CAppBase::UpdateBase(void)
 {
 	static bool good; good = true;
 
-	good &= _pCInput->Update();
+	good &= GetCInput()->Update();
 	if(good) good &= Update();
 
 	return good;
@@ -80,9 +83,9 @@ bool CAppBase::RenderBase(void)
 {
 	static bool good; good = true;
 
-	good &= _pCDirectX->BeginRender();
+	good &= GetCDirectX()->BeginRender();
 	if (good) good &= Render();
-	if (good) good &= _pCDirectX->EndRender();
+	if (good) good &= GetCDirectX()->EndRender();
 
 	return good;
 }

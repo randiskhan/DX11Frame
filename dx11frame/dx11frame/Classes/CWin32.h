@@ -24,6 +24,30 @@ public:
 		LPARAM) = 0;
 };
 
+struct CWin32Data
+{
+	ICWin32App*	pICWin32App;
+	wstring		wndClassName;
+	wstring		wndTitle;
+	int			height;
+	int			width;
+	DWORD		windowStyle;
+
+	CWin32Data()
+	{
+		pICWin32App = nullptr;
+		wndClassName = L"WindowClass";
+		wndTitle = L"DirectX11";
+		width = 800;
+		height = 600;
+		windowStyle = (WS_OVERLAPPED/* |
+						WS_CAPTION |
+						WS_SYSMENU |
+						WS_MINIMIZEBOX |
+						WS_THICKFRAME*/);
+	}
+};
+
 // Class to encapsulate the code for generating a window in a Win32 application.
 class CWin32
 {
@@ -31,11 +55,10 @@ private:
 	MSG			_msg;
 	HWND		_HWnd;
 	bool		_IsInit;
-	ICWin32App*	_pICWin32App;
+	CWin32Data	_CWin32Data;
 
 public:
-	CWin32(void);
-	CWin32(ICWin32App* pApp);
+	CWin32(CWin32Data wd);
 	virtual ~CWin32(void);
 
 	RECT		GetScreenRect(void);
@@ -44,7 +67,7 @@ public:
 	bool		IsInit(void);
 
 	// Initialization of all Win32 objects & logic.
-	HWND		Init(void);
+	bool		Init(void);
 	void		Shutdown(void);
 
 	// Method for clearing the Win32 message queue.
