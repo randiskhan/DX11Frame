@@ -33,13 +33,18 @@
 #pragma comment(lib, "DirectXTKAudioDX.lib")
 #endif
 
+using namespace DirectX;
+
 // Base class for "root" class/object in executable.
 class CAppBase : public ICWin32App
 {
 private:
+	// DX11Frame primary objects.
 	unique_ptr<CWin32>		_pCWin32;
 	unique_ptr<CDirectX>	_pCDirectX;
 	unique_ptr<CInput>		_pCInput;
+	// DirectXTK objects.
+	unique_ptr<SpriteBatch>	_pSpriteBatch;
 
 public:
 	CAppBase(void);
@@ -57,6 +62,9 @@ protected:
 	CWin32*			GetCWin32(void);
 	CDirectX*		GetCDirectX(void);
 	CInput*			GetCInput(void);
+
+	// Get DirectXTK object references.
+	SpriteBatch*	GetSpriteBatch(void);
 
 	// Win32 message handler override from implementing interface ICWin32App.
 	LRESULT CALLBACK	ICWin32App_MsgProc(HWND, UINT, WPARAM, LPARAM);

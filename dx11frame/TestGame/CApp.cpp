@@ -24,6 +24,10 @@ bool CApp::PreInit(void)
 bool CApp::PostInit(void)
 {
 	static bool good; good = true;
+
+	if (good) _pSpriteFontDebug.reset(new SpriteFont( GetCDirectX()->GetDevice(), L"debug.spritefont" ));
+	if(!_pSpriteFontDebug) good &= false;
+
 	return good;
 }
 
@@ -37,9 +41,20 @@ bool CApp::Update(void)
 bool CApp::Render(void)
 {
 	static bool good; good = true;
+
+	GetSpriteBatch()->Begin();
+	GetSpriteDebugFont()->DrawString( GetSpriteBatch(), L"randiskhan", XMFLOAT2(10,10), Colors::White );
+	GetSpriteBatch()->End();
+
 	return good;
 }
 
 void CApp::Cleanup(void)
 {
+	_pSpriteFontDebug.release();
+}
+
+SpriteFont*		CApp::GetSpriteDebugFont(void)
+{
+	return _pSpriteFontDebug.get();
 }

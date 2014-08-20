@@ -57,11 +57,11 @@ bool CAppBase::InitBase(void)
 
 	if (good) good &= PreInit();
 
+	// DX11Frame object creation.
 	_pCWin32.reset(new CWin32(_CWin32Data));
 	if(!_pCWin32) good &= false;
 	if (good) good &= GetCWin32()->Init();
 
-	// This is a quick fix so data structs are syncronized.
 	_CDirectXData.hwnd = GetCWin32()->GetWindow();
 	if(_CDirectXData.useHWndDimentions)
 	{
@@ -76,6 +76,10 @@ bool CAppBase::InitBase(void)
 	if (good) _pCInput.reset(new CInput());
 	if(!_pCInput) good &= false;
 	if (good) good &= GetCInput()->Init();
+
+	// DirectXTK object creation
+	if (good) _pSpriteBatch.reset(new SpriteBatch( GetCDirectX()->GetContext() ));
+	if(!_pSpriteBatch) good &= false;
 
 	if (good) good &= PostInit();
 
@@ -106,6 +110,7 @@ bool CAppBase::RenderBase(void)
 void CAppBase::CleanupBase(void)
 {
 	Cleanup();
+	_pSpriteBatch.release();
 	_pCDirectX.release();
 	_pCInput.release();
 	_pCWin32.release();
@@ -113,19 +118,21 @@ void CAppBase::CleanupBase(void)
 #pragma endregion
 
 #pragma region Object reference getters
-CWin32* CAppBase::GetCWin32(void)
+CWin32*			CAppBase::GetCWin32(void)
 {
 	return _pCWin32.get();
 }
-
-CDirectX* CAppBase::GetCDirectX(void)
+CDirectX*		CAppBase::GetCDirectX(void)
 {
 	return _pCDirectX.get();
 }
-
-CInput* CAppBase::GetCInput(void)
+CInput*			CAppBase::GetCInput(void)
 {
 	return _pCInput.get();
+}
+SpriteBatch*	CAppBase::GetSpriteBatch(void)
+{
+	return _pSpriteBatch.get();
 }
 #pragma endregion
 
