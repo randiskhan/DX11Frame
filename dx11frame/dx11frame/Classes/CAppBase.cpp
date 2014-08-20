@@ -52,14 +52,19 @@ bool CAppBase::InitBase(void)
 {
 	static bool good; good = true;
 
+	if (good) good &= PreInit();
+
 	_pCWin32.reset(new CWin32(_CWin32Data));
 	if(!_pCWin32) good &= false;
 	if (good) good &= GetCWin32()->Init();
 
 	// This is a quick fix so data structs are syncronized.
 	_CDirectXData.hwnd = GetCWin32()->GetWindow();
-	_CDirectXData.width = _CWin32Data.width;
-	_CDirectXData.height = _CWin32Data.height;
+	if(_CDirectXData.useHWndDimentions)
+	{
+		_CDirectXData.width = _CWin32Data.width;
+		_CDirectXData.height = _CWin32Data.height;
+	}
 
 	if (good) _pCDirectX.reset(new CDirectX(_CDirectXData));
 	if(!_pCDirectX) good &= false;
@@ -69,7 +74,7 @@ bool CAppBase::InitBase(void)
 	if(!_pCInput) good &= false;
 	if (good) good &= GetCInput()->Init();
 
-	if (good) good &= Init();
+	if (good) good &= PostInit();
 
 	return good;
 }

@@ -16,7 +16,8 @@ public:
 	CApp(void);
 	virtual ~CApp(void);
 
-	bool		Init(void);
+	bool		PreInit(void);
+	bool		PostInit(void);
 	bool		Update(void);
 	bool		Render(void);
 	void		Shutdown(void);

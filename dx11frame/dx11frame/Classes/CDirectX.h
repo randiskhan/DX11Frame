@@ -13,12 +13,14 @@ struct CDirectXData
 {
 	int		width;
 	int		height;
+	bool	useHWndDimentions;
 	HWND	hwnd;
 
 	CDirectXData()
 	{
 		width = 800;
 		height = 600;
+		useHWndDimentions = true;
 		hwnd = nullptr;
 	}
 };

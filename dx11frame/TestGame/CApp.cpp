@@ -11,7 +11,17 @@ CApp::~CApp(void)
 {
 }
 
-bool CApp::Init(void)
+bool CApp::PreInit(void)
+{
+	static bool good; good = true;
+
+	_CWin32Data.width = 400;
+	_CWin32Data.height = 300;
+
+	return good;
+}
+
+bool CApp::PostInit(void)
 {
 	static bool good; good = true;
 	return good;

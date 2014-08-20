@@ -28,7 +28,8 @@ public:
 	bool			MainLoopIteration(void);
 
 	// Pure virtual methods
-	virtual bool	Init(void) = 0;
+	virtual bool	PreInit(void) = 0;
+	virtual bool	PostInit(void) = 0;
 	virtual bool	Update(void) = 0;
 	virtual bool	Render(void) = 0;
 	virtual void	Shutdown(void) = 0;
