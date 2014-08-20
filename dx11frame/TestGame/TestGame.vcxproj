@@ -41,11 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\references\DirectXTK;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\references\DirectXTK;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

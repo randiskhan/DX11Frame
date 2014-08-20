@@ -20,5 +20,5 @@ public:
 	bool		PostInit(void);
 	bool		Update(void);
 	bool		Render(void);
-	void		Shutdown(void);
+	void		Cleanup(void);
 };

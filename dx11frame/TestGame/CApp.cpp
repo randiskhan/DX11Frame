@@ -40,6 +40,6 @@ bool CApp::Render(void)
 	return good;
 }
 
-void CApp::Shutdown(void)
+void CApp::Cleanup(void)
 {
 }

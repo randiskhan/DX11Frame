@@ -31,6 +31,9 @@ WPARAM CAppBase::Run(void)
 		if (_pCWin32->GetLastMsg()->message == WM_QUIT)
 			ret = _pCWin32->GetLastMsg()->wParam;
 	}
+
+	CleanupBase();
+
 	return ret;
 }
 
@@ -100,9 +103,9 @@ bool CAppBase::RenderBase(void)
 	return good;
 }
 
-void CAppBase::ShutdownBase(void)
+void CAppBase::CleanupBase(void)
 {
-	Shutdown();
+	Cleanup();
 	_pCDirectX.release();
 	_pCInput.release();
 	_pCWin32.release();
