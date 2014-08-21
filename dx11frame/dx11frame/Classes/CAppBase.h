@@ -16,7 +16,7 @@
 #include "IUpdateable.h"
 #include "IRenderable.h"
 #include "ICleanupable.h"
-#include "IEntity.h"
+//#include "IEntity.h"
 // DirectXTK headers.
 #include "Audio.h"
 #include "CommonStates.h"

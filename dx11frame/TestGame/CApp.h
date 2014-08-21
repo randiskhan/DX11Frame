@@ -1,18 +1,19 @@
 // CApp.h
 // Declaration file for CApp.
 // "Root" class of executable.
-// This class must be implemented and inherit from CAppBase, as dx11frame.lib
-// looks for this file and instantiates CApp.
+// This class must be extend CAppBase.
 
 #pragma once
 
 #include "CAppBase.h"
+#include "TestEntity.h"
 
 #pragma comment(lib, "dx11frame.lib")
 
 class CApp : public CAppBase
 {
 private:
+	unique_ptr<TestEntity>	_pTestEntity;
 
 public:
 	CApp(void);

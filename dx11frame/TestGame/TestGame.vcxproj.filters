@@ -3,8 +3,10 @@
   <ItemGroup>
     <ClCompile Include="CApp.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TestEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CApp.h" />
+    <ClInclude Include="TestEntity.h" />
   </ItemGroup>
 </Project>
