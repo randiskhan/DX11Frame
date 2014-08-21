@@ -3,7 +3,8 @@
 
 #include "TestEntity.h"
 
-TestEntity::TestEntity(CAppBase* pCAppBase) : IEntity(pCAppBase)
+TestEntity::TestEntity(CAppBase* pCAppBase) : IEntity(pCAppBase),
+	_msg(L"randiskhan")
 {
 }
 
@@ -25,13 +26,16 @@ bool		TestEntity::Init(void)
 bool		TestEntity::Update(void)
 {
 	static bool good; good = true;
+
 	return good;
 }
 
 bool		TestEntity::Render(void)
 {
 	static bool good; good = true;
-	DrawDebugString(L"randiskhan", XMFLOAT2(10,10), Colors::Yellow);
+
+	DrawDebugString(_msg, XMFLOAT2(10,10), Colors::Yellow);
+	
 	return good;
 }
 

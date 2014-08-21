@@ -22,10 +22,10 @@ CDirectX::CDirectX(CDirectXData dd) :
 
 CDirectX::~CDirectX(void)
 {
-	Shutdown();
+	Cleanup();
 }
 
-void CDirectX::Shutdown(void)
+void CDirectX::Cleanup(void)
 {
 	SafeRelease(_pD3D11Device);
 	if( _pD3D11DeviceContext )

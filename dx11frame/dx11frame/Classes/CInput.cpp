@@ -10,17 +10,12 @@ CInput::CInput(void)
 	_mousePos.x = 0;
 	_mousePos.y = 0;
 	for (int i=0;i<256;++i)
-	{
-		_keysCurr[i] = false;
-		_keysPrev[i] = false;
-		_keysThisFrameDown[i] = false;
-		_keysThisFrameUp[i] = false;
-	}
+		_keysCurr[i] = _keysPrev[i] = 0;
 }
 
 CInput::~CInput(void)
 {
-	Shutdown();
+	Cleanup();
 }
 
 #pragma endregion
@@ -36,22 +31,16 @@ bool CInput::Init(void)
 bool CInput::Update(void)
 {
 	static bool good; good = true;
-	// Move current keyboard state to previous state, and
-	//	clear the key event tracking arrays.
+
 	for (int i=0;i<256;++i)
-	{
-		// Key up events override key down events in a frame to
-		//	prevent a simulated "stuck" key.
 		_keysPrev[i] = _keysCurr[i];
-		_keysCurr[i] = _keysThisFrameDown[i];
-		_keysCurr[i] = _keysThisFrameUp[i];
-		_keysThisFrameDown[i] = false;
-		_keysThisFrameUp[i] = false;
-	}
+
+	good &= (0 < GetKeyboardState(_keysCurr));
+
 	return good;
 }
 
-void CInput::Shutdown(void)
+void CInput::Cleanup(void)
 {
 }
 
@@ -59,16 +48,6 @@ void CInput::SetMousePos(int x, int y)
 {
 	_mousePos.x = x;
 	_mousePos.y = y;
-}
-
-void CInput::KeyDown(int vk)
-{
-	_keysThisFrameDown[vk] = true;
-}
-
-void CInput::KeyUp(int vk)
-{
-	_keysThisFrameUp[vk] = true;
 }
 
 #pragma endregion
@@ -81,35 +60,51 @@ const Point*	CInput::GetMouseScreenPos(void)
 }
 bool	CInput::IsKeyDown(int vk)
 {
-	return _keysCurr[vk];
+	return (_keysCurr[vk] & 0x80) != 0;
 }
 bool	CInput::IsKeyUp(int vk)
 {
-	return !_keysCurr[vk];
+	return (_keysCurr[vk] & 0x80) == 0;
 }
 bool	CInput::IsKeyDownSinceLastFrame(int vk)
 {
-	return (_keysCurr[vk] && !_keysPrev[vk]);
+	return (((_keysCurr[vk] & 0x80) != 0) && ((_keysPrev[vk] & 0x80) == 0));
 }
 bool	CInput::IsKeyUpSinceLastFrame(int vk)
 {
-	return (!_keysCurr[vk] && _keysPrev[vk]);
+	return (((_keysCurr[vk] & 0x80) == 0) && ((_keysPrev[vk] & 0x80) != 0));
 }
-bool	CInput::IsMouseButtonDown(MouseButton mb)
+bool	CInput::IsMouseButtonLeftDown(void)
 {
-	return false;
+	return IsKeyDown(VK_LBUTTON);
 }
-bool	CInput::IsMouseButtonUp(MouseButton mb)
+bool	CInput::IsMouseButtonLeftUp(void)
 {
-	return false;
+	return IsKeyUp(VK_LBUTTON);
 }
-bool	CInput::IsMouseButtonDownSinceLastFrame(MouseButton mb)
+bool	CInput::IsMouseButtonRightDown(void)
 {
-	return false;
+	return IsKeyDown(VK_RBUTTON);
 }
-bool	CInput::IsMouseButtonUpSinceLastFrame(MouseButton mb)
+bool	CInput::IsMouseButtonRightUp(void)
 {
-	return false;
+	return IsKeyUp(VK_RBUTTON);
+}
+bool	CInput::IsMouseButtonLeftDownSinceLastFrame(void)
+{
+	return IsKeyDownSinceLastFrame(VK_LBUTTON);
+}
+bool	CInput::IsMouseButtonLeftUpSinceLastFrame(void)
+{
+	return IsKeyUpSinceLastFrame(VK_LBUTTON);
+}
+bool	CInput::IsMouseButtonRightDownSinceLastFrame(void)
+{
+	return IsKeyDownSinceLastFrame(VK_RBUTTON);
+}
+bool	CInput::IsMouseButtonRightUpSinceLastFrame(void)
+{
+	return IsKeyUpSinceLastFrame(VK_RBUTTON);
 }
 
 #pragma endregion

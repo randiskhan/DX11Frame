@@ -78,10 +78,4 @@ struct Point
 		y = 0;
 	}
 };
-enum MouseButton
-{
-	LEFT,
-	RIGHT,
-	MIDDLE
-};
 #pragma endregion

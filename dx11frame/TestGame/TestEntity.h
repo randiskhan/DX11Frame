@@ -10,6 +10,7 @@ class TestEntity : public IEntity
 {
 private:
 	unique_ptr<SpriteFont>	_pDebugFont;
+	wstring					_msg;
 
 public:
 	TestEntity(CAppBase* pCAppBase);

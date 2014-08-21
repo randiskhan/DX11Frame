@@ -149,16 +149,6 @@ LRESULT CALLBACK	CAppBase::ICWin32App_MsgProc(
 		{
 			GetCInput()->SetMousePos(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 		} break;
-	case WM_KEYDOWN:
-		{
-			GetCInput()->KeyDown(wParam);
-			handled = true;
-		} break;
-	case WM_KEYUP:
-		{
-			GetCInput()->KeyUp(wParam);
-			handled = true;
-		} break;
 	}
 
 	if(!handled)

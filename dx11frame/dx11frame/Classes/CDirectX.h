@@ -49,7 +49,7 @@ public:
 
 	bool	Init(void);
 	bool	Reset(int x, int y);
-	void	Shutdown(void);
+	void	Cleanup(void);
 
 	bool	BeginRender(void);
 	bool	EndRender(void);
