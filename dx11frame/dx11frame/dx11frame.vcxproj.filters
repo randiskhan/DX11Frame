@@ -14,6 +14,21 @@
     <ClInclude Include="Classes\CInput.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Interfaces\IUpdateable.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IInitializable.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IRenderable.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IEntity.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\ICleanupable.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Classes\CAppBase.cpp">
@@ -32,6 +47,9 @@
   <ItemGroup>
     <Filter Include="Classes">
       <UniqueIdentifier>{ef69ad6a-6d37-4dbc-a98f-9e27513af936}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interfaces">
+      <UniqueIdentifier>{9c63c96e-4f02-4506-a85d-1c0fde09eec3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

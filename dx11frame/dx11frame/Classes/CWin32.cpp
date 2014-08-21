@@ -13,7 +13,7 @@ CWin32::CWin32(CWin32Data wd) :
 }
 CWin32::~CWin32(void)
 {
-	Shutdown();
+	Cleanup();
 }
 #pragma endregion
 
@@ -77,7 +77,7 @@ bool CWin32::Init(void)
 
 	return _IsInit = good;
 }
-void CWin32::Shutdown(void)
+void CWin32::Cleanup(void)
 {
 }
 #pragma endregion

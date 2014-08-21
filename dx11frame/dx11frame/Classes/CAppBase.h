@@ -1,6 +1,8 @@
 // CAppBase.h
 // Declaration file for CAppBase.
 
+#pragma region preprocessor directives
+
 #pragma once
 
 // Common header.
@@ -9,6 +11,12 @@
 #include "CWin32.h"
 #include "CDirectX.h"
 #include "CInput.h"
+// DX11Frame interface headers.
+#include "IInitializable.h"
+#include "IUpdateable.h"
+#include "IRenderable.h"
+#include "ICleanupable.h"
+#include "IEntity.h"
 // DirectXTK headers.
 #include "Audio.h"
 #include "CommonStates.h"
@@ -35,6 +43,8 @@
 
 using namespace DirectX;
 
+#pragma endregion
+
 // Base class for "root" class/object in executable.
 class CAppBase : public ICWin32App
 {
@@ -52,27 +62,17 @@ public:
 
 	WPARAM			Run();
 
-protected:
-	CWin32Data				_CWin32Data;
-	CDirectXData			_CDirectXData;
-
-	bool			MainLoopIteration(void);
-
 	// Get DX11Frame object references.
 	CWin32*			GetCWin32(void);
 	CDirectX*		GetCDirectX(void);
 	CInput*			GetCInput(void);
-
 	// Get DirectXTK object references.
 	SpriteBatch*	GetSpriteBatch(void);
 
-	// Win32 message handler override from implementing interface ICWin32App.
-	LRESULT CALLBACK	ICWin32App_MsgProc(HWND, UINT, WPARAM, LPARAM);
+protected:
+	CWin32Data		_CWin32Data;
+	CDirectXData	_CDirectXData;
 
-	bool			InitBase(void);
-	bool			UpdateBase(void);
-	bool			RenderBase(void);
-	void			CleanupBase(void);
 
 	void			PostQuit(void);
 
@@ -82,4 +82,16 @@ protected:
 	virtual bool	Update(void) = 0;
 	virtual bool	Render(void) = 0;
 	virtual void	Cleanup(void) = 0;
+
+private:
+	bool			MainLoopIteration(void);
+
+	// Win32 message handler override from implementing interface ICWin32App.
+	LRESULT CALLBACK	ICWin32App_MsgProc(HWND, UINT, WPARAM, LPARAM);
+
+	bool			InitBase(void);
+	bool			UpdateBase(void);
+	bool			RenderBase(void);
+	void			CleanupBase(void);
+
 };

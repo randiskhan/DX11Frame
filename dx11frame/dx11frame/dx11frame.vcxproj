@@ -40,11 +40,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\TestGame;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(SolutionDir)\TestGame;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\references\DirectXTK;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\TestGame;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(SolutionDir)\TestGame;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\references\DirectXTK;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -78,17 +78,48 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Classes\CAppBase.cpp" />
-    <ClCompile Include="Classes\CDirectX.cpp" />
-    <ClCompile Include="Classes\CInput.cpp" />
-    <ClCompile Include="Classes\CWin32.cpp" />
+    <ClCompile Include="Classes\CAppBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Classes\CDirectX.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Classes\CInput.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Classes\CWin32.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Classes\CAppBase.h" />
-    <ClInclude Include="Classes\CDirectX.h" />
-    <ClInclude Include="Classes\CInput.h" />
-    <ClInclude Include="Classes\CWin32.h" />
+    <ClInclude Include="Classes\CAppBase.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Classes\CDirectX.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Classes\CInput.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Classes\CWin32.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="common.h" />
+    <ClInclude Include="Interfaces\ICleanupable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IEntity.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IInitializable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IRenderable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="Interfaces\IUpdateable.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,7 +13,6 @@
 class CApp : public CAppBase
 {
 private:
-	unique_ptr<SpriteFont>	_pSpriteFontDebug;
 
 public:
 	CApp(void);
@@ -24,7 +23,4 @@ public:
 	bool		Update(void);
 	bool		Render(void);
 	void		Cleanup(void);
-
-protected:
-	SpriteFont*		GetSpriteDebugFont(void);
 };

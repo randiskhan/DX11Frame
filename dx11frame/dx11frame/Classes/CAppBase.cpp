@@ -7,13 +7,15 @@
 CAppBase::CAppBase(void) :
 	_pCWin32(nullptr),
 	_pCDirectX(nullptr),
-	_pCInput(nullptr)
+	_pCInput(nullptr),
+	_pSpriteBatch(nullptr)
 {
 	_CWin32Data.pICWin32App = this;
 }
 
 CAppBase::~CAppBase(void)
 {
+	CleanupBase();
 }
 #pragma endregion
 
@@ -109,11 +111,6 @@ bool CAppBase::RenderBase(void)
 
 void CAppBase::CleanupBase(void)
 {
-	Cleanup();
-	_pSpriteBatch.release();
-	_pCDirectX.release();
-	_pCInput.release();
-	_pCWin32.release();
 }
 #pragma endregion
 

@@ -41,12 +41,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\references\DirectXTK;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)\references\DirectXTK;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -82,16 +82,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\dx11frame\dx11frame.vcxproj">
-      <Project>{fa4c0013-0f4a-49ea-b440-d59cc06ffbbd}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="CApp.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CApp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\dx11frame\dx11frame.vcxproj">
+      <Project>{fa4c0013-0f4a-49ea-b440-d59cc06ffbbd}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

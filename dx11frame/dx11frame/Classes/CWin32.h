@@ -70,7 +70,7 @@ public:
 
 	// Initialization of all Win32 objects & logic.
 	bool		Init(void);
-	void		Shutdown(void);
+	void		Cleanup(void);
 
 	// Method for clearing the Win32 message queue.
 	bool		MsgQueueProc(void);
