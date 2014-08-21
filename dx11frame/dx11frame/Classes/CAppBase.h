@@ -71,7 +71,7 @@ public:
 protected:
 	CWin32Data		_CWin32Data;
 	CDirectXData	_CDirectXData;
-
+	CInputData		_CInputData;
 
 	void			PostQuit(void);
 
@@ -85,8 +85,8 @@ protected:
 private:
 	bool			MainLoopIteration(void);
 
-	// Win32 message handler override from implementing interface ICWin32App.
-	LRESULT CALLBACK	ICWin32App_MsgProc(HWND, UINT, WPARAM, LPARAM);
+	// Win32 message handler basic implementation. Available for overriding in CAppBase child classes.
+	virtual LRESULT CALLBACK	MsgProc(HWND, UINT, WPARAM, LPARAM);
 
 	bool			InitBase(void);
 	bool			UpdateBase(void);

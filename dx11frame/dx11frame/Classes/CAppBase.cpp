@@ -10,7 +10,6 @@ CAppBase::CAppBase(void) :
 	_pCInput(nullptr),
 	_pSpriteBatch(nullptr)
 {
-	_CWin32Data.pICWin32App = this;
 }
 
 CAppBase::~CAppBase(void)
@@ -64,18 +63,22 @@ bool CAppBase::InitBase(void)
 	if(!_pCWin32) good &= false;
 	if (good) good &= GetCWin32()->Init();
 
-	_CDirectXData.hwnd = GetCWin32()->GetWindow();
-	if(_CDirectXData.useHWndDimentions)
+	if (good)
 	{
-		_CDirectXData.width = _CWin32Data.width;
-		_CDirectXData.height = _CWin32Data.height;
+		_CInputData.hwnd = GetCWin32()->GetWindow();
+		_CDirectXData.hwnd = GetCWin32()->GetWindow();
+		if(_CDirectXData.useHWndDimentions)
+		{
+			_CDirectXData.width = _CWin32Data.width;
+			_CDirectXData.height = _CWin32Data.height;
+		}
 	}
 
 	if (good) _pCDirectX.reset(new CDirectX(_CDirectXData));
 	if(!_pCDirectX) good &= false;
 	if (good) good &= GetCDirectX()->Init();
 
-	if (good) _pCInput.reset(new CInput());
+	if (good) _pCInput.reset(new CInput(_CInputData));
 	if(!_pCInput) good &= false;
 	if (good) good &= GetCInput()->Init();
 
@@ -134,25 +137,18 @@ SpriteBatch*	CAppBase::GetSpriteBatch(void)
 #pragma endregion
 
 #pragma region Win32 message processing
-LRESULT CALLBACK	CAppBase::ICWin32App_MsgProc(
+LRESULT CALLBACK	CAppBase::MsgProc(
 	HWND hwnd,
 	UINT msg,
 	WPARAM wParam,
 	LPARAM lParam)
 {
-	LRESULT result = 0;
+	static LRESULT result = 0;
 	static bool handled; handled = false;
-
-	switch(msg)
-	{
-	case WM_MOUSEMOVE:
-		{
-			GetCInput()->SetMousePos(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
-		} break;
-	}
 
 	if(!handled)
 		result = DefWindowProc(hwnd, msg, wParam, lParam);
+
 	return result;
 }
 #pragma endregion

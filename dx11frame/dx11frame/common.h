@@ -65,17 +65,3 @@ __forceinline float NormSin(float angle)
 	return (sin(angle) + 1.0f) / 2.0f;
 }
 #pragma endregion
-
-#pragma region Custom data types
-struct Point
-{
-	int x;
-	int y;
-
-	Point()
-	{
-		x = 0;
-		y = 0;
-	}
-};
-#pragma endregion

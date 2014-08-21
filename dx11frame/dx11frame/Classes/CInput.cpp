@@ -5,8 +5,9 @@
 
 #pragma region Construction/destruction
 
-CInput::CInput(void)
+CInput::CInput(CInputData id)
 {
+	_CInputData = id;
 	_mousePos.x = 0;
 	_mousePos.y = 0;
 	for (int i=0;i<256;++i)
@@ -37,6 +38,9 @@ bool CInput::Update(void)
 
 	good &= (0 < GetKeyboardState(_keysCurr));
 
+	if(good) good &= (0 < GetCursorPos(&_mousePos));
+	if(good) good &= (0 < ScreenToClient(_CInputData.hwnd, &_mousePos));
+
 	return good;
 }
 
@@ -54,7 +58,7 @@ void CInput::SetMousePos(int x, int y)
 
 #pragma region Input querying
 
-const Point*	CInput::GetMouseScreenPos(void)
+const PPOINT	CInput::GetMouseScreenPos(void)
 {
 	return &_mousePos;
 }

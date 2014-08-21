@@ -19,7 +19,7 @@ EXTERN_C IMAGE_DOS_HEADER __ImageBase;
 class ICWin32App
 {
 public:
-	virtual	LRESULT CALLBACK ICWin32App_MsgProc(
+	virtual	LRESULT CALLBACK MsgProc(
 		HWND,
 		UINT,
 		WPARAM,

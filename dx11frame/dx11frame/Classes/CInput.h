@@ -6,18 +6,30 @@
 #include "common.h"
 #include <windows.h>
 
+struct CInputData
+{
+	HWND	hwnd;
+
+	CInputData()
+	{
+		hwnd = nullptr;
+	}
+};
+
 // Class for all input logic and objects
 class CInput
 {
 private:
-	Point	_mousePos;
-	BYTE	_keysCurr[256];
-	BYTE	_keysPrev[256];
+	POINT		_mousePos;
+	BYTE		_keysCurr[256];
+	BYTE		_keysPrev[256];
+
+	CInputData	_CInputData;
 
 protected:
 
 public:
-	CInput(void);
+	CInput(CInputData id);
 	virtual ~CInput(void);
 
 	bool		Init(void);
@@ -26,7 +38,7 @@ public:
 
 	void		SetMousePos(int x, int y);
 
-	const Point*	GetMouseScreenPos(void);
+	const PPOINT	GetMouseScreenPos(void);
 	bool			IsMouseButtonLeftDown(void);
 	bool			IsMouseButtonLeftUp(void);
 	bool			IsMouseButtonRightDown(void);

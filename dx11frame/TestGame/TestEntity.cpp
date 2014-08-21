@@ -27,6 +27,8 @@ bool		TestEntity::Update(void)
 {
 	static bool good; good = true;
 
+	_msg = ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->x) + L"," + ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->y);
+
 	return good;
 }
 

@@ -67,6 +67,7 @@ bool CWin32::Init(void)
 	if (good)
 	{
 		SetLastError(0);
+		// Store a pointer to this object to use a memmber message handler.
 		LONG lresult = SetWindowLong(_HWnd, GWL_USERDATA, (LONG)this);
 		if(lresult == 0 && GetLastError() != 0) good &= false;
 	}
@@ -113,7 +114,7 @@ bool CWin32::MsgQueueProc(void)
 	//	if it has a reference to one in its GWL_USERDATA.
 	if(GetWindowLong(hwnd, GWL_USERDATA))
 		return ((CWin32*)GetWindowLong(hwnd, GWL_USERDATA))->
-		MsgProc(hwnd, msg, wParam, lParam);
+			MsgProc(hwnd, msg, wParam, lParam);
 	else
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 }
@@ -125,7 +126,7 @@ LRESULT CALLBACK CWin32::MsgProc(
 {
 	// Only dispatch a message to the ICWin32App object if we have a reference.
 	if(_CWin32Data.pICWin32App)
-		return _CWin32Data.pICWin32App->ICWin32App_MsgProc(hwnd, msg, wParam, lParam);
+		return _CWin32Data.pICWin32App->MsgProc(hwnd, msg, wParam, lParam);
 	else
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 }
