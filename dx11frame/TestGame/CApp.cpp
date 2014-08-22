@@ -17,7 +17,7 @@ bool CApp::PreInit(void)
 	static bool good; good = true;
 
 	// Set the path to CAppBase spritefont file.
-	_DebugStritefontPath = L"debug.spritefont";
+	_DebugStritefontPath = L"assets\\debug.spritefont";
 
 	return good;
 }
