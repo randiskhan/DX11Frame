@@ -42,10 +42,10 @@ bool CWin32::Init(void)
 
 	// Added the extra evaluation operator to clear warning for mixing 'bool' and 'BOOL' types.
 	if (good)
-		good &= !(0 == AdjustWindowRect(
+		good &= (0 < AdjustWindowRect(
 		&rect,
 		_CWin32Data.windowStyle,
-		false));
+		_CWin32Data.isWindowMenu));
 
 	if (good)
 		_HWnd = CreateWindow(
@@ -54,8 +54,8 @@ bool CWin32::Init(void)
 		_CWin32Data.windowStyle,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
-		_CWin32Data.width,
-		_CWin32Data.height,
+		rect.right - rect.left,
+		rect.bottom - rect.top,
 		0,
 		0,
 		HINST_THISCOMPONENT,

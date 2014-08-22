@@ -38,7 +38,7 @@ bool		TestEntity::Render(void)
 
 	GetFrame()->DrawDebugString(
 		_msg, 
-		XMFLOAT2(50,50), 
+		XMFLOAT2(20,20), 
 		Colors::Yellow);
 	
 	return good;

@@ -34,6 +34,7 @@ struct CWin32Data
 	int			height;
 	int			width;
 	DWORD		windowStyle;
+	BOOL		isWindowMenu;
 
 	CWin32Data()
 	{
@@ -42,11 +43,8 @@ struct CWin32Data
 		wndTitle = L"DirectX11";
 		width = 800;
 		height = 600;
-		windowStyle = (WS_OVERLAPPED/* |
-									WS_CAPTION |
-									WS_SYSMENU |
-									WS_MINIMIZEBOX |
-									WS_THICKFRAME*/);
+		windowStyle = (WS_CAPTION);
+		isWindowMenu = 0;
 	}
 };
 
