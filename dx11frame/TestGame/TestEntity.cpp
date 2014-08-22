@@ -25,13 +25,26 @@ bool		TestEntity::Init(void)
 bool		TestEntity::Update(void)
 {
 	static bool good; good = true;
+	static int count = 0; ++count;
+	static float last = 0;
+	static float fps = 0;
+	static float interval = 0.5f;
 
+	if (GetFrame()->GetCTimer()->GetTotalElapsed() > last + interval)
+	{
+		fps = count / interval;
+		count = 0;
+		last += interval;
+	}
+	
 	if(DoUpdate())
 	{
 		_msg = 
 			ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->x) + 
 			L"," + 
-			ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->y);
+			ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->y) +
+			L" - FPS: " +
+			ToString(fps);
 	}
 
 	return good;

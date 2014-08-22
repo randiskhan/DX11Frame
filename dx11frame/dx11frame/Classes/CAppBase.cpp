@@ -61,6 +61,9 @@ bool CAppBase::InitBase(void)
 	if (good) good &= PreInit();
 
 	// DX11Frame object creation.
+	_pCTimer.reset(new CTimer());
+	if(!(_pCTimer && _pCTimer->IsInit())) good &= false;
+
 	_pCWin32.reset(new CWin32(_CWin32Data));
 	if(!_pCWin32) good &= false;
 	if (good) good &= GetCWin32()->Init();
@@ -103,7 +106,8 @@ bool CAppBase::UpdateBase(void)
 {
 	static bool good; good = true;
 
-	good &= GetCInput()->Update();
+	good &= GetCTimer()->Update();
+	if(good) good &= GetCInput()->Update();
 	if(good) good &= Update();
 
 	return good;
@@ -137,6 +141,10 @@ CDirectX*		CAppBase::GetCDirectX(void)
 CInput*			CAppBase::GetCInput(void)
 {
 	return _pCInput.get();
+}
+CTimer*			CAppBase::GetCTimer(void)
+{
+	return _pCTimer.get();
 }
 SpriteBatch*	CAppBase::GetSpriteBatch(void)
 {

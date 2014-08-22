@@ -11,6 +11,7 @@
 #include "CWin32.h"
 #include "CDirectX.h"
 #include "CInput.h"
+#include "CTimer.h"
 // DX11Frame interface headers.
 #include "IInitializable.h"
 #include "IUpdateable.h"
@@ -52,6 +53,7 @@ private:
 	unique_ptr<CWin32>		_pCWin32;
 	unique_ptr<CDirectX>	_pCDirectX;
 	unique_ptr<CInput>		_pCInput;
+	unique_ptr<CTimer>		_pCTimer;
 	// DirectXTK objects.
 	unique_ptr<SpriteBatch>	_pSpriteBatch;
 	unique_ptr<SpriteFont>	_pDebugFont;
@@ -66,6 +68,7 @@ public:
 	CWin32*			GetCWin32(void);
 	CDirectX*		GetCDirectX(void);
 	CInput*			GetCInput(void);
+	CTimer*			GetCTimer(void);
 	// Get DirectXTK object references.
 	SpriteBatch*	GetSpriteBatch(void);
 
