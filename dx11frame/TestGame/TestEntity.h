@@ -9,8 +9,7 @@
 class TestEntity : public IEntity
 {
 private:
-	unique_ptr<SpriteFont>	_pDebugFont;
-	wstring					_msg;
+	wstring		_msg;
 
 public:
 	TestEntity(CAppBase* pCAppBase);
@@ -21,8 +20,5 @@ public:
 	bool	Render(void);
 	void	Cleanup(void);
 
-protected:
-
-	void	DrawDebugString(wstring msg, XMFLOAT2 loc, FXMVECTOR color);
 };
 

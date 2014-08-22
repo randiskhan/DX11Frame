@@ -16,6 +16,8 @@ bool CApp::PreInit(void)
 {
 	static bool good; good = true;
 
+	_DebugStritefontPath = L"debug.spritefont";
+
 	_pTestEntity.reset(new TestEntity(this));
 	if(!_pTestEntity) good &= false;
 

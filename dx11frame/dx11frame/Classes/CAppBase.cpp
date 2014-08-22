@@ -8,7 +8,9 @@ CAppBase::CAppBase(void) :
 	_pCWin32(nullptr),
 	_pCDirectX(nullptr),
 	_pCInput(nullptr),
-	_pSpriteBatch(nullptr)
+	_pSpriteBatch(nullptr),
+	_pDebugFont(nullptr),
+	_DebugStritefontPath(L"")
 {
 }
 
@@ -85,6 +87,9 @@ bool CAppBase::InitBase(void)
 	// DirectXTK object creation
 	if (good) _pSpriteBatch.reset(new SpriteBatch( GetCDirectX()->GetContext() ));
 	if(!_pSpriteBatch) good &= false;
+	
+	if(good && (_DebugStritefontPath.length() > 0))
+		_pDebugFont.reset(new SpriteFont(GetCDirectX()->GetDevice(),_DebugStritefontPath.c_str()));
 
 	if (good) good &= PostInit();
 
@@ -158,4 +163,10 @@ void	CAppBase::PostQuit(void)
 {
 	PostQuitMessage(0);
 }
+
+void	CAppBase::DrawDebugString(wstring msg, XMFLOAT2 loc, FXMVECTOR color)
+{
+	if(_pDebugFont) _pDebugFont->DrawString(GetSpriteBatch(), msg.c_str(), loc, color);
+}
+
 #pragma endregion

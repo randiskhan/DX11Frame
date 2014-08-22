@@ -54,6 +54,7 @@ private:
 	unique_ptr<CInput>		_pCInput;
 	// DirectXTK objects.
 	unique_ptr<SpriteBatch>	_pSpriteBatch;
+	unique_ptr<SpriteFont>	_pDebugFont;
 
 public:
 	CAppBase(void);
@@ -68,10 +69,13 @@ public:
 	// Get DirectXTK object references.
 	SpriteBatch*	GetSpriteBatch(void);
 
+	void			DrawDebugString(wstring msg, XMFLOAT2 loc, FXMVECTOR color);
+
 protected:
 	CWin32Data		_CWin32Data;
 	CDirectXData	_CDirectXData;
 	CInputData		_CInputData;
+	wstring			_DebugStritefontPath;
 
 	void			PostQuit(void);
 
