@@ -16,6 +16,7 @@ bool CApp::PreInit(void)
 {
 	static bool good; good = true;
 
+	// Set the path to CAppBase spritefont file.
 	_DebugStritefontPath = L"debug.spritefont";
 
 	_pTestEntity.reset(new TestEntity(this));

@@ -67,8 +67,10 @@ bool CAppBase::InitBase(void)
 
 	if (good)
 	{
+		// Make sure everyone is working with the same window.
 		_CInputData.hwnd = GetCWin32()->GetWindow();
 		_CDirectXData.hwnd = GetCWin32()->GetWindow();
+		// Synchronize window and backbuffer dimentions if desired.
 		if(_CDirectXData.useHWndDimentions)
 		{
 			_CDirectXData.width = _CWin32Data.width;
@@ -88,6 +90,7 @@ bool CAppBase::InitBase(void)
 	if (good) _pSpriteBatch.reset(new SpriteBatch( GetCDirectX()->GetContext() ));
 	if(!_pSpriteBatch) good &= false;
 	
+	// Create SpriteFont for debugging, but don't exit if failed.
 	if(good && (_DebugStritefontPath.length() > 0))
 		_pDebugFont.reset(new SpriteFont(GetCDirectX()->GetDevice(),_DebugStritefontPath.c_str()));
 
