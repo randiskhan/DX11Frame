@@ -3,9 +3,9 @@
 
 #include "TestEntity.h"
 
-TestEntity::TestEntity(CAppBase* pCAppBase) : IEntity(pCAppBase),
-	_msg(L"")
+TestEntity::TestEntity(CAppBase* pCAppBase) : IEntity(pCAppBase)
 {
+	Init();
 }
 
 TestEntity::~TestEntity(void)
@@ -17,17 +17,22 @@ bool		TestEntity::Init(void)
 {
 	static bool good; good = true;
 
-	return good;
+	_msg = L"";
+
+	return _IsInit = good;
 }
 
 bool		TestEntity::Update(void)
 {
 	static bool good; good = true;
 
-	_msg = 
-		ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->x) + 
-		L"," + 
-		ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->y);
+	if(DoUpdate())
+	{
+		_msg = 
+			ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->x) + 
+			L"," + 
+			ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->y);
+	}
 
 	return good;
 }
@@ -36,10 +41,13 @@ bool		TestEntity::Render(void)
 {
 	static bool good; good = true;
 
-	GetFrame()->DrawDebugString(
-		_msg, 
-		XMFLOAT2(20,20), 
-		Colors::Yellow);
+	if(DoRender())
+	{
+		GetFrame()->DrawDebugString(
+			_msg, 
+			XMFLOAT2(20,20), 
+			Colors::Yellow);
+	}
 	
 	return good;
 }

@@ -1,12 +1,19 @@
 #pragma once
 class IInitializable
 {
+protected:
+	bool			_IsInit;
+
 public:
 
-	IInitializable(void) {}
-	virtual ~IInitializable(void) {};
+	// Construction/Destruction
+	IInitializable(void) : _IsInit(false) {}
+	virtual			~IInitializable(void) {};
 
-	virtual bool Init(void) = 0;
+	// Pure virtual members
+	virtual bool	Init(void) = 0;
 
+	// Instance members
+	bool			IsInit(void) { return _IsInit; }
 };
 

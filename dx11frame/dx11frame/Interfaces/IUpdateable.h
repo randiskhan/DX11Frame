@@ -1,14 +1,19 @@
 #pragma once
 class IUpdateable
 {
+protected:
+	bool			_DoUpdate;
+
 public:
 
-	IUpdateable(void) : update(true) {}
-	virtual ~IUpdateable(void) {};
+	// Construction/Destruction
+	IUpdateable(void) : _DoUpdate(true) {}
+	virtual			~IUpdateable(void) {};
 
-	virtual bool Update(void) = 0;
+	// Pure virtual members
+	virtual bool	Update(void) = 0;
 
-protected:
-	bool	update;
+	// Instance members
+	bool			DoUpdate(void) { return _DoUpdate; }
 };
 

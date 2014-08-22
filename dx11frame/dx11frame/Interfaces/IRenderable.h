@@ -1,14 +1,19 @@
 #pragma once
 class IRenderable
 {
+protected:
+	bool			_DoRender;
+
 public:
 
-	IRenderable(void):render(true) {}
-	virtual ~IRenderable(void) {};
+	// Construction/Destruction
+	IRenderable(void):_DoRender(true) {}
+	virtual			~IRenderable(void) {};
 
-	virtual bool Render(void) = 0;
+	// Pure virtual members
+	virtual bool	Render(void) = 0;
 
-protected:
-	bool	render;
+	// Instance members
+	bool			DoRender(void) { return _DoRender; }
 };
 
