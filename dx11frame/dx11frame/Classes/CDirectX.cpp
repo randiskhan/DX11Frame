@@ -45,6 +45,8 @@ void CDirectX::Cleanup(void)
 #pragma region Initialization
 bool	CDirectX::Init(void)
 {
+	bool good = true;
+
 	HRESULT hr;
 
 	UINT createDeviceFlags = 0;
@@ -65,39 +67,30 @@ bool	CDirectX::Init(void)
 		&featureLevel,
 		&_pD3D11DeviceContext);
 
-	if( FAILED(hr) )
-	{
-		MessageBox(0, L"D3D11CreateDevice Failed.", 0, 0);
-		return false;
-	}
-
 	if( featureLevel != D3D_FEATURE_LEVEL_11_0 )
-	{
-		MessageBox(0, L"Direct3D Feature Level 11 unsupported.", 0, 0);
-		return false;
-	}
+		hr = S_FALSE;
 
 	DXGI_SWAP_CHAIN_DESC sd;
-	sd.BufferDesc.Width  = _CDirectXData.width;
-	sd.BufferDesc.Height = _CDirectXData.height;
-	sd.BufferDesc.RefreshRate.Numerator = 60;
-	sd.BufferDesc.RefreshRate.Denominator = 1;
-	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
-	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-
-	sd.SampleDesc.Count   = 1;
-	sd.SampleDesc.Quality = 0;
-
-	sd.BufferUsage  = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.BufferCount  = 1;
-	sd.OutputWindow = _CDirectXData.hwnd;
-	sd.Windowed     = true;
-	sd.SwapEffect   = DXGI_SWAP_EFFECT_DISCARD;
-	sd.Flags        = 0;
 
 	if(SUCCEEDED(hr))
 	{
+		sd.BufferDesc.Width  = _CDirectXData.width;
+		sd.BufferDesc.Height = _CDirectXData.height;
+		sd.BufferDesc.RefreshRate.Numerator = 60;
+		sd.BufferDesc.RefreshRate.Denominator = 1;
+		sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+		sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+		sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+
+		sd.SampleDesc.Count   = 1;
+		sd.SampleDesc.Quality = 0;
+
+		sd.BufferUsage  = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		sd.BufferCount  = 1;
+		sd.OutputWindow = _CDirectXData.hwnd;
+		sd.Windowed     = true;
+		sd.SwapEffect   = DXGI_SWAP_EFFECT_DISCARD;
+		sd.Flags        = 0;
 		hr = _pD3D11Device->QueryInterface(__uuidof(IDXGIDevice), (void**)&_pDXGIDevice);
 	}
 	if(SUCCEEDED(hr))
@@ -118,13 +111,16 @@ bool	CDirectX::Init(void)
 		_pDXGIFactory->MakeWindowAssociation(_CDirectXData.hwnd, DXGI_MWA_NO_ALT_ENTER);
 	}
 	if(SUCCEEDED(hr))
-		Reset(_CDirectXData.width, _CDirectXData.height);
+		good &= Reset(_CDirectXData.width, _CDirectXData.height);
 
-	return true;
+	if(FAILED(hr)) good &= false;
+
+	return _IsInit = good;
 }
 
 bool	CDirectX::Reset(int x, int y)
 {
+	bool good = true;
 	HRESULT hr;
 
 	// Release the old views, as they hold references to the buffers we
@@ -200,7 +196,9 @@ bool	CDirectX::Reset(int x, int y)
 	}
 	SafeRelease(backBuffer);
 
-	return true;
+	if(FAILED(hr)) good &= false;
+
+	return _IsInit = good;
 }
 
 #pragma endregion
@@ -220,7 +218,9 @@ ID3D11DeviceContext*	CDirectX::GetContext(void)
 #pragma region Begin/End rendering
 bool	CDirectX::BeginRender(void)
 {
-	float backcolor[4] = { 0 };
+	static bool good; good = true;
+
+	static float backcolor[4] = { 0 };
 	_pD3D11DeviceContext->ClearRenderTargetView(
 		_pD3D11RenderTargetView,
 		reinterpret_cast<const float*>(backcolor));
@@ -229,14 +229,18 @@ bool	CDirectX::BeginRender(void)
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
 		1.0f,
 		0);
-	return true;
+
+	return good;
 }
 
 bool	CDirectX::EndRender(void)
 {
-	HRESULT hr;
+	static bool good; good = true;
+	static HRESULT hr;
+
 	hr = _pDXGISwapChain->Present(0, 0);
-	if(FAILED(hr)) return false;
-	return true;
+	if(FAILED(hr)) good = false;
+
+	return good;
 }
 #pragma endregion

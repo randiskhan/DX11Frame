@@ -5,6 +5,7 @@
 
 #include <d3d11.h>
 #include "common.h"
+#include "IInitializable.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -26,7 +27,7 @@ struct CDirectXData
 };
 
 // Class for all DirectX rendering objects.
-class CDirectX
+class CDirectX : public IInitializable
 {
 private:
 	// Direct3D object fields

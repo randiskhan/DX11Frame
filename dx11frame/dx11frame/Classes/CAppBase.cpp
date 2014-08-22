@@ -42,7 +42,7 @@ WPARAM CAppBase::Run(void)
 
 bool CAppBase::MainLoopIteration(void)
 {
-	bool good = true;
+	static bool good; good = true;
 
 	// Clear the message queue.
 	if (good &= _pCWin32->MsgQueueProc())
