@@ -19,6 +19,9 @@ using namespace std;
 #endif
 #pragma endregion
 
+// Uncomment this line to enable MsgProc in CAppBase.
+//#define MEMBER_MSGPROC
+
 #pragma region ToString functions
 template<typename T>
 __forceinline std::wstring ToString(const T& s)

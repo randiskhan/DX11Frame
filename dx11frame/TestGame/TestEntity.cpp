@@ -15,7 +15,7 @@ TestEntity::~TestEntity(void)
 
 bool		TestEntity::Init(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	_msg = L"";
 
@@ -24,7 +24,7 @@ bool		TestEntity::Init(void)
 
 bool		TestEntity::Update(void)
 {
-	static bool good; good = true;
+	bool good = true;
 	static int count = 0; ++count;
 	static float last = 0;
 	static float fps = 0;
@@ -52,7 +52,7 @@ bool		TestEntity::Update(void)
 
 bool		TestEntity::Render(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	if(DoRender())
 	{

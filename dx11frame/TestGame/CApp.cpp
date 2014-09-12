@@ -14,7 +14,7 @@ CApp::~CApp(void)
 
 bool CApp::PreInit(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	// Set the path to CAppBase spritefont file.
 	_DebugStritefontPath = L"assets\\debug.spritefont";
@@ -24,7 +24,7 @@ bool CApp::PreInit(void)
 
 bool CApp::PostInit(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	_pTestEntity.reset(new TestEntity(this));
 	if(!(_pTestEntity && _pTestEntity->IsInit()))
@@ -35,7 +35,7 @@ bool CApp::PostInit(void)
 
 bool CApp::Update(void)
 {
-	static bool good; good = true;
+	bool good = true;
 	if(GetCInput()->IsKeyDown(VK_ESCAPE)) PostQuit();
 
 	_pTestEntity->Update();
@@ -45,7 +45,7 @@ bool CApp::Update(void)
 
 bool CApp::Render(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	GetSpriteBatch()->Begin();
 	_pTestEntity->Render();

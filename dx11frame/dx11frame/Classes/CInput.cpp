@@ -31,7 +31,7 @@ bool CInput::Init(void)
 
 bool CInput::Update(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	for (int i=0;i<256;++i)
 		_keysPrev[i] = _keysCurr[i];

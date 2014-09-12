@@ -1,7 +1,7 @@
 // CApp.h
 // Declaration file for CApp.
 // "Root" class of executable.
-// This class must be extend CAppBase.
+// This class must extend CAppBase.
 
 #pragma once
 

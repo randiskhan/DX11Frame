@@ -218,7 +218,7 @@ ID3D11DeviceContext*	CDirectX::GetContext(void)
 #pragma region Begin/End rendering
 bool	CDirectX::BeginRender(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	static float backcolor[4] = { 0 };
 	_pD3D11DeviceContext->ClearRenderTargetView(
@@ -235,8 +235,8 @@ bool	CDirectX::BeginRender(void)
 
 bool	CDirectX::EndRender(void)
 {
-	static bool good; good = true;
-	static HRESULT hr;
+	bool good = true;
+	HRESULT hr;
 
 	hr = _pDXGISwapChain->Present(0, 0);
 	if(FAILED(hr)) good = false;

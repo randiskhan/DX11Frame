@@ -12,7 +12,7 @@ CTimer::~CTimer(void)
 
 bool	CTimer::Init(void)
 {
-	static bool good; good = true;
+	bool good = true;
 	_IsInit = false;
 
 	// Do initialization stuff.
@@ -23,7 +23,7 @@ bool	CTimer::Init(void)
 
 bool	CTimer::Update(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	// Do update stuff.
 	_PrevTimePoint = _CurrTimePoint;

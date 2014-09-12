@@ -42,7 +42,7 @@ WPARAM CAppBase::Run(void)
 
 bool CAppBase::MainLoopIteration(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	// Clear the message queue.
 	if (good &= _pCWin32->MsgQueueProc())
@@ -56,7 +56,7 @@ bool CAppBase::MainLoopIteration(void)
 
 bool CAppBase::InitBase(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	if (good) good &= PreInit();
 
@@ -104,7 +104,7 @@ bool CAppBase::InitBase(void)
 
 bool CAppBase::UpdateBase(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	good &= GetCTimer()->Update();
 	if(good) good &= GetCInput()->Update();
@@ -115,7 +115,7 @@ bool CAppBase::UpdateBase(void)
 
 bool CAppBase::RenderBase(void)
 {
-	static bool good; good = true;
+	bool good = true;
 
 	good &= GetCDirectX()->BeginRender();
 	if (good) good &= Render();
@@ -159,8 +159,8 @@ LRESULT CALLBACK	CAppBase::MsgProc(
 	WPARAM wParam,
 	LPARAM lParam)
 {
-	static LRESULT result = 0;
-	static bool handled; handled = false;
+	LRESULT result = 0;
+	bool handled = false;
 
 	if(!handled)
 		result = DefWindowProc(hwnd, msg, wParam, lParam);

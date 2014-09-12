@@ -46,7 +46,11 @@ using namespace DirectX;
 #pragma endregion
 
 // Base class for "root" class/object in executable.
+#ifdef MEMBER_MSGPROC
 class CAppBase : public ICWin32App
+#else
+class CAppBase
+#endif
 {
 private:
 	// DX11Frame primary objects.

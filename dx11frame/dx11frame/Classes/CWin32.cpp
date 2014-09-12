@@ -17,7 +17,7 @@ CWin32::~CWin32(void)
 }
 #pragma endregion
 
-#pragma region Initialization
+#pragma region Initialization/Cleanup
 bool CWin32::Init(void)
 {
 	bool good = true;
@@ -110,12 +110,14 @@ bool CWin32::MsgQueueProc(void)
 			return 0;
 		}
 	}
+#ifdef MEMBER_MSGPROC
 	// Only dispatch a message to the CWin32 object for this window
 	//	if it has a reference to one in its GWL_USERDATA.
 	if(GetWindowLong(hwnd, GWL_USERDATA))
 		return ((CWin32*)GetWindowLong(hwnd, GWL_USERDATA))->
 			MsgProc(hwnd, msg, wParam, lParam);
 	else
+#endif
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 LRESULT CALLBACK CWin32::MsgProc(
