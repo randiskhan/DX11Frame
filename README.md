@@ -9,6 +9,8 @@ Any executable project using this static library only needs to:
 3) Create a class that extends CAppBase.
 4) Implement WinMain, instantiate your class, and call Run().
 
+This project is dependant on DirectX Tool Kit (http://directxtk.codeplex.com/). The binaries are not in the repository.
+
 Earlier commits had WinMain in the static library. This is no longer the case. Caused more problems than it solved. Solutions to keep WinMain in lib have been discovered, but complicate things more than I'd like at this projects current development. Thanks for your help Scott!
 
 randiskhan (Randolph Stone) git@randskhan.com
