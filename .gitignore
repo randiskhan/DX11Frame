@@ -32,3 +32,4 @@ _ReSharper*/
 *.cachefile
 *.sdf
 *.opensdf
+*.ffs_db
