@@ -2,6 +2,8 @@
 #ignore thumbnails created by windows
 Thumbs.db
 #Ignore files build by Visual Studio
+*.dll
+*.lib
 *.obj
 *.exe
 *.pdb
@@ -21,14 +23,12 @@ Thumbs.db
 *.log
 [Bb]in
 [Dd]ebug*/
-*.lib
 *.sbr
 obj/
 bin/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
-*.dll
 *.cachefile
 *.sdf
 *.opensdf
