@@ -41,13 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\references\DirectXTK;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\references\DirectXTK\inc;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\references\DirectXTK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\references\DirectXTK\includes;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\references\DirectXTK;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\references\DirectXTK\inc;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\references\DirectXTK\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
