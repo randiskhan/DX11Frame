@@ -63,7 +63,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /s /d /i $(ProjectDir)Assets $(TargetDir)Assets</Command>
+      <Command>xcopy /y /s /d /i "$(ProjectDir)Assets" "$(TargetDir)Assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,7 +84,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /s /d /i $(ProjectDir)Assets $(TargetDir)Assets</Command>
+      <Command>xcopy /y /s /d /i "$(ProjectDir)Assets" "$(TargetDir)Assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

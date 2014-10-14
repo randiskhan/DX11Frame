@@ -40,6 +40,7 @@ bool		TestEntity::Update(void)
 	if(DoUpdate())
 	{
 		_msg = 
+			L"Press escape to exit.\n" +
 			ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->x) + 
 			L"," + 
 			ToString(GetFrame()->GetCInput()->GetMouseScreenPos()->y) +
@@ -58,7 +59,7 @@ bool		TestEntity::Render(void)
 	{
 		GetFrame()->DrawDebugString(
 			_msg, 
-			XMFLOAT2(20,20), 
+			XMFLOAT2(5,5), 
 			Colors::Yellow);
 	}
 	
