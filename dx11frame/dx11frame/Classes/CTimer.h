@@ -1,3 +1,6 @@
+// CTimer.h
+// Declaration file for CTimer.
+
 #pragma once
 
 #include "IInitializable.h"

@@ -1,5 +1,5 @@
 // TestEntity.cpp
-// Impementation file for TestEntity.
+// Implementation file for TestEntity.
 
 #include "TestEntity.h"
 

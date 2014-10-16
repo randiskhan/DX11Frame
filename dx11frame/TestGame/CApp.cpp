@@ -1,5 +1,5 @@
 // CApp.cpp
-// Impementation file for CApp.
+// Implementation file for CApp.
 
 #include "CApp.h"
 
@@ -17,7 +17,7 @@ bool CApp::PreInit(void)
 	bool good = true;
 
 	// Set the path to CAppBase spritefont file.
-	_DebugStritefontPath = L"assets\\debug.spritefont";
+	_DebugSpritefontPath = L"assets\\debug.spritefont";
 
 	return good;
 }
@@ -28,7 +28,7 @@ bool CApp::PostInit(void)
 
 	_pTestEntity.reset(new TestEntity(this));
 	if(!(_pTestEntity && _pTestEntity->IsInit()))
-		good &= false;
+		good = false;
 
 	return good;
 }

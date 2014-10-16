@@ -1,5 +1,5 @@
-//	CDirectX.cpp
-//	Implementation file for CDirectX.
+// CDirectX.cpp
+// Implementation file for CDirectX.
 
 #include "CDirectX.h"
 
@@ -68,11 +68,11 @@ bool	CDirectX::Init(void)
 		&_pD3D11DeviceContext);
 
 	if( featureLevel != D3D_FEATURE_LEVEL_11_0 )
-		hr = S_FALSE;
+		good = false;
 
 	DXGI_SWAP_CHAIN_DESC sd;
 
-	if(SUCCEEDED(hr))
+	if(SUCCEEDED(hr) && good)
 	{
 		sd.BufferDesc.Width  = _CDirectXData.width;
 		sd.BufferDesc.Height = _CDirectXData.height;
@@ -93,27 +93,27 @@ bool	CDirectX::Init(void)
 		sd.Flags        = 0;
 		hr = _pD3D11Device->QueryInterface(__uuidof(IDXGIDevice), (void**)&_pDXGIDevice);
 	}
-	if(SUCCEEDED(hr))
+	if(SUCCEEDED(hr) && good)
 	{
 		hr = _pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&_pDXGIAdapter);
 	}
-	if(SUCCEEDED(hr))
+	if(SUCCEEDED(hr) && good)
 	{
 		hr = _pDXGIAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&_pDXGIFactory);
 	}
-	if(SUCCEEDED(hr))
+	if(SUCCEEDED(hr) && good)
 	{
 		hr = _pDXGIFactory->CreateSwapChain(_pD3D11Device, &sd, &_pDXGISwapChain);
 	}
-	if(SUCCEEDED(hr))
+	if(SUCCEEDED(hr) && good)
 	{
 		// Block alt-enter for fullscreen toggle, for now.
 		_pDXGIFactory->MakeWindowAssociation(_CDirectXData.hwnd, DXGI_MWA_NO_ALT_ENTER);
 	}
-	if(SUCCEEDED(hr))
+	if(SUCCEEDED(hr) && good)
 		good &= Reset(_CDirectXData.width, _CDirectXData.height);
 
-	if(FAILED(hr)) good &= false;
+	if(FAILED(hr)) good = false;
 
 	return _IsInit = good;
 }

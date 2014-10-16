@@ -69,7 +69,7 @@ bool CWin32::Init(void)
 		SetLastError(0);
 		// Store a pointer to this object to use a memmber message handler.
 		LONG lresult = SetWindowLong(_HWnd, GWL_USERDATA, (LONG)this);
-		if(lresult == 0 && GetLastError() != 0) good &= false;
+		if(lresult == 0 && GetLastError() != 0) good = false;
 	}
 
 	ShowWindow(_HWnd, SW_SHOW);

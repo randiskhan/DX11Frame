@@ -1,3 +1,6 @@
+// CTimer.cpp
+// Implementation file for CTimer.
+
 #include "CTimer.h"
 
 CTimer::CTimer(void)

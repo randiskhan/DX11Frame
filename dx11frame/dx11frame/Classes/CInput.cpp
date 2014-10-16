@@ -36,10 +36,10 @@ bool CInput::Update(void)
 	for (int i=0;i<256;++i)
 		_keysPrev[i] = _keysCurr[i];
 
-	good &= (0 < GetKeyboardState(_keysCurr));
+	good = (0 < GetKeyboardState(_keysCurr));
 
-	if(good) good &= (0 < GetCursorPos(&_mousePos));
-	if(good) good &= (0 < ScreenToClient(_CInputData.hwnd, &_mousePos));
+	if(good) good = (0 < GetCursorPos(&_mousePos));
+	if(good) good = (0 < ScreenToClient(_CInputData.hwnd, &_mousePos));
 
 	return good;
 }

@@ -1,5 +1,5 @@
-//	CDirectX.h
-//	Declaration file for CDirectX.
+// CDirectX.h
+// Declaration file for CDirectX.
 
 #pragma once
 

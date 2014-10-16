@@ -1,5 +1,5 @@
 // CAppBase.cpp
-// Impementation file for CAppBase.
+// Implementation file for CAppBase.
 
 #include "CAppBase.h"
 
@@ -10,7 +10,7 @@ CAppBase::CAppBase(void) :
 	_pCInput(nullptr),
 	_pSpriteBatch(nullptr),
 	_pDebugFont(nullptr),
-	_DebugStritefontPath(L"")
+	_DebugSpritefontPath(L"")
 {
 }
 
@@ -45,9 +45,9 @@ bool CAppBase::MainLoopIteration(void)
 	bool good = true;
 
 	// Clear the message queue.
-	if (good &= _pCWin32->MsgQueueProc())
+	if (good = _pCWin32->MsgQueueProc())
 	{
-		good &= UpdateBase();
+		good = UpdateBase();
 		good &= RenderBase();
 	}
 
@@ -58,15 +58,15 @@ bool CAppBase::InitBase(void)
 {
 	bool good = true;
 
-	if (good) good &= PreInit();
+	if (good) good = PreInit();
 
 	// DX11Frame object creation.
 	_pCTimer.reset(new CTimer());
-	if(!(_pCTimer && _pCTimer->IsInit())) good &= false;
+	if(!(_pCTimer && _pCTimer->IsInit())) good = false;
 
 	_pCWin32.reset(new CWin32(_CWin32Data));
-	if(!_pCWin32) good &= false;
-	if (good) good &= GetCWin32()->Init();
+	if(!_pCWin32) good = false;
+	if (good) good = GetCWin32()->Init();
 
 	if (good)
 	{
@@ -82,22 +82,22 @@ bool CAppBase::InitBase(void)
 	}
 
 	if (good) _pCDirectX.reset(new CDirectX(_CDirectXData));
-	if(!_pCDirectX) good &= false;
-	if (good) good &= GetCDirectX()->Init();
+	if(!_pCDirectX) good = false;
+	if (good) good = GetCDirectX()->Init();
 
 	if (good) _pCInput.reset(new CInput(_CInputData));
-	if(!_pCInput) good &= false;
-	if (good) good &= GetCInput()->Init();
+	if(!_pCInput) good = false;
+	if (good) good = GetCInput()->Init();
 
 	// DirectXTK object creation
 	if (good) _pSpriteBatch.reset(new SpriteBatch( GetCDirectX()->GetContext() ));
-	if(!_pSpriteBatch) good &= false;
+	if(!_pSpriteBatch) good = false;
 	
 	// Create SpriteFont for debugging, but don't exit if failed.
-	if(good && (_DebugStritefontPath.length() > 0))
-		_pDebugFont.reset(new SpriteFont(GetCDirectX()->GetDevice(),_DebugStritefontPath.c_str()));
+	if(good && (_DebugSpritefontPath.length() > 0))
+		_pDebugFont.reset(new SpriteFont(GetCDirectX()->GetDevice(),_DebugSpritefontPath.c_str()));
 
-	if (good) good &= PostInit();
+	if (good) good = PostInit();
 
 	return good;
 }
@@ -107,8 +107,8 @@ bool CAppBase::UpdateBase(void)
 	bool good = true;
 
 	good &= GetCTimer()->Update();
-	if(good) good &= GetCInput()->Update();
-	if(good) good &= Update();
+	if(good) good = GetCInput()->Update();
+	if(good) good = Update();
 
 	return good;
 }
@@ -117,9 +117,9 @@ bool CAppBase::RenderBase(void)
 {
 	bool good = true;
 
-	good &= GetCDirectX()->BeginRender();
-	if (good) good &= Render();
-	if (good) good &= GetCDirectX()->EndRender();
+	good = GetCDirectX()->BeginRender();
+	if (good) good = Render();
+	if (good) good = GetCDirectX()->EndRender();
 
 	return good;
 }

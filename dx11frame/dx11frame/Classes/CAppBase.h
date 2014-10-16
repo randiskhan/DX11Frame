@@ -82,7 +82,7 @@ protected:
 	CWin32Data		_CWin32Data;
 	CDirectXData	_CDirectXData;
 	CInputData		_CInputData;
-	wstring			_DebugStritefontPath;
+	wstring			_DebugSpritefontPath;
 
 	void			PostQuit(void);
 
