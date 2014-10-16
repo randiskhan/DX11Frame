@@ -7,6 +7,7 @@
 
 #include "CAppBase.h"
 #include "TestEntity.h"
+#include "TestEntity2.h"
 
 #pragma comment(lib, "dx11frame.lib")
 
@@ -14,6 +15,7 @@ class CApp : public CAppBase
 {
 private:
 	unique_ptr<TestEntity>	_pTestEntity;
+	unique_ptr<TestEntity2>	_pTestEntity2;
 
 public:
 	CApp(void);
