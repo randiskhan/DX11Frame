@@ -52,7 +52,7 @@ bool		TestEntity2::Init(void)
 	if(FAILED(hr)) good = false;
 
 	for(int i = 0; i < _NumVertices; ++i)
-		_vertices[i].color = XMFLOAT4(0.8f,0.5f,0.8f,1.0f);
+		_vertices[i].color = XMFLOAT4(0.5f,0.5f,0.5f,1.0f);
 
 	return _IsInit = good;
 }
@@ -73,7 +73,7 @@ bool		TestEntity2::Update(void)
 	// can think of radius2 as a ratio to/of radius1. Next is d, which I prefer to 
 	// be a ratio of radius2, hence the d *= radius2. That way I can always think of
 	// d = 1.0 to be drawing point on edge of radius2.
-	float radius1 = 1.0f, radius2 = 0.82f, d = 1.0f, a = 0.0f;
+	float radius1 = 1.0f, radius2 = 0.82f, d = 0.5f, a = 0.0f;
 
 	if(DoUpdate())
 	{
