@@ -22,7 +22,7 @@ bool		TestEntity2::Init(void)
 
 	_pPrimtiveBatch.reset(
 		new PrimitiveBatch<VertexPositionColor>(
-			GetFrame()->GetCDirectX()->GetContext()));
+			GetFrame()->GetCDirectX()->GetContext(), 65535U, 65535U));
 	_pBasicEffect.reset(
 		new BasicEffect(GetFrame()->GetCDirectX()->GetDevice()));
 
@@ -52,7 +52,7 @@ bool		TestEntity2::Init(void)
 	if(FAILED(hr)) good = false;
 
 	for(int i = 0; i < _NumVertices; ++i)
-		_vertices[i].color = XMFLOAT4(1.0f,1.0f,1.0f,1.0f);
+		_vertices[i].color = XMFLOAT4(0.8f,0.5f,0.8f,1.0f);
 
 	return _IsInit = good;
 }
@@ -62,19 +62,29 @@ bool		TestEntity2::Update(void)
 	bool good = true;
 	float t = GetFrame()->GetCTimer()->GetTotalElapsed();
 	RECT r = GetFrame()->GetCWin32()->GetScreenRect();
+	float x=0, y=0;
 	
+	// Parameters for Hypotrochoid.
+	// Fixed circle radius: radius1
+	// Moving circle radius: radius2
+	// Drawing point distance from center: d
+	// Angle in radians: a
+	// I find it easiest to "normalize" these values. I keep radius1 at 1.0, so I
+	// can think of radius2 as a ratio to/of radius1. Next is d, which I prefer to 
+	// be a ratio of radius2, hence the d *= radius2. That way I can always think of
+	// d = 1.0 to be drawing point on edge of radius2.
+	float radius1 = 1.0f, radius2 = 0.82f, d = 1.0f, a = 0.0f;
+
 	if(DoUpdate())
 	{
-		for(int i = 0; i < _NumVertices; i+=2)
+		d *= radius2;
+		for(int i = 0; i < _NumVertices; ++i)
 		{
-			_vertices[i].position = XMFLOAT3(
-				(r.right*(i/(float)_NumVertices)),
-				(float)r.bottom,
-				0);
-			_vertices[i+1].position = XMFLOAT3(
-				(float)r.right,
-				r.bottom*(1.0f-(i/(float)_NumVertices)),
-				0);
+			a += 0.01f;
+			x = ((radius1-radius2)*cos(a))+(d*cos(((radius1-radius2)/radius2)*a));
+			y = ((radius1-radius2)*sin(a))-(d*sin(((radius1-radius2)/radius2)*a));
+			_vertices[i].position.x = ( x * r.bottom * 0.5f) + (r.right * 0.5f);
+			_vertices[i].position.y = ( y * r.bottom * 0.5f) + (r.bottom * 0.5f);
 		}
 	}
 
@@ -91,7 +101,7 @@ bool		TestEntity2::Render(void)
 		GetFrame()->GetCDirectX()->GetContext()->IASetInputLayout(_pID3D11InputLayout);
 
 		_pPrimtiveBatch->Begin();
-		_pPrimtiveBatch->Draw(D3D11_PRIMITIVE_TOPOLOGY_LINELIST, _vertices, _NumVertices);
+		_pPrimtiveBatch->Draw(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST, _vertices, _NumVertices);
 		_pPrimtiveBatch->End();
 	}
 	

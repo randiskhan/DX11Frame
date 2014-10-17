@@ -220,10 +220,15 @@ bool	CDirectX::BeginRender(void)
 {
 	bool good = true;
 
-	static float backcolor[4] = { 0 };
+	float bc[4] = {
+		_CDirectXData.backcolor.x,
+		_CDirectXData.backcolor.y,
+		_CDirectXData.backcolor.z,
+		_CDirectXData.backcolor.w
+	};
 	_pD3D11DeviceContext->ClearRenderTargetView(
 		_pD3D11RenderTargetView,
-		reinterpret_cast<const float*>(backcolor));
+		reinterpret_cast<const float*>(bc));
 	_pD3D11DeviceContext->ClearDepthStencilView(
 		_pD3D11DepthStencilView,
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,

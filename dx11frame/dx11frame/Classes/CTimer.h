@@ -3,9 +3,10 @@
 
 #pragma once
 
-#include "IInitializable.h"
-#include "IUpdateable.h"
-#include "ICleanupable.h"
+#include "common.h"
+//#include "IInitializable.h"
+//#include "IUpdateable.h"
+//#include "ICleanupable.h"
 #include <chrono>
 
 using namespace std::chrono;

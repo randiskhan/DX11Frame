@@ -5,7 +5,6 @@
 
 #include <d3d11.h>
 #include "common.h"
-#include "IInitializable.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "dxguid.lib")
@@ -16,13 +15,15 @@ struct CDirectXData
 	int		height;
 	bool	useHWndDimentions;
 	HWND	hwnd;
-
+	Vector4	backcolor;
+	
 	CDirectXData()
 	{
 		width = 800;
 		height = 600;
 		useHWndDimentions = true;
 		hwnd = nullptr;
+		backcolor = Vector4(0.0f);
 	}
 };
 

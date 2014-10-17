@@ -3,9 +3,9 @@
 
 #pragma once
 
+#include "common.h"
 #include <windows.h>
 #include <windowsx.h>
-#include "common.h"
 
 // This macro eliminates the need to pass an HINSTANCE reference
 //	for window creation. Will always use current HINSTANCE.

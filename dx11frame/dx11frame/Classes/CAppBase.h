@@ -12,36 +12,6 @@
 #include "CDirectX.h"
 #include "CInput.h"
 #include "CTimer.h"
-// DX11Frame interface headers.
-#include "IInitializable.h"
-#include "IUpdateable.h"
-#include "IRenderable.h"
-#include "ICleanupable.h"
-// DirectXTK headers.
-#include "Audio.h"
-#include "CommonStates.h"
-#include "DirectXHelpers.h"
-#include "DDSTextureLoader.h"
-#include "Effects.h"
-#include "GeometricPrimitive.h"
-#include "Model.h"
-#include "PrimitiveBatch.h"
-#include "ScreenGrab.h"
-#include "SimpleMath.h"
-#include "SpriteBatch.h"
-#include "SpriteFont.h"
-#include "VertexTypes.h"
-#include "WICTextureLoader.h"
-
-#if defined(_DEBUG)
-#pragma comment(lib, "DirectXTK_d.lib")
-#pragma comment(lib, "DirectXTKAudioDX_d.lib")
-#else
-#pragma comment(lib, "DirectXTK.lib")
-#pragma comment(lib, "DirectXTKAudioDX.lib")
-#endif
-
-using namespace DirectX;
 
 #pragma endregion
 

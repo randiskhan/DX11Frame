@@ -13,7 +13,7 @@ private:
 	unique_ptr<BasicEffect>							_pBasicEffect;
 	ID3D11InputLayout*								_pID3D11InputLayout;
 
-	static const int			_NumVertices = 64;
+	static const int			_NumVertices = 65534;
 	VertexPositionColor			_vertices[_NumVertices];
 
 public:
