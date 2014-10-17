@@ -98,4 +98,12 @@ __forceinline float NormSin(float angle)
 {
 	return (sin(angle) + 1.0f) / 2.0f;
 }
+__forceinline double NormSin(double angle)
+{
+	return (sin(angle) + 1.0f) / 2.0f;
+}
+__forceinline long double NormSin(long double angle)
+{
+	return (sin(angle) + 1.0f) / 2.0f;
+}
 #pragma endregion

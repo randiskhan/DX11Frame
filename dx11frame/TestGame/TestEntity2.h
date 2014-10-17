@@ -6,6 +6,16 @@
 #include "CAppBase.h"
 #include "IEntity.h"
 
+struct LDPoint
+{
+	double	x;
+	double	y;
+	LDPoint()
+	{
+		x = y = 0.0;
+	}
+};
+
 class TestEntity2 :	public IEntity
 {
 private:
@@ -13,8 +23,9 @@ private:
 	unique_ptr<BasicEffect>							_pBasicEffect;
 	ID3D11InputLayout*								_pID3D11InputLayout;
 
-	static const int			_NumVertices = 65534;
+	static const int			_NumVertices = 32767;
 	VertexPositionColor			_vertices[_NumVertices];
+	LDPoint						_verticesRaw[_NumVertices];
 
 public:
 	TestEntity2(CAppBase* pCAppBase);
