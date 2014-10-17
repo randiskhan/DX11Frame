@@ -1,0 +1,1 @@
+MakeSpriteFont "Consolas" debug.spritefont /FontSize:12 /Sharp
