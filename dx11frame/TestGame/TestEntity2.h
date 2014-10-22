@@ -6,11 +6,11 @@
 #include "CAppBase.h"
 #include "IEntity.h"
 
-struct LDPoint
+struct DoublePoint
 {
 	double	x;
 	double	y;
-	LDPoint()
+	DoublePoint()
 	{
 		x = y = 0.0;
 	}
@@ -25,7 +25,7 @@ private:
 
 	static const int			_NumVertices = 32767;
 	VertexPositionColor			_vertices[_NumVertices];
-	LDPoint						_verticesRaw[_NumVertices];
+	DoublePoint					_verticesRaw[_NumVertices];
 
 public:
 	TestEntity2(CAppBase* pCAppBase);
