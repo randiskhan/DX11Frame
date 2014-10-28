@@ -40,12 +40,12 @@ void	CTimer::Cleanup(void)
 	// Do cleanup stuff.
 }
 
-float	CTimer::GetTotalElapsed(void)
+double	CTimer::GetTotalElapsed(void)
 {
-	return duration_cast<duration<float>>(_CurrTimePoint - _InitTimePoint).count();
+	return duration_cast<duration<double>>(_CurrTimePoint - _InitTimePoint).count();
 }
 
-float	CTimer::GetFrameElapsed(void)
+double	CTimer::GetFrameElapsed(void)
 {
-	return duration_cast<duration<float>>(_CurrTimePoint - _PrevTimePoint).count();
+	return duration_cast<duration<double>>(_CurrTimePoint - _PrevTimePoint).count();
 }

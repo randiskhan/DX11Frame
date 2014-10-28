@@ -13,6 +13,7 @@ struct CDirectXData
 {
 	int		width;
 	int		height;
+	bool	startWindowed;
 	bool	useHWndDimentions;
 	HWND	hwnd;
 	Vector4	backcolor;
@@ -21,6 +22,7 @@ struct CDirectXData
 	{
 		width = 800;
 		height = 600;
+		startWindowed = true;
 		useHWndDimentions = true;
 		hwnd = nullptr;
 		backcolor = Vector4(0.0f);
@@ -33,6 +35,7 @@ class CDirectX : public IInitializable
 private:
 	// Direct3D object fields
 	ID3D11Device*				_pD3D11Device;
+	ID3D10Device*				_pD3D10Device;
 	ID3D11DeviceContext*		_pD3D11DeviceContext;
 	IDXGISwapChain*				_pDXGISwapChain;
 	ID3D11Texture2D*			_pD3D11Texture2D;
@@ -58,4 +61,5 @@ public:
 
 	ID3D11Device*			GetDevice(void);
 	ID3D11DeviceContext*	GetContext(void);
+	IDXGISwapChain*			GetSwapChain(void);
 };

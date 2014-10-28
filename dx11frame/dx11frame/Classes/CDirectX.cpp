@@ -88,7 +88,7 @@ bool	CDirectX::Init(void)
 		sd.BufferUsage  = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		sd.BufferCount  = 1;
 		sd.OutputWindow = _CDirectXData.hwnd;
-		sd.Windowed     = true;
+		sd.Windowed     = _CDirectXData.startWindowed;
 		sd.SwapEffect   = DXGI_SWAP_EFFECT_DISCARD;
 		sd.Flags        = 0;
 		hr = _pD3D11Device->QueryInterface(__uuidof(IDXGIDevice), (void**)&_pDXGIDevice);
@@ -108,7 +108,7 @@ bool	CDirectX::Init(void)
 	if(SUCCEEDED(hr) && good)
 	{
 		// Block alt-enter for fullscreen toggle, for now.
-		_pDXGIFactory->MakeWindowAssociation(_CDirectXData.hwnd, DXGI_MWA_NO_ALT_ENTER);
+		//_pDXGIFactory->MakeWindowAssociation(_CDirectXData.hwnd, DXGI_MWA_NO_ALT_ENTER);
 	}
 	if(SUCCEEDED(hr) && good)
 		good &= Reset(_CDirectXData.width, _CDirectXData.height);
@@ -212,7 +212,10 @@ ID3D11DeviceContext*	CDirectX::GetContext(void)
 {
 	return _pD3D11DeviceContext;
 }
-
+IDXGISwapChain*			CDirectX::GetSwapChain(void)
+{
+	return _pDXGISwapChain;
+}
 #pragma endregion
 
 #pragma region Begin/End rendering

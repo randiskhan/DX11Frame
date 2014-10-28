@@ -5,6 +5,7 @@
 
 #include "CAppBase.h"
 #include "IEntity.h"
+#include <wincodec.h>
 
 struct DoublePoint
 {
@@ -23,7 +24,7 @@ private:
 	unique_ptr<BasicEffect>							_pBasicEffect;
 	ID3D11InputLayout*								_pID3D11InputLayout;
 
-	static const int			_NumVertices = 32767;
+	static const int			_NumVertices = 16382;
 	VertexPositionColor			_vertices[_NumVertices];
 	DoublePoint					_verticesRaw[_NumVertices];
 

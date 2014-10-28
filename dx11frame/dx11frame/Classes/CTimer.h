@@ -4,9 +4,6 @@
 #pragma once
 
 #include "common.h"
-//#include "IInitializable.h"
-//#include "IUpdateable.h"
-//#include "ICleanupable.h"
 #include <chrono>
 
 using namespace std::chrono;
@@ -26,7 +23,7 @@ public:
 	bool	Update(void);
 	void	Cleanup(void);
 
-	float	GetTotalElapsed(void);
-	float	GetFrameElapsed(void);
+	double	GetTotalElapsed(void);
+	double	GetFrameElapsed(void);
 };
 
