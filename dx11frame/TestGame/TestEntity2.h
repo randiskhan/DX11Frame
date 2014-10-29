@@ -11,9 +11,11 @@ struct DoublePoint
 {
 	double	x;
 	double	y;
+	double	a;
+	double	d;
 	DoublePoint()
 	{
-		x = y = 0.0;
+		x = y = a = d = 0.0;
 	}
 };
 

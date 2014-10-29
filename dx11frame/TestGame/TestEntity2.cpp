@@ -86,10 +86,11 @@ bool		TestEntity2::Update(void)
 		// Calculate the raw coordinates, and find max absolute component.
 		for(int i = 0; i < _NumVertices; ++i)
 		{
-			a = ((1.0/(double)_NumVertices) * (i-(_NumVertices/2.0)) * XM_2PI * 32.0);
-			_verticesRaw[i].x = ((radius1-radius2)*cos(a))+(d*cos(((radius1-radius2)/radius2)*a));
-			_verticesRaw[i].y = ((radius1-radius2)*sin(a))-(d*sin(((radius1-radius2)/radius2)*a));
-			maxDist = max(maxDist, sqrt(pow(_verticesRaw[i].x,2) + pow(_verticesRaw[i].y,2)));
+			_verticesRaw[i].a = ((1.0/(double)_NumVertices) * (i-(_NumVertices/2.0)) * XM_2PI * 32.0);
+			_verticesRaw[i].x = ((radius1-radius2)*cos(_verticesRaw[i].a))+(d*cos(((radius1-radius2)/radius2)*_verticesRaw[i].a));
+			_verticesRaw[i].y = ((radius1-radius2)*sin(_verticesRaw[i].a))-(d*sin(((radius1-radius2)/radius2)*_verticesRaw[i].a));
+			_verticesRaw[i].d = sqrt(pow(_verticesRaw[i].x,2) + pow(_verticesRaw[i].y,2));
+			maxDist = max(maxDist, _verticesRaw[i].d);
 		}
 		// Use maxDist to make sure all raw points are within a normalized circle on xy plane.
 		// Rotate the coordinates one quarter turn counter clockwise so zero angle is at top
@@ -112,9 +113,12 @@ bool		TestEntity2::Update(void)
 				(float)(( (_verticesRaw[i].y * 0.95) * maxSquareEdgeScreenCoords * 0.5 ) + ( r.bottom * 0.5 ));
 			// Some color variation based on raw coordinates.
 			// Must translate from range [-1.0,1.0] to [0.0,1.0].
-			_vertices[i].color.x = (float)(_verticesRaw[i].x * 0.5 + 0.5);
-			_vertices[i].color.y = (float)(_verticesRaw[i].y * 0.5 + 0.5);
-			_vertices[i].color.z = (float)(1.0-sqrt(pow(_verticesRaw[i].x,2) + pow(_verticesRaw[i].y,2)));
+			//_vertices[i].color.x = (float)(_verticesRaw[i].x * 0.5 + 0.5);
+			//_vertices[i].color.y = (float)(_verticesRaw[i].y * 0.5 + 0.5);
+			//_vertices[i].color.z = (float)(1.0-sqrt(pow(_verticesRaw[i].x,2) + pow(_verticesRaw[i].y,2)));
+			_vertices[i].color.x = (float)NormSin(_verticesRaw[i].a);
+			_vertices[i].color.y = (float)NormSin((_verticesRaw[i].a) + (XM_2PI / 3.0));
+			_vertices[i].color.z = (float)NormSin((_verticesRaw[i].a) + (XM_2PI * 2.0 / 3.0));
 		}
 
 		if(GetCDX11Frame()->GetCInput()->IsKeyDownSinceLastFrame(VK_SPACE))
