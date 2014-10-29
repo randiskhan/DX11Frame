@@ -26,4 +26,3 @@ public:
 	double	GetTotalElapsed(void);
 	double	GetFrameElapsed(void);
 };
-

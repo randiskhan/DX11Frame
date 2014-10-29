@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "CAppBase.h"
+#include "CDX11Frame.h"
 #include "IEntity.h"
 
 class TestEntity : public IEntity
@@ -12,13 +12,11 @@ private:
 	wstring		_msg;
 
 public:
-	TestEntity(CAppBase* pCAppBase);
+	TestEntity(CDX11Frame* pCDX11Frame);
 	virtual ~TestEntity(void);
 
 	bool	Init(void);
 	bool	Update(void);
 	bool	Render(void);
 	void	Cleanup(void);
-
 };
-

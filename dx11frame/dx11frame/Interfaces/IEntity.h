@@ -1,18 +1,16 @@
 #pragma once
 
-#include "CAppBase.h"
+#include "CDX11Frame.h"
 
 class IEntity : public IInitializable, public IUpdateable, public IRenderable, public ICleanupable
 {
 public:
-	IEntity(CAppBase* pCAppBase) : _pCAppBase(pCAppBase) {}
+	IEntity(CDX11Frame* pCAppBase) : _pCDX11Frame(pCAppBase) {}
 	virtual ~IEntity(void) {};
 
 private:
-	CAppBase*	_pCAppBase;
+	CDX11Frame*	_pCDX11Frame;
 
 protected:
-	CAppBase*	GetFrame(void) { return _pCAppBase;	}
-
+	CDX11Frame*	GetCDX11Frame(void) { return _pCDX11Frame;	}
 };
-

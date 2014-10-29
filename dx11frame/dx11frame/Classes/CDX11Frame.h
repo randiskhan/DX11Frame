@@ -1,5 +1,5 @@
-// CAppBase.h
-// Declaration file for CAppBase.
+// dx11frame.h
+// Declaration file for CDX11Frame.
 
 #pragma region preprocessor directives
 
@@ -17,9 +17,9 @@
 
 // Base class for "root" class/object in executable.
 #ifdef MEMBER_MSGPROC
-class CAppBase : public ICWin32App
+class CDX11Frame : public ICWin32App
 #else
-class CAppBase
+class CDX11Frame
 #endif
 {
 private:
@@ -33,8 +33,8 @@ private:
 	unique_ptr<SpriteFont>	_pDebugFont;
 
 public:
-	CAppBase(void);
-	virtual ~CAppBase(void);
+	CDX11Frame(void);
+	virtual ~CDX11Frame(void);
 
 	WPARAM			Run();
 
@@ -73,5 +73,4 @@ private:
 	bool			UpdateBase(void);
 	bool			RenderBase(void);
 	void			CleanupBase(void);
-
 };

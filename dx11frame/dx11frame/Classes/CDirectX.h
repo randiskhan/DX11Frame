@@ -17,7 +17,7 @@ struct CDirectXData
 	bool	useHWndDimentions;
 	HWND	hwnd;
 	Vector4	backcolor;
-	
+
 	CDirectXData()
 	{
 		width = 800;

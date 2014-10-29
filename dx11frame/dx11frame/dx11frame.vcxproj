@@ -78,7 +78,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Classes\CAppBase.cpp">
+    <ClCompile Include="Classes\CDX11Frame.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Classes\CDirectX.cpp">
@@ -93,7 +93,7 @@
     <ClCompile Include="Classes\CTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Classes\CAppBase.h">
+    <ClInclude Include="Classes\CDX11Frame.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="Classes\CDirectX.h">

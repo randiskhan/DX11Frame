@@ -108,7 +108,7 @@ bool	CDirectX::Init(void)
 	if(SUCCEEDED(hr) && good)
 	{
 		// Block alt-enter for fullscreen toggle, for now.
-		//_pDXGIFactory->MakeWindowAssociation(_CDirectXData.hwnd, DXGI_MWA_NO_ALT_ENTER);
+		_pDXGIFactory->MakeWindowAssociation(_CDirectXData.hwnd, DXGI_MWA_NO_ALT_ENTER);
 	}
 	if(SUCCEEDED(hr) && good)
 		good &= Reset(_CDirectXData.width, _CDirectXData.height);

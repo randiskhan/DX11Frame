@@ -16,4 +16,3 @@ public:
 	// Instance members
 	bool			IsInit(void) { return _IsInit; }
 };
-

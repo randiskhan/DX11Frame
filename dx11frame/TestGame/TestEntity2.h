@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "CAppBase.h"
+#include "CDX11Frame.h"
 #include "IEntity.h"
 #include <wincodec.h>
 
@@ -29,13 +29,11 @@ private:
 	DoublePoint					_verticesRaw[_NumVertices];
 
 public:
-	TestEntity2(CAppBase* pCAppBase);
+	TestEntity2(CDX11Frame* pCDX11Frame);
 	virtual ~TestEntity2(void);
 
 	bool	Init(void);
 	bool	Update(void);
 	bool	Render(void);
 	void	Cleanup(void);
-
 };
-

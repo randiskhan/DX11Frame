@@ -16,4 +16,3 @@ public:
 	// Instance members
 	bool			DoRender(void) { return _DoRender; }
 };
-

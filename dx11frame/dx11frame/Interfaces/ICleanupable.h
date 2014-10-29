@@ -9,6 +9,4 @@ public:
 
 	// Pure virtual members
 	virtual void Cleanup(void) = 0;
-
 };
-

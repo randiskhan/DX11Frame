@@ -16,4 +16,3 @@ public:
 	// Instance members
 	bool			DoUpdate(void) { return _DoUpdate; }
 };
-

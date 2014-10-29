@@ -3,7 +3,7 @@
 
 #include "TestEntity2.h"
 
-TestEntity2::TestEntity2(CAppBase* pCAppBase) : IEntity(pCAppBase)
+TestEntity2::TestEntity2(CDX11Frame* pCDX11Frame) : IEntity(pCDX11Frame)
 {
 	ZeroMemory(_vertices,sizeof(VertexPositionColor)*_NumVertices);
 	ZeroMemory(_verticesRaw,sizeof(DoublePoint)*_NumVertices);
@@ -23,19 +23,19 @@ bool		TestEntity2::Init(void)
 
 	_pPrimtiveBatch.reset(
 		new PrimitiveBatch<VertexPositionColor>(
-			GetFrame()->GetCDirectX()->GetContext(), 65535U, 65535U));
+		GetCDX11Frame()->GetCDirectX()->GetContext(), 65535U, 65535U));
 	_pBasicEffect.reset(
-		new BasicEffect(GetFrame()->GetCDirectX()->GetDevice()));
+		new BasicEffect(GetCDX11Frame()->GetCDirectX()->GetDevice()));
 
-	RECT r = GetFrame()->GetCWin32()->GetScreenRect();
+	RECT r = GetCDX11Frame()->GetCWin32()->GetScreenRect();
 
 	_pBasicEffect->SetProjection(
 		XMMatrixOrthographicOffCenterRH(
-		0, 
-		(float)r.right, 
+		0,
+		(float)r.right,
 		(float)r.bottom,
-		0, 
-		0, 
+		0,
+		0,
 		1.0f));
 	_pBasicEffect->SetVertexColorEnabled(true);
 
@@ -44,7 +44,7 @@ bool		TestEntity2::Init(void)
 
 	_pBasicEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 
-	hr = GetFrame()->GetCDirectX()->GetDevice()->CreateInputLayout(
+	hr = GetCDX11Frame()->GetCDirectX()->GetDevice()->CreateInputLayout(
 		VertexPositionColor::InputElements,
 		VertexPositionColor::InputElementCount,
 		shaderByteCode,
@@ -62,18 +62,18 @@ bool		TestEntity2::Update(void)
 {
 	bool good = true;
 
-	double t = GetFrame()->GetCTimer()->GetTotalElapsed();
-	RECT r = GetFrame()->GetCWin32()->GetScreenRect();
+	double t = GetCDX11Frame()->GetCTimer()->GetTotalElapsed();
+	RECT r = GetCDX11Frame()->GetCWin32()->GetScreenRect();
 	double maxDist = 0;
 	int maxSquareEdgeScreenCoords = min(r.right, r.bottom);
-	
+
 	// Parameters for Hypotrochoid.
 	// Fixed circle radius: radius1
 	// Moving circle radius: radius2
 	// Drawing point distance from center: d
 	// Angle in radians: a
 	// I find it easiest to "normalize" these values. I keep radius1 at 1.0, so I
-	// can think of radius2 as a ratio to/of radius1. Next is d, which I prefer to 
+	// can think of radius2 as a ratio to/of radius1. Next is d, which I prefer to
 	// be a ratio of radius2, hence the d *= radius2. That way I can always think of
 	// d = 1.0 to be drawing point on edge of radius2.
 	double radius1 = 1.0, radius2 = 0.0, d = 0.5, a = 0.0;
@@ -106,9 +106,9 @@ bool		TestEntity2::Update(void)
 			_verticesRaw[i].y = -swap;
 			// Now translate the raw coordinates to screen coordinates.
 			// The 0.99 is to move the drawing just a tad away from the window border.
-			_vertices[i].position.x = 
+			_vertices[i].position.x =
 				(float)(( (_verticesRaw[i].x * 0.95) * maxSquareEdgeScreenCoords * 0.5 ) + ( r.right * 0.5 ));
-			_vertices[i].position.y = 
+			_vertices[i].position.y =
 				(float)(( (_verticesRaw[i].y * 0.95) * maxSquareEdgeScreenCoords * 0.5 ) + ( r.bottom * 0.5 ));
 			// Some color variation based on raw coordinates.
 			// Must translate from range [-1.0,1.0] to [0.0,1.0].
@@ -117,15 +117,15 @@ bool		TestEntity2::Update(void)
 			_vertices[i].color.z = (float)(1.0-sqrt(pow(_verticesRaw[i].x,2) + pow(_verticesRaw[i].y,2)));
 		}
 
-		if(GetFrame()->GetCInput()->IsKeyDownSinceLastFrame(VK_SPACE))
+		if(GetCDX11Frame()->GetCInput()->IsKeyDownSinceLastFrame(VK_SPACE))
 		{
 			Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
-			HRESULT hr = GetFrame()->GetCDirectX()->GetSwapChain()->GetBuffer( 0, __uuidof( ID3D11Texture2D ),
-			   reinterpret_cast<LPVOID*>( backBuffer.GetAddressOf() ) );
+			HRESULT hr = GetCDX11Frame()->GetCDirectX()->GetSwapChain()->GetBuffer( 0, __uuidof( ID3D11Texture2D ),
+				reinterpret_cast<LPVOID*>( backBuffer.GetAddressOf() ) );
 			if ( SUCCEEDED(hr) )
 			{
-				hr = SaveWICTextureToFile( GetFrame()->GetCDirectX()->GetContext(), backBuffer.Get(),
-							GUID_ContainerFormatBmp, L"screenshot.bmp" );
+				hr = SaveWICTextureToFile( GetCDX11Frame()->GetCDirectX()->GetContext(), backBuffer.Get(),
+					GUID_ContainerFormatBmp, L"screenshot.bmp" );
 			}
 			if(FAILED(hr)) good = false;
 		}
@@ -140,14 +140,14 @@ bool		TestEntity2::Render(void)
 
 	if(DoRender())
 	{
-		_pBasicEffect->Apply(GetFrame()->GetCDirectX()->GetContext());
-		GetFrame()->GetCDirectX()->GetContext()->IASetInputLayout(_pID3D11InputLayout);
+		_pBasicEffect->Apply(GetCDX11Frame()->GetCDirectX()->GetContext());
+		GetCDX11Frame()->GetCDirectX()->GetContext()->IASetInputLayout(_pID3D11InputLayout);
 
 		_pPrimtiveBatch->Begin();
 		_pPrimtiveBatch->Draw(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP, _vertices, _NumVertices);
 		_pPrimtiveBatch->End();
 	}
-	
+
 	return good;
 }
 

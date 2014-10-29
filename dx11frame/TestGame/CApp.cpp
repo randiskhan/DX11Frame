@@ -27,7 +27,6 @@ bool CApp::PreInit(void)
 #endif
 	_CDirectXData.backcolor = Vector4(0.1f,0.1f,0.1f,1.0f);
 
-
 	// Set the path to CAppBase spritefont file.
 	_DebugSpritefontPath = L"assets\\debug.spritefont";
 

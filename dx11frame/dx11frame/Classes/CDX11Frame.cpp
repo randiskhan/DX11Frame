@@ -1,10 +1,10 @@
-// CAppBase.cpp
-// Implementation file for CAppBase.
+// dx11frame.cpp
+// Implementation file for CDX11Frame.
 
-#include "CAppBase.h"
+#include "CDX11Frame.h"
 
 #pragma region Construction/destruction
-CAppBase::CAppBase(void) :
+CDX11Frame::CDX11Frame(void) :
 	_pCWin32(nullptr),
 	_pCDirectX(nullptr),
 	_pCInput(nullptr),
@@ -13,15 +13,14 @@ CAppBase::CAppBase(void) :
 	_DebugSpritefontPath(L"")
 {
 }
-
-CAppBase::~CAppBase(void)
+CDX11Frame::~CDX11Frame(void)
 {
 	CleanupBase();
 }
 #pragma endregion
 
 #pragma region Base methods
-WPARAM CAppBase::Run(void)
+WPARAM CDX11Frame::Run(void)
 {
 	WPARAM ret = 0;
 	if(InitBase())
@@ -39,8 +38,7 @@ WPARAM CAppBase::Run(void)
 
 	return ret;
 }
-
-bool CAppBase::MainLoopIteration(void)
+bool CDX11Frame::MainLoopIteration(void)
 {
 	bool good = true;
 
@@ -53,8 +51,7 @@ bool CAppBase::MainLoopIteration(void)
 
 	return good;
 }
-
-bool CAppBase::InitBase(void)
+bool CDX11Frame::InitBase(void)
 {
 	bool good = true;
 
@@ -92,7 +89,7 @@ bool CAppBase::InitBase(void)
 	// DirectXTK object creation
 	if (good) _pSpriteBatch.reset(new SpriteBatch( GetCDirectX()->GetContext() ));
 	if(!_pSpriteBatch) good = false;
-	
+
 	// Create SpriteFont for debugging, but don't exit if failed.
 	if(good && (_DebugSpritefontPath.length() > 0))
 		_pDebugFont.reset(new SpriteFont(GetCDirectX()->GetDevice(),_DebugSpritefontPath.c_str()));
@@ -101,8 +98,7 @@ bool CAppBase::InitBase(void)
 
 	return good;
 }
-
-bool CAppBase::UpdateBase(void)
+bool CDX11Frame::UpdateBase(void)
 {
 	bool good = true;
 
@@ -112,8 +108,7 @@ bool CAppBase::UpdateBase(void)
 
 	return good;
 }
-
-bool CAppBase::RenderBase(void)
+bool CDX11Frame::RenderBase(void)
 {
 	bool good = true;
 
@@ -123,37 +118,36 @@ bool CAppBase::RenderBase(void)
 
 	return good;
 }
-
-void CAppBase::CleanupBase(void)
+void CDX11Frame::CleanupBase(void)
 {
 }
 #pragma endregion
 
 #pragma region Object reference getters
-CWin32*			CAppBase::GetCWin32(void)
+CWin32*			CDX11Frame::GetCWin32(void)
 {
 	return _pCWin32.get();
 }
-CDirectX*		CAppBase::GetCDirectX(void)
+CDirectX*		CDX11Frame::GetCDirectX(void)
 {
 	return _pCDirectX.get();
 }
-CInput*			CAppBase::GetCInput(void)
+CInput*			CDX11Frame::GetCInput(void)
 {
 	return _pCInput.get();
 }
-CTimer*			CAppBase::GetCTimer(void)
+CTimer*			CDX11Frame::GetCTimer(void)
 {
 	return _pCTimer.get();
 }
-SpriteBatch*	CAppBase::GetSpriteBatch(void)
+SpriteBatch*	CDX11Frame::GetSpriteBatch(void)
 {
 	return _pSpriteBatch.get();
 }
 #pragma endregion
 
 #pragma region Win32 message processing
-LRESULT CALLBACK	CAppBase::MsgProc(
+LRESULT CALLBACK	CDX11Frame::MsgProc(
 	HWND hwnd,
 	UINT msg,
 	WPARAM wParam,
@@ -170,14 +164,12 @@ LRESULT CALLBACK	CAppBase::MsgProc(
 #pragma endregion
 
 #pragma region Instance methods
-void	CAppBase::PostQuit(void)
+void	CDX11Frame::PostQuit(void)
 {
 	PostQuitMessage(0);
 }
-
-void	CAppBase::DrawDebugString(wstring msg, XMFLOAT2 loc, FXMVECTOR color)
+void	CDX11Frame::DrawDebugString(wstring msg, XMFLOAT2 loc, FXMVECTOR color)
 {
 	if(_pDebugFont) _pDebugFont->DrawString(GetSpriteBatch(), msg.c_str(), loc, color);
 }
-
 #pragma endregion

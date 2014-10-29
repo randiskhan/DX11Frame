@@ -115,7 +115,7 @@ bool CWin32::MsgQueueProc(void)
 	//	if it has a reference to one in its GWL_USERDATA.
 	if(GetWindowLong(hwnd, GWL_USERDATA))
 		return ((CWin32*)GetWindowLong(hwnd, GWL_USERDATA))->
-			MsgProc(hwnd, msg, wParam, lParam);
+		MsgProc(hwnd, msg, wParam, lParam);
 	else
 #endif
 		return DefWindowProc(hwnd, msg, wParam, lParam);

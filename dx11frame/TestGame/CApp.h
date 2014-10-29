@@ -5,13 +5,13 @@
 
 #pragma once
 
-#include "CAppBase.h"
+#include "CDX11Frame.h"
 #include "TestEntity.h"
 #include "TestEntity2.h"
 
 #pragma comment(lib, "dx11frame.lib")
 
-class CApp : public CAppBase
+class CApp : public CDX11Frame
 {
 private:
 	unique_ptr<TestEntity>	_pTestEntity;
