@@ -6,7 +6,7 @@ class IEntity : public IInitializable, public IUpdateable, public IRenderable, p
 {
 public:
 	IEntity(CDX11Frame* pCAppBase) : _pCDX11Frame(pCAppBase) {}
-	virtual ~IEntity(void) {};
+	virtual ~IEntity(void) { _pCDX11Frame = nullptr; };
 
 private:
 	CDX11Frame*	_pCDX11Frame;

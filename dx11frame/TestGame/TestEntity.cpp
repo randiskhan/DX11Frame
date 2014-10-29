@@ -40,16 +40,12 @@ bool		TestEntity::Update(void)
 	if(DoUpdate())
 	{
 		_msg =
-			L"Press escape to exit.\n"
-#if defined(DEBUG) || defined(_DEBUG)
-			+
+			L"Press escape to exit.\n" +
 			ToString(GetCDX11Frame()->GetCInput()->GetMouseScreenPos()->x) +
 			L"," +
 			ToString(GetCDX11Frame()->GetCInput()->GetMouseScreenPos()->y) +
 			L" - FPS: " +
-			ToString(fps)
-#endif
-			;
+			ToString(fps);
 	}
 
 	return good;
