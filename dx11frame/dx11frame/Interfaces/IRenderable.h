@@ -7,7 +7,7 @@ protected:
 public:
 
 	// Construction/Destruction
-	IRenderable(void):_DoRender(true) {}
+	IRenderable(void) :_DoRender(true) {}
 	virtual			~IRenderable(void) {};
 
 	// Pure virtual members

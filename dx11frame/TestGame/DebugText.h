@@ -1,19 +1,19 @@
-// TestEntity.h
-// Declaration file for TestEntity.
+// DebugText.h
+// Declaration file for DebugText.
 
 #pragma once
 
 #include "CDX11Frame.h"
 #include "IEntity.h"
 
-class TestEntity : public IEntity
+class DebugText : public IEntity
 {
 private:
 	wstring		_msg;
 
 public:
-	TestEntity(CDX11Frame* pCDX11Frame);
-	virtual ~TestEntity(void);
+	DebugText(CDX11Frame* pCDX11Frame);
+	virtual ~DebugText(void);
 
 	bool	Init(void);
 	bool	Update(void);

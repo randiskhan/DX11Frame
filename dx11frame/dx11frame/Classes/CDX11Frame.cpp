@@ -5,12 +5,12 @@
 
 #pragma region Construction/destruction
 CDX11Frame::CDX11Frame(void) :
-	_pCWin32(nullptr),
-	_pCDirectX(nullptr),
-	_pCInput(nullptr),
-	_pSpriteBatch(nullptr),
-	_pDebugFont(nullptr),
-	_DebugSpritefontPath(L"")
+_pCWin32(nullptr),
+_pCDirectX(nullptr),
+_pCInput(nullptr),
+_pSpriteBatch(nullptr),
+_pDebugFont(nullptr),
+_DebugSpritefontPath(L"")
 {
 }
 CDX11Frame::~CDX11Frame(void)
@@ -23,10 +23,10 @@ CDX11Frame::~CDX11Frame(void)
 WPARAM CDX11Frame::Run(void)
 {
 	WPARAM ret = 0;
-	if(InitBase())
+	if (InitBase())
 	{
 		// Main loop in one statement - Woohoo!
-		while(MainLoopIteration());
+		while (MainLoopIteration());
 
 		// If a WM_QUIT message was received through message queue,
 		//	return the wParam. Otherwise, return zero. Advised by MSDN.
@@ -59,10 +59,10 @@ bool CDX11Frame::InitBase(void)
 
 	// DX11Frame object creation.
 	_pCTimer.reset(new CTimer());
-	if(!(_pCTimer && _pCTimer->IsInit())) good = false;
+	if (!(_pCTimer && _pCTimer->IsInit())) good = false;
 
 	_pCWin32.reset(new CWin32(_CWin32Data));
-	if(!_pCWin32) good = false;
+	if (!_pCWin32) good = false;
 	if (good) good = GetCWin32()->Init();
 
 	if (good)
@@ -71,7 +71,7 @@ bool CDX11Frame::InitBase(void)
 		_CInputData.hwnd = GetCWin32()->GetWindow();
 		_CDirectXData.hwnd = GetCWin32()->GetWindow();
 		// Synchronize window and backbuffer dimentions if desired.
-		if(_CDirectXData.useHWndDimentions)
+		if (_CDirectXData.useHWndDimentions)
 		{
 			_CDirectXData.width = _CWin32Data.width;
 			_CDirectXData.height = _CWin32Data.height;
@@ -79,20 +79,20 @@ bool CDX11Frame::InitBase(void)
 	}
 
 	if (good) _pCDirectX.reset(new CDirectX(_CDirectXData));
-	if(!_pCDirectX) good = false;
+	if (!_pCDirectX) good = false;
 	if (good) good = GetCDirectX()->Init();
 
 	if (good) _pCInput.reset(new CInput(_CInputData));
-	if(!_pCInput) good = false;
+	if (!_pCInput) good = false;
 	if (good) good = GetCInput()->Init();
 
 	// DirectXTK object creation
-	if (good) _pSpriteBatch.reset(new SpriteBatch( GetCDirectX()->GetContext() ));
-	if(!_pSpriteBatch) good = false;
+	if (good) _pSpriteBatch.reset(new SpriteBatch(GetCDirectX()->GetContext()));
+	if (!_pSpriteBatch) good = false;
 
 	// Create SpriteFont for debugging, but don't exit if failed.
-	if(good && (_DebugSpritefontPath.length() > 0))
-		_pDebugFont.reset(new SpriteFont(GetCDirectX()->GetDevice(),_DebugSpritefontPath.c_str()));
+	if (good && (_DebugSpritefontPath.length() > 0))
+		_pDebugFont.reset(new SpriteFont(GetCDirectX()->GetDevice(), _DebugSpritefontPath.c_str()));
 
 	if (good) good = PostInit();
 
@@ -103,8 +103,8 @@ bool CDX11Frame::UpdateBase(void)
 	bool good = true;
 
 	good &= GetCTimer()->Update();
-	if(good) good = GetCInput()->Update();
-	if(good) good = Update();
+	if (good) good = GetCInput()->Update();
+	if (good) good = Update();
 
 	return good;
 }
@@ -156,7 +156,7 @@ LRESULT CALLBACK	CDX11Frame::MsgProc(
 	LRESULT result = 0;
 	bool handled = false;
 
-	if(!handled)
+	if (!handled)
 		result = DefWindowProc(hwnd, msg, wParam, lParam);
 
 	return result;
@@ -170,6 +170,6 @@ void	CDX11Frame::PostQuit(void)
 }
 void	CDX11Frame::DrawDebugString(wstring msg, XMFLOAT2 loc, FXMVECTOR color)
 {
-	if(_pDebugFont) _pDebugFont->DrawString(GetSpriteBatch(), msg.c_str(), loc, color);
+	if (_pDebugFont) _pDebugFont->DrawString(GetSpriteBatch(), msg.c_str(), loc, color);
 }
 #pragma endregion

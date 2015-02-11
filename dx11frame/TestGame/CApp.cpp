@@ -19,7 +19,7 @@ bool CApp::PreInit(void)
 	_CWin32Data.width = 1000;
 	_CWin32Data.height = 750;
 	_CDirectXData.startWindowed = true;
-	_CDirectXData.backcolor = Vector4(0.1f,0.1f,0.1f,1.0f);
+	_CDirectXData.backcolor = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
 
 	// Set the path to CAppBase spritefont file.
 	_DebugSpritefontPath = L"assets\\debug.spritefont";
@@ -31,11 +31,11 @@ bool CApp::PostInit(void)
 {
 	bool good = true;
 
-	_pTestEntity.reset(new TestEntity(this));
-	if(!(_pTestEntity && _pTestEntity->IsInit()))
+	_pDebugText.reset(new DebugText(this));
+	if (!(_pDebugText && _pDebugText->IsInit()))
 		good &= false;
-	_pTestEntity2.reset(new TestEntity2(this));
-	if(!(_pTestEntity2 && _pTestEntity2->IsInit()))
+	_pHypotrochoid.reset(new Hypotrochoid(this));
+	if (!(_pHypotrochoid && _pHypotrochoid->IsInit()))
 		good &= false;
 
 	return good;
@@ -44,10 +44,10 @@ bool CApp::PostInit(void)
 bool CApp::Update(void)
 {
 	bool good = true;
-	if(GetCInput()->IsKeyDown(VK_ESCAPE)) PostQuit();
+	if (GetCInput()->IsKeyDown(VK_ESCAPE)) PostQuit();
 
-	good &= _pTestEntity->Update();
-	good &= _pTestEntity2->Update();
+	good &= _pDebugText->Update();
+	good &= _pHypotrochoid->Update();
 
 	return good;
 }
@@ -57,8 +57,8 @@ bool CApp::Render(void)
 	bool good = true;
 
 	GetSpriteBatch()->Begin();
-	good &= _pTestEntity->Render();
-	good &= _pTestEntity2->Render();
+	good &= _pDebugText->Render();
+	good &= _pHypotrochoid->Render();
 	GetSpriteBatch()->End();
 
 	return good;

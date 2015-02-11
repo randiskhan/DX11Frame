@@ -12,5 +12,5 @@ private:
 	CDX11Frame*	_pCDX11Frame;
 
 protected:
-	CDX11Frame*	GetCDX11Frame(void) { return _pCDX11Frame;	}
+	CDX11Frame*	GetCDX11Frame(void) { return _pCDX11Frame; }
 };

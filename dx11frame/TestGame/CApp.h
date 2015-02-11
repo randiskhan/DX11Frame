@@ -6,16 +6,16 @@
 #pragma once
 
 #include "CDX11Frame.h"
-#include "TestEntity.h"
-#include "TestEntity2.h"
+#include "DebugText.h"
+#include "Hypotrochoid.h"
 
 #pragma comment(lib, "dx11frame.lib")
 
 class CApp : public CDX11Frame
 {
 private:
-	unique_ptr<TestEntity>	_pTestEntity;
-	unique_ptr<TestEntity2>	_pTestEntity2;
+	unique_ptr<DebugText>		_pDebugText;
+	unique_ptr<Hypotrochoid>	_pHypotrochoid;
 
 public:
 	CApp(void);

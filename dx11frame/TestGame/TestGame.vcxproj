@@ -90,13 +90,13 @@
   <ItemGroup>
     <ClCompile Include="CApp.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TestEntity.cpp" />
-    <ClCompile Include="TestEntity2.cpp" />
+    <ClCompile Include="DebugText.cpp" />
+    <ClCompile Include="Hypotrochoid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CApp.h" />
-    <ClInclude Include="TestEntity.h" />
-    <ClInclude Include="TestEntity2.h" />
+    <ClInclude Include="DebugText.h" />
+    <ClInclude Include="Hypotrochoid.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dx11frame\dx11frame.vcxproj">

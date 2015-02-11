@@ -5,8 +5,8 @@
 
 #pragma region Construction/Destruction
 CWin32::CWin32(CWin32Data wd) :
-	_HWnd(nullptr),
-	_IsInit(false)
+_HWnd(nullptr),
+_IsInit(false)
 {
 	ZeroMemory(&_msg, sizeof(MSG));
 	_CWin32Data = wd;
@@ -24,15 +24,15 @@ bool CWin32::Init(void)
 	_HWnd = nullptr;
 
 	WNDCLASS wc;
-	wc.style         = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc   = StaticMsgProc;
-	wc.cbClsExtra    = 0;
-	wc.cbWndExtra    = 0;
-	wc.hInstance     = HINST_THISCOMPONENT;
-	wc.hIcon         = LoadIcon(0, IDI_APPLICATION);
-	wc.hCursor       = LoadCursor(0, IDC_ARROW);
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc = StaticMsgProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = HINST_THISCOMPONENT;
+	wc.hIcon = LoadIcon(0, IDI_APPLICATION);
+	wc.hCursor = LoadCursor(0, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
-	wc.lpszMenuName  = 0;
+	wc.lpszMenuName = 0;
 	wc.lpszClassName = _CWin32Data.wndClassName.c_str();
 
 	ATOM atom = RegisterClass(&wc);
@@ -60,7 +60,7 @@ bool CWin32::Init(void)
 		0,
 		HINST_THISCOMPONENT,
 		0);
-	if( !_HWnd ) good &= false;
+	if (!_HWnd) good &= false;
 
 	// Store a reference to this CWin32 object in the window's GWL_USERDATA
 	//	so we can call a member method to handle Win32 messages.
@@ -69,7 +69,7 @@ bool CWin32::Init(void)
 		SetLastError(0);
 		// Store a pointer to this object to use a memmber message handler.
 		LONG lresult = SetWindowLong(_HWnd, GWL_USERDATA, (LONG)this);
-		if(lresult == 0 && GetLastError() != 0) good = false;
+		if (lresult == 0 && GetLastError() != 0) good = false;
 	}
 
 	ShowWindow(_HWnd, SW_SHOW);
@@ -86,11 +86,11 @@ void CWin32::Cleanup(void)
 #pragma region Win32 message processing
 bool CWin32::MsgQueueProc(void)
 {
-	while(PeekMessage(&_msg, nullptr, 0, 0, PM_REMOVE))
+	while (PeekMessage(&_msg, nullptr, 0, 0, PM_REMOVE))
 	{
 		TranslateMessage(&_msg);
 		DispatchMessage(&_msg);
-		if(_msg.message == WM_QUIT) return false;
+		if (_msg.message == WM_QUIT) return false;
 	}
 	return true;
 }
@@ -100,20 +100,20 @@ bool CWin32::MsgQueueProc(void)
 	WPARAM wParam,
 	LPARAM lParam)
 {
-	switch( msg )
+	switch (msg)
 	{
 		// This WM_DESTROY case left here to handle messages from window destruction
 		// just to be safe
 	case WM_DESTROY:
-		{
-			PostQuitMessage(0);
-			return 0;
-		}
+	{
+		PostQuitMessage(0);
+		return 0;
+	}
 	}
 #ifdef MEMBER_MSGPROC
 	// Only dispatch a message to the CWin32 object for this window
 	//	if it has a reference to one in its GWL_USERDATA.
-	if(GetWindowLong(hwnd, GWL_USERDATA))
+	if (GetWindowLong(hwnd, GWL_USERDATA))
 		return ((CWin32*)GetWindowLong(hwnd, GWL_USERDATA))->
 		MsgProc(hwnd, msg, wParam, lParam);
 	else
@@ -127,7 +127,7 @@ LRESULT CALLBACK CWin32::MsgProc(
 	LPARAM lParam)
 {
 	// Only dispatch a message to the ICWin32App object if we have a reference.
-	if(_CWin32Data.pICWin32App)
+	if (_CWin32Data.pICWin32App)
 		return _CWin32Data.pICWin32App->MsgProc(hwnd, msg, wParam, lParam);
 	else
 		return DefWindowProc(hwnd, msg, wParam, lParam);

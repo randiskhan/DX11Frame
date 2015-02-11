@@ -1,5 +1,5 @@
-// TestEntity.h
-// Declaration file for TestEntity.
+// Hypotrochoid.h
+// Declaration file for Hypotrochoid.
 
 #pragma once
 
@@ -19,7 +19,7 @@ struct DoublePoint
 	}
 };
 
-class TestEntity2 :	public IEntity
+class Hypotrochoid : public IEntity
 {
 private:
 	unique_ptr<PrimitiveBatch<VertexPositionColor>>	_pPrimtiveBatch;
@@ -31,8 +31,8 @@ private:
 	DoublePoint					_verticesRaw[_NumVertices];
 
 public:
-	TestEntity2(CDX11Frame* pCDX11Frame);
-	virtual ~TestEntity2(void);
+	Hypotrochoid(CDX11Frame* pCDX11Frame);
+	virtual ~Hypotrochoid(void);
 
 	bool	Init(void);
 	bool	Update(void);

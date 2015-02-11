@@ -1,19 +1,19 @@
-// TestEntity.cpp
-// Implementation file for TestEntity.
+// DebugText.cpp
+// Implementation file for DebugText.
 
-#include "TestEntity.h"
+#include "DebugText.h"
 
-TestEntity::TestEntity(CDX11Frame* pCDX11Frame) : IEntity(pCDX11Frame)
+DebugText::DebugText(CDX11Frame* pCDX11Frame) : IEntity(pCDX11Frame)
 {
 	Init();
 }
 
-TestEntity::~TestEntity(void)
+DebugText::~DebugText(void)
 {
 	Cleanup();
 }
 
-bool		TestEntity::Init(void)
+bool		DebugText::Init(void)
 {
 	bool good = true;
 
@@ -22,7 +22,7 @@ bool		TestEntity::Init(void)
 	return _IsInit = good;
 }
 
-bool		TestEntity::Update(void)
+bool		DebugText::Update(void)
 {
 	bool good = true;
 	static int count = 0; ++count;
@@ -37,7 +37,7 @@ bool		TestEntity::Update(void)
 		last += interval;
 	}
 
-	if(DoUpdate())
+	if (DoUpdate())
 	{
 		_msg =
 			L"Press escape to exit.\n" +
@@ -51,21 +51,21 @@ bool		TestEntity::Update(void)
 	return good;
 }
 
-bool		TestEntity::Render(void)
+bool		DebugText::Render(void)
 {
 	bool good = true;
 
-	if(DoRender())
+	if (DoRender())
 	{
 		GetCDX11Frame()->DrawDebugString(
 			_msg,
-			XMFLOAT2(5,5),
+			XMFLOAT2(5, 5),
 			Colors::Yellow);
 	}
 
 	return good;
 }
 
-void		TestEntity::Cleanup(void)
+void		DebugText::Cleanup(void)
 {
 }
