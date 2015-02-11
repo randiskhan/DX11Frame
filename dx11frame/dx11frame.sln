@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dx11frame", "dx11frame\dx11frame.vcxproj", "{FA4C0013-0F4A-49EA-B440-D59CC06FFBBD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestGame", "TestGame\TestGame.vcxproj", "{5F54EEA2-7A8B-4510-906F-9A56005E0A41}"
