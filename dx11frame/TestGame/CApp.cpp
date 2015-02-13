@@ -44,7 +44,9 @@ bool CApp::PostInit(void)
 bool CApp::Update(void)
 {
 	bool good = true;
+
 	if (GetCInput()->IsKeyDown(VK_ESCAPE)) PostQuit();
+	if (GetCInput()->IsKeyDownSinceLastFrame(VK_SPACE)) TakeScreenshot();
 
 	good &= _pDebugText->Update();
 	good &= _pHypotrochoid->Update();
@@ -66,4 +68,22 @@ bool CApp::Render(void)
 
 void CApp::Cleanup(void)
 {
+}
+
+// Save the backbuffer to a .bmp file.
+bool CApp::TakeScreenshot(void)
+{
+	bool good = true;
+
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
+	HRESULT hr = GetCDirectX()->GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D),
+		reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
+	if (SUCCEEDED(hr))
+	{
+		hr = SaveWICTextureToFile(GetCDirectX()->GetContext(), backBuffer.Get(),
+			GUID_ContainerFormatBmp, L"screenshot.bmp");
+	}
+	if (FAILED(hr)) good = false;
+
+	return good;
 }

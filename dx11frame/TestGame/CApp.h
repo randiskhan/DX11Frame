@@ -17,6 +17,8 @@ private:
 	unique_ptr<DebugText>		_pDebugText;
 	unique_ptr<Hypotrochoid>	_pHypotrochoid;
 
+	bool		TakeScreenshot(void);
+
 public:
 	CApp(void);
 	virtual ~CApp(void);

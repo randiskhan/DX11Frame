@@ -120,20 +120,6 @@ bool		Hypotrochoid::Update(void)
 			_vertices[i].color.y = (float)NormSin((_verticesRaw[i].a) + (XM_2PI / 3.0));
 			_vertices[i].color.z = (float)NormSin((_verticesRaw[i].a) + (XM_2PI * 2.0 / 3.0));
 		}
-
-		// Screenshot logic
-		if (GetCDX11Frame()->GetCInput()->IsKeyDownSinceLastFrame(VK_SPACE))
-		{
-			Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
-			HRESULT hr = GetCDX11Frame()->GetCDirectX()->GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D),
-				reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
-			if (SUCCEEDED(hr))
-			{
-				hr = SaveWICTextureToFile(GetCDX11Frame()->GetCDirectX()->GetContext(), backBuffer.Get(),
-					GUID_ContainerFormatBmp, L"screenshot.bmp");
-			}
-			if (FAILED(hr)) good = false;
-		}
 	}
 
 	return good;
