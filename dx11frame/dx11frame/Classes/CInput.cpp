@@ -38,8 +38,11 @@ bool CInput::Update(void)
 
 	good = (0 < GetKeyboardState(_keysCurr));
 
-	if (good) good = (0 < GetCursorPos(&_mousePos));
-	if (good) good = (0 < ScreenToClient(_CInputData.hwnd, &_mousePos));
+	// Removed fail check on getting mouse coordinates.
+	// This was done to not exit upon a ctrl+alt+del, which causes 
+	// GetCursorPos() to fail.
+	if (0 < GetCursorPos(&_mousePos))
+		ScreenToClient(_CInputData.hwnd, &_mousePos);
 
 	return good;
 }
