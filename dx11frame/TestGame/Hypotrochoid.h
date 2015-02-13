@@ -5,7 +5,6 @@
 
 #include "CDX11Frame.h"
 #include "IEntity.h"
-#include <wincodec.h>
 
 struct DoublePoint
 {

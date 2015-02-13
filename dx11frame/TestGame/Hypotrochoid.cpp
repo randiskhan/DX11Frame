@@ -121,6 +121,7 @@ bool		Hypotrochoid::Update(void)
 			_vertices[i].color.z = (float)NormSin((_verticesRaw[i].a) + (XM_2PI * 2.0 / 3.0));
 		}
 
+		// Screenshot logic
 		if (GetCDX11Frame()->GetCInput()->IsKeyDownSinceLastFrame(VK_SPACE))
 		{
 			Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;

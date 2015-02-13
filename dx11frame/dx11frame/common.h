@@ -9,6 +9,9 @@
 #include <memory>
 #include <iostream>
 #include <sstream>
+#include <vector>
+// Windows headers
+#include <wincodec.h> // Needed for DirectXTK ScreenGrab.
 // DX11Frame interface headers.
 #include "IInitializable.h"
 #include "IUpdateable.h"
