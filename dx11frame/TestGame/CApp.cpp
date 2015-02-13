@@ -16,9 +16,15 @@ bool CApp::PreInit(void)
 {
 	bool good = true;
 
-	_CWin32Data.width = 1000;
-	_CWin32Data.height = 750;
+#if defined(_DEBUG)
+	_CWin32Data.width = 800;
+	_CWin32Data.height = 800;
 	_CDirectXData.startWindowed = true;
+#else
+	_CWin32Data.width = 1280;
+	_CWin32Data.height = 1024;
+	_CDirectXData.startWindowed = false;
+#endif
 	_CDirectXData.backcolor = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
 
 	// Set the path to CAppBase spritefont file.
