@@ -14,5 +14,5 @@ public:
 	virtual bool	Render(void) = 0;
 
 	// Instance members
-	bool			DoRender(void) { return _DoRender; }
+	bool			GetDoRender(void) { return _DoRender; }
 };

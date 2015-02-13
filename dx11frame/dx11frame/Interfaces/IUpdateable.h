@@ -14,5 +14,5 @@ public:
 	virtual bool	Update(void) = 0;
 
 	// Instance members
-	bool			DoUpdate(void) { return _DoUpdate; }
+	bool			GetDoUpdate(void) { return _DoUpdate; }
 };

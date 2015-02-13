@@ -44,6 +44,14 @@ bool CApp::PostInit(void)
 	if (!(_pHypotrochoid && _pHypotrochoid->IsInit()))
 		good &= false;
 
+#if defined(_DEBUG)
+	_pDebugText->SetDoUpdate(true);
+	_pDebugText->SetDoRender(true);
+#else
+	_pDebugText->SetDoUpdate(false);
+	_pDebugText->SetDoRender(false);
+#endif
+
 	return good;
 }
 
@@ -54,8 +62,8 @@ bool CApp::Update(void)
 	if (GetCInput()->IsKeyDown(VK_ESCAPE)) PostQuit();
 	if (GetCInput()->IsKeyDownSinceLastFrame(VK_SPACE)) TakeScreenshot();
 
-	good &= _pDebugText->Update();
-	good &= _pHypotrochoid->Update();
+	if (good && _pDebugText->GetDoUpdate()) good &= _pDebugText->Update();
+	if (good && _pHypotrochoid->GetDoUpdate()) good &= _pHypotrochoid->Update();
 
 	return good;
 }
@@ -65,8 +73,8 @@ bool CApp::Render(void)
 	bool good = true;
 
 	GetSpriteBatch()->Begin();
-	good &= _pDebugText->Render();
-	good &= _pHypotrochoid->Render();
+	if (good && _pDebugText->GetDoRender()) good &= _pDebugText->Render();
+	if (good && _pHypotrochoid->GetDoRender()) good &= _pHypotrochoid->Render();
 	GetSpriteBatch()->End();
 
 	return good;

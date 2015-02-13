@@ -78,48 +78,45 @@ bool		Hypotrochoid::Update(void)
 	// d = 1.0 to be drawing point on edge of radius2.
 	double radius1 = 1.0, radius2 = 0.0, d = 0.5, a = 0.0;
 
-	if (DoUpdate())
-	{
-		radius2 = NormSin(t * 0.002);
-		d = radius2 * 0.5;
+	radius2 = NormSin(t * 0.002);
+	d = radius2 * 0.5;
 
-		// Calculate the raw coordinates, and find max absolute component.
-		for (int i = 0; i < _NumVertices; ++i)
-		{
-			_verticesRaw[i].a = ((1.0 / (double)_NumVertices) * (i - (_NumVertices / 2.0)) * XM_2PI * 32.0);
-			_verticesRaw[i].x = ((radius1 - radius2)*cos(_verticesRaw[i].a)) + (d*cos(((radius1 - radius2) / radius2)*_verticesRaw[i].a));
-			_verticesRaw[i].y = ((radius1 - radius2)*sin(_verticesRaw[i].a)) - (d*sin(((radius1 - radius2) / radius2)*_verticesRaw[i].a));
-			_verticesRaw[i].d = sqrt(pow(_verticesRaw[i].x, 2) + pow(_verticesRaw[i].y, 2));
-			maxDist = max(maxDist, _verticesRaw[i].d);
-		}
-		// Use maxDist to make sure all raw points are within a normalized circle on xy plane.
-		// Rotate the coordinates one quarter turn counter clockwise so zero angle is at top
-		// of window, then convert to screen pixels.
-		double swap = 0;
-		for (int i = 0; i < _NumVertices; ++i)
-		{
-			// First normalize the coordinate components.
-			_verticesRaw[i].x *= (1.0 / maxDist);
-			_verticesRaw[i].y *= (1.0 / maxDist);
-			// Then rotate one quarter turn counter-clockwise.
-			swap = _verticesRaw[i].x;
-			_verticesRaw[i].x = -(_verticesRaw[i].y);
-			_verticesRaw[i].y = -swap;
-			// Now translate the raw coordinates to screen coordinates.
-			// The 0.99 is to move the drawing just a tad away from the window border.
-			_vertices[i].position.x =
-				(float)(((_verticesRaw[i].x * 0.95) * maxSquareEdgeScreenCoords * 0.5) + (r.right * 0.5));
-			_vertices[i].position.y =
-				(float)(((_verticesRaw[i].y * 0.95) * maxSquareEdgeScreenCoords * 0.5) + (r.bottom * 0.5));
-			// Some color variation based on raw coordinates.
-			// Must translate from range [-1.0,1.0] to [0.0,1.0].
-			//_vertices[i].color.x = (float)(_verticesRaw[i].x * 0.5 + 0.5);
-			//_vertices[i].color.y = (float)(_verticesRaw[i].y * 0.5 + 0.5);
-			//_vertices[i].color.z = (float)(1.0-sqrt(pow(_verticesRaw[i].x,2) + pow(_verticesRaw[i].y,2)));
-			_vertices[i].color.x = (float)NormSin(_verticesRaw[i].a);
-			_vertices[i].color.y = (float)NormSin((_verticesRaw[i].a) + (XM_2PI / 3.0));
-			_vertices[i].color.z = (float)NormSin((_verticesRaw[i].a) + (XM_2PI * 2.0 / 3.0));
-		}
+	// Calculate the raw coordinates, and find max absolute component.
+	for (int i = 0; i < _NumVertices; ++i)
+	{
+		_verticesRaw[i].a = ((1.0 / (double)_NumVertices) * (i - (_NumVertices / 2.0)) * XM_2PI * 32.0);
+		_verticesRaw[i].x = ((radius1 - radius2)*cos(_verticesRaw[i].a)) + (d*cos(((radius1 - radius2) / radius2)*_verticesRaw[i].a));
+		_verticesRaw[i].y = ((radius1 - radius2)*sin(_verticesRaw[i].a)) - (d*sin(((radius1 - radius2) / radius2)*_verticesRaw[i].a));
+		_verticesRaw[i].d = sqrt(pow(_verticesRaw[i].x, 2) + pow(_verticesRaw[i].y, 2));
+		maxDist = max(maxDist, _verticesRaw[i].d);
+	}
+	// Use maxDist to make sure all raw points are within a normalized circle on xy plane.
+	// Rotate the coordinates one quarter turn counter clockwise so zero angle is at top
+	// of window, then convert to screen pixels.
+	double swap = 0;
+	for (int i = 0; i < _NumVertices; ++i)
+	{
+		// First normalize the coordinate components.
+		_verticesRaw[i].x *= (1.0 / maxDist);
+		_verticesRaw[i].y *= (1.0 / maxDist);
+		// Then rotate one quarter turn counter-clockwise.
+		swap = _verticesRaw[i].x;
+		_verticesRaw[i].x = -(_verticesRaw[i].y);
+		_verticesRaw[i].y = -swap;
+		// Now translate the raw coordinates to screen coordinates.
+		// The 0.99 is to move the drawing just a tad away from the window border.
+		_vertices[i].position.x =
+			(float)(((_verticesRaw[i].x * 0.95) * maxSquareEdgeScreenCoords * 0.5) + (r.right * 0.5));
+		_vertices[i].position.y =
+			(float)(((_verticesRaw[i].y * 0.95) * maxSquareEdgeScreenCoords * 0.5) + (r.bottom * 0.5));
+		// Some color variation based on raw coordinates.
+		// Must translate from range [-1.0,1.0] to [0.0,1.0].
+		//_vertices[i].color.x = (float)(_verticesRaw[i].x * 0.5 + 0.5);
+		//_vertices[i].color.y = (float)(_verticesRaw[i].y * 0.5 + 0.5);
+		//_vertices[i].color.z = (float)(1.0-sqrt(pow(_verticesRaw[i].x,2) + pow(_verticesRaw[i].y,2)));
+		_vertices[i].color.x = (float)NormSin(_verticesRaw[i].a);
+		_vertices[i].color.y = (float)NormSin((_verticesRaw[i].a) + (XM_2PI / 3.0));
+		_vertices[i].color.z = (float)NormSin((_verticesRaw[i].a) + (XM_2PI * 2.0 / 3.0));
 	}
 
 	return good;
@@ -129,15 +126,12 @@ bool		Hypotrochoid::Render(void)
 {
 	bool good = true;
 
-	if (DoRender())
-	{
-		_pBasicEffect->Apply(GetCDX11Frame()->GetCDirectX()->GetContext());
-		GetCDX11Frame()->GetCDirectX()->GetContext()->IASetInputLayout(_pID3D11InputLayout);
+	_pBasicEffect->Apply(GetCDX11Frame()->GetCDirectX()->GetContext());
+	GetCDX11Frame()->GetCDirectX()->GetContext()->IASetInputLayout(_pID3D11InputLayout);
 
-		_pPrimtiveBatch->Begin();
-		_pPrimtiveBatch->Draw(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP, _vertices, _NumVertices);
-		_pPrimtiveBatch->End();
-	}
+	_pPrimtiveBatch->Begin();
+	_pPrimtiveBatch->Draw(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP, _vertices, _NumVertices);
+	_pPrimtiveBatch->End();
 
 	return good;
 }

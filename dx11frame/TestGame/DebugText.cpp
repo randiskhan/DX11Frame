@@ -37,7 +37,7 @@ bool		DebugText::Update(void)
 		last += interval;
 	}
 
-	if (DoUpdate())
+	if (GetDoUpdate())
 	{
 		_msg =
 			L"Press escape to exit.\n" +
@@ -55,17 +55,24 @@ bool		DebugText::Render(void)
 {
 	bool good = true;
 
-	if (DoRender())
-	{
-		GetCDX11Frame()->DrawDebugString(
-			_msg,
-			XMFLOAT2(5, 5),
-			Colors::Yellow);
-	}
+	GetCDX11Frame()->DrawDebugString(
+		_msg,
+		XMFLOAT2(5, 5),
+		Colors::Yellow);
 
 	return good;
 }
 
 void		DebugText::Cleanup(void)
 {
+}
+
+void		DebugText::SetDoRender(bool render)
+{
+	_DoRender = render;
+}
+
+void		DebugText::SetDoUpdate(bool update)
+{
+	_DoUpdate = update;
 }
