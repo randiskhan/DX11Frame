@@ -5,11 +5,12 @@
 
 #pragma region Includes & defines
 
-// C++ headers
+// C/C++ headers
 #include <memory>
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <random>
 // Windows headers
 #include <wincodec.h> // Needed for DirectXTK ScreenGrab.
 // DX11Frame interface headers.
