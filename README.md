@@ -14,5 +14,7 @@ Any executable project using this static library only needs to:
 This project is dependant on DirectX Tool Kit (http://directxtk.codeplex.com/). A simple DirectXTK SDK (headers, libraries, and tools) is included in the repository built by me from DirectXTK source unmodified.
 
 randiskhan (Randolph Stone) git@randskhan.com
-	
+
+150223: Although this project lately has been used more for playing with the math to generate and render cycloids (specifically hypotrochoids), the goal is still to keep the engine as a library for use in other projects of mine.
+
 150212: Added a #if to CApp.cpp to use windowed@800x800 mode when running a debug build, fullscreen@1280x1024 when running release build. This made it easier for me to switch between the two.
