@@ -48,7 +48,7 @@ private:
 	// Moving circle radius: _Radius2
 	// Drawing point distance from center of moving circle: _ArmLength
 	// I find it easiest to "normalize" these values. I keep radius1 at 1.0, so I
-	// can think of radius2 as a ratio to/of radius1. This also helps with 
+	// can think of radius2 as a ratio to/of radius1. This also helps with
 	// _ArmLength - If _Radius1 is 1, then when _ArmLength equals _Radius2,
 	// The Drawing point is exactly on the cirumfrence of the moving circle.
 	double		_Radius1;

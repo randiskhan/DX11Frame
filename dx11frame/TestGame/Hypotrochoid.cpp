@@ -18,15 +18,15 @@ bool		Hypotrochoid::Init(void)
 	bool good = true;
 
 	// Initial values. See header for descriptions.
-	_Radius1				= 1.0;
-	_Radius2				= 0.5;
-	_ArmLength				= 0.4; 
-	_NumVerticesPerCycle	= 256;
-	_AnimationDelay			= 0.00;
-	_NumVertices			= 16384;
-	_Cycles					= 16;
-	_CalcCycles				= false;
-	_CopyOriginToEnd		= false;
+	_Radius1 = 1.0;
+	_Radius2 = 0.5;
+	_ArmLength = 0.4;
+	_NumVerticesPerCycle = 256;
+	_AnimationDelay = 0.00;
+	_NumVertices = 16384;
+	_Cycles = 16;
+	_CalcCycles = false;
+	_CopyOriginToEnd = false;
 
 	HRESULT hr;
 
@@ -114,7 +114,7 @@ bool		Hypotrochoid::Update(void)
 			_verticesRaw[i].a = ((1.0 / (double)_NumVertices) * (i - (_NumVertices / 2.0)) * XM_2PI *_Cycles);
 			_verticesRaw[i].x =
 				((_Radius1 - _Radius2) * cos(_verticesRaw[i].a)) + (recalcArmLength * cos(((_Radius1 - _Radius2) / _Radius2) * _verticesRaw[i].a));
-			_verticesRaw[i].y = 
+			_verticesRaw[i].y =
 				((_Radius1 - _Radius2) * sin(_verticesRaw[i].a)) - (recalcArmLength * sin(((_Radius1 - _Radius2) / _Radius2) * _verticesRaw[i].a));
 			_verticesRaw[i].d = sqrt(pow(_verticesRaw[i].x, 2) + pow(_verticesRaw[i].y, 2));
 			maxDist = max(maxDist, _verticesRaw[i].d);
@@ -164,8 +164,8 @@ bool		Hypotrochoid::Render(void)
 
 	_pPrimtiveBatch->Begin();
 	_pPrimtiveBatch->Draw(
-		D3D10_PRIMITIVE_TOPOLOGY_LINESTRIP, 
-		_vertices, 
+		D3D10_PRIMITIVE_TOPOLOGY_LINESTRIP,
+		_vertices,
 		_NumVertices + (_CopyOriginToEnd ? 1 : 0)
 		);
 	_pPrimtiveBatch->End();
