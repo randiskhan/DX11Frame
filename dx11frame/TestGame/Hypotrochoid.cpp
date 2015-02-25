@@ -21,12 +21,13 @@ bool		Hypotrochoid::Init(void)
 	_Radius1 = 1.0;
 	_Radius2 = 0.5;
 	_ArmLength = 0.4;
-	_NumVerticesPerCycle = 256;
-	_AnimationDelay = 0.00;
+	_NumVerticesPerCycle = 2048;
+	_AnimationDelay = 2.5;
 	_NumVertices = 16384;
-	_Cycles = 16;
+	_Cycles = 32;
 	_CalcCycles = false;
-	_CopyOriginToEnd = false;
+	_CopyOriginToEnd = true;
+	_Randomize = true;
 
 	HRESULT hr;
 
@@ -77,30 +78,60 @@ bool		Hypotrochoid::Update(void)
 	int maxSquareEdgeScreenCoords = min(r.right, r.bottom);
 
 	// Animate the radius of rolling circle.
-	static double timestamp = 0, recalcArmLength = 0;
+	static double timestamp = -_AnimationDelay, recalcArmLength = 0;
 	if (t > timestamp + _AnimationDelay)
 	{
+		timestamp += _AnimationDelay;
 		// Make changes to cycloid parameters.
-		_Radius2 = NormSin(t * 0.01);
+		if (_Randomize)
+		{
+			bool valid = false;
+			//if number of cycles is valid exit loop
+			while (!valid)
+			{
+				// Generate random radius2 (0, 1) in 0.001 increments.
+				_Radius2 = (rand() % 800 + 100) / 1000.0;
+				// Generate random arm length [0,2] in 0.01 increments.
+				_ArmLength = (rand() % 201) / 100.0;
+				// Calculate needed cycles to complete
+				int cycles = 0;
+				while (_NumVerticesPerCycle * cycles < _MaxVertices)
+				{
+					++cycles;
+					if ((cycles / _Radius2) == (int)(cycles / _Radius2))
+					{
+						valid = true;
+						break;
+					}
+				}
+				_Cycles = cycles;
+				// Also base the number of verticies on how many cycles are needed.
+				_NumVertices = _NumVerticesPerCycle * cycles;
+			}
+		}
+		else
+		{
+			_Radius2 = NormSin(t * 0.002) * 0.8 + 0.1;
+
+			// Calculate the number of cycles needed to return to the starting vertex.
+			// This method only works if _Radius1 says at 1.
+			if (_CalcCycles)
+			{
+				int cycles = 0;
+				while (_Radius2 != 0)
+				{
+					++cycles;
+					if ((cycles / _Radius2) == (int)(cycles / _Radius2)) break;
+					if (_NumVerticesPerCycle * cycles > _MaxVertices) break;
+				}
+				_Cycles = cycles;
+				// Also base the number of verticies on how many cycles are needed.
+				_NumVertices = _NumVerticesPerCycle * cycles;
+			}
+		}
+
 		// Recalculate the drawing point position.
 		recalcArmLength = _ArmLength * _Radius2;
-		timestamp += _AnimationDelay;
-
-		// Calculate the number of cycles needed to return to the starting vertex.
-		// This method only works if _Radius1 says at 1.
-		if (_CalcCycles)
-		{
-			int cycles = 0;
-			while (_Radius2 != 0)
-			{
-				++cycles;
-				if ((cycles / _Radius2) == (int)(cycles / _Radius2)) break;
-				if (_NumVerticesPerCycle * cycles > _MaxVertices) break;
-			}
-			_Cycles = cycles;
-			// Also base the number of verticies on how many cycles are needed.
-			_NumVertices = _NumVerticesPerCycle * cycles;
-		}
 
 		// Verify the number of verticies does not exceed our array and max count for
 		// DTK primitive batch.

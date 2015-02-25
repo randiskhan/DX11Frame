@@ -40,6 +40,8 @@ private:
 	bool						_CalcCycles;
 	// Add origin vertex to end of array to close pattern?
 	bool						_CopyOriginToEnd;
+	// Randomize cycloid parameters?
+	bool						_Randomize;
 
 	double	_AnimationDelay;
 

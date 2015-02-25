@@ -16,6 +16,8 @@ bool CApp::PreInit(void)
 {
 	bool good = true;
 
+	srand((unsigned int)time(NULL));
+
 #if defined(_DEBUG)
 	_CWin32Data.width = 800;
 	_CWin32Data.height = 800;
