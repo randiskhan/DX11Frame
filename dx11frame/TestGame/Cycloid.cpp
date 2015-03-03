@@ -1,19 +1,19 @@
-// Hypotrochoid.cpp
-// Implementation file for Hypotrochoid.
+// Cycloid.cpp
+// Implementation file for Cycloid.
 
-#include "Hypotrochoid.h"
+#include "Cycloid.h"
 
-Hypotrochoid::Hypotrochoid(CDX11Frame* pCDX11Frame) : IEntity(pCDX11Frame)
+Cycloid::Cycloid(CDX11Frame* pCDX11Frame) : IEntity(pCDX11Frame)
 {
 	Init();
 }
 
-Hypotrochoid::~Hypotrochoid(void)
+Cycloid::~Cycloid(void)
 {
 	Cleanup();
 }
 
-bool		Hypotrochoid::Init(void)
+bool		Cycloid::Init(void)
 {
 	bool good = true;
 
@@ -69,7 +69,7 @@ bool		Hypotrochoid::Init(void)
 	return _IsInit = good;
 }
 
-bool		Hypotrochoid::Update(void)
+bool		Cycloid::Update(void)
 {
 	bool good = true;
 
@@ -192,7 +192,7 @@ bool		Hypotrochoid::Update(void)
 	return good;
 }
 
-bool		Hypotrochoid::Render(void)
+bool		Cycloid::Render(void)
 {
 	bool good = true;
 
@@ -210,12 +210,12 @@ bool		Hypotrochoid::Render(void)
 	return good;
 }
 
-void		Hypotrochoid::Cleanup(void)
+void		Cycloid::Cleanup(void)
 {
 	SafeRelease(_pID3D11InputLayout);
 }
 
-void		Hypotrochoid::ColorVerticiesByAnglePosition(void)
+void		Cycloid::ColorVerticiesByAnglePosition(void)
 {
 	for (int i = 0; i < _NumVertices; ++i)
 	{
@@ -225,7 +225,7 @@ void		Hypotrochoid::ColorVerticiesByAnglePosition(void)
 	}
 }
 
-void		Hypotrochoid::ColorVerticiesByPolarCoordinates(void)
+void		Cycloid::ColorVerticiesByPolarCoordinates(void)
 {
 	for (int i = 0; i < _NumVertices; ++i)
 	{
@@ -235,7 +235,7 @@ void		Hypotrochoid::ColorVerticiesByPolarCoordinates(void)
 	}
 }
 
-void		Hypotrochoid::ColorVerticiesByRandom(void)
+void		Cycloid::ColorVerticiesByRandom(void)
 {
 	float tempx, tempy, tempz;
 	tempx = rand() / (float)RAND_MAX;

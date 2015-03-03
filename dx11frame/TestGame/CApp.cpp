@@ -42,8 +42,8 @@ bool CApp::PostInit(void)
 	_pDebugText.reset(new DebugText(this));
 	if (!(_pDebugText && _pDebugText->IsInit()))
 		good &= false;
-	_pHypotrochoid.reset(new Hypotrochoid(this));
-	if (!(_pHypotrochoid && _pHypotrochoid->IsInit()))
+	_pCycloid.reset(new Cycloid(this));
+	if (!(_pCycloid && _pCycloid->IsInit()))
 		good &= false;
 
 #if defined(_DEBUG)
@@ -65,7 +65,7 @@ bool CApp::Update(void)
 	if (GetCInput()->IsKeyDownSinceLastFrame(VK_SPACE)) TakeScreenshot();
 
 	if (good && _pDebugText->GetDoUpdate()) good &= _pDebugText->Update();
-	if (good && _pHypotrochoid->GetDoUpdate()) good &= _pHypotrochoid->Update();
+	if (good && _pCycloid->GetDoUpdate()) good &= _pCycloid->Update();
 
 	return good;
 }
@@ -76,7 +76,7 @@ bool CApp::Render(void)
 
 	GetSpriteBatch()->Begin();
 	if (good && _pDebugText->GetDoRender()) good &= _pDebugText->Render();
-	if (good && _pHypotrochoid->GetDoRender()) good &= _pHypotrochoid->Render();
+	if (good && _pCycloid->GetDoRender()) good &= _pCycloid->Render();
 	GetSpriteBatch()->End();
 
 	return good;

@@ -1,5 +1,5 @@
-// Hypotrochoid.h
-// Declaration file for Hypotrochoid.
+// Cycloid.h
+// Declaration file for Cycloid.
 
 #pragma once
 
@@ -19,7 +19,7 @@ struct DoublePoint
 	}
 };
 
-class Hypotrochoid : public IEntity
+class Cycloid : public IEntity
 {
 private:
 	unique_ptr<PrimitiveBatch<VertexPositionColor>>	_pPrimtiveBatch;
@@ -48,7 +48,7 @@ private:
 
 	double	_AnimationDelay;
 
-	// Parameters for Hypotrochoid.
+	// Parameters for Cycloid.
 	// Fixed circle radius: _Radius1
 	// Moving circle radius: _Radius2
 	// Drawing point distance from center of moving circle: _ArmLength
@@ -62,8 +62,8 @@ private:
 	double		_Cycles;
 
 public:
-	Hypotrochoid(CDX11Frame* pCDX11Frame);
-	virtual ~Hypotrochoid(void);
+	Cycloid(CDX11Frame* pCDX11Frame);
+	virtual ~Cycloid(void);
 
 	bool	Init(void);
 	bool	Update(void);
@@ -71,7 +71,7 @@ public:
 	void	Cleanup(void);
 
 private:
-	// Color the raw verticies based on the angular position of the inner circle 
+	// Color the raw verticies based on the angular position of the inner circle
 	// to the outer circle (angle used in cycloid calculation).
 	void	ColorVerticiesByAnglePosition(void);
 	// Color the raw verticies based on the azmuth of the polar coordinate of the

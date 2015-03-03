@@ -7,7 +7,7 @@
 
 #include "CDX11Frame.h"
 #include "DebugText.h"
-#include "Hypotrochoid.h"
+#include "Cycloid.h"
 
 #pragma comment(lib, "dx11frame.lib")
 
@@ -15,7 +15,7 @@ class CApp : public CDX11Frame
 {
 private:
 	unique_ptr<DebugText>		_pDebugText;
-	unique_ptr<Hypotrochoid>	_pHypotrochoid;
+	unique_ptr<Cycloid>			_pCycloid;
 
 	bool		TakeScreenshot(void);
 
