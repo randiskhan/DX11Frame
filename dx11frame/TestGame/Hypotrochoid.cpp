@@ -28,6 +28,7 @@ bool		Hypotrochoid::Init(void)
 	_CalcCycles = false;
 	_CopyOriginToEnd = true;
 	_Randomize = true;
+	_ColorRand = false;
 
 	HRESULT hr;
 
@@ -89,10 +90,10 @@ bool		Hypotrochoid::Update(void)
 			//if number of cycles is valid exit loop
 			while (!valid)
 			{
-				// Generate random radius2 (0, 1) in 0.001 increments.
-				_Radius2 = (rand() % 800 + 100) / 1000.0;
-				// Generate random arm length [0,2] in 0.01 increments.
-				_ArmLength = (rand() % 201) / 100.0;
+				// Generate random radius2 [0.2, 0.8] in 0.001 increments.
+				_Radius2 = (rand() % 601 + 200) / 1000.0;
+				// Generate random arm length [0.2,2.0] in 0.01 increments.
+				_ArmLength = (rand() % 181 + 20) / 100.0;
 				// Calculate needed cycles to complete
 				int cycles = 0;
 				while (_NumVerticesPerCycle * cycles < _MaxVertices)
@@ -148,6 +149,9 @@ bool		Hypotrochoid::Update(void)
 			_verticesRaw[i].y =
 				((_Radius1 - _Radius2) * sin(_verticesRaw[i].a)) - (recalcArmLength * sin(((_Radius1 - _Radius2) / _Radius2) * _verticesRaw[i].a));
 			_verticesRaw[i].d = sqrt(pow(_verticesRaw[i].x, 2) + pow(_verticesRaw[i].y, 2));
+			_verticesRaw[i].p = atan2(_verticesRaw[i].y, _verticesRaw[i].x);
+			if (abs(_verticesRaw[i].p) != _verticesRaw[i].p)
+				_verticesRaw[i].p = (double)XM_2PI + _verticesRaw[i].p;
 			maxDist = max(maxDist, _verticesRaw[i].d);
 		}
 		if (_CopyOriginToEnd)
@@ -162,24 +166,26 @@ bool		Hypotrochoid::Update(void)
 			// First normalize the coordinate components.
 			_verticesRaw[i].x *= (1.0 / maxDist);
 			_verticesRaw[i].y *= (1.0 / maxDist);
+
 			// Then rotate one quarter turn counter-clockwise.
 			swap = _verticesRaw[i].x;
 			_verticesRaw[i].x = -(_verticesRaw[i].y);
 			_verticesRaw[i].y = -swap;
+
 			// Now translate the raw coordinates to screen coordinates.
 			// The * 0.XX is to move the drawing just a tad away from the window border.
 			_vertices[i].position.x =
 				(float)(((_verticesRaw[i].x * 0.95) * maxSquareEdgeScreenCoords * 0.5) + (r.right * 0.5));
 			_vertices[i].position.y =
 				(float)(((_verticesRaw[i].y * 0.95) * maxSquareEdgeScreenCoords * 0.5) + (r.bottom * 0.5));
-			// Some color variation based on raw coordinates.
-			// Must translate from range [-1.0,1.0] to [0.0,1.0].
-			//_vertices[i].color.x = (float)(_verticesRaw[i].x * 0.5 + 0.5);
-			//_vertices[i].color.y = (float)(_verticesRaw[i].y * 0.5 + 0.5);
-			//_vertices[i].color.z = (float)(1.0-sqrt(pow(_verticesRaw[i].x,2) + pow(_verticesRaw[i].y,2)));
-			_vertices[i].color.x = (float)NormSin(_verticesRaw[i].a);
-			_vertices[i].color.y = (float)NormSin((_verticesRaw[i].a) + (XM_2PI / 3.0));
-			_vertices[i].color.z = (float)NormSin((_verticesRaw[i].a) + (XM_2PI * 2.0 / 3.0));
+		}
+		if (_ColorRand)
+		{
+			ColorVerticiesByRandom();
+		}
+		else
+		{
+			ColorVerticiesByAnglePosition();
 		}
 	}
 
@@ -207,4 +213,38 @@ bool		Hypotrochoid::Render(void)
 void		Hypotrochoid::Cleanup(void)
 {
 	SafeRelease(_pID3D11InputLayout);
+}
+
+void		Hypotrochoid::ColorVerticiesByAnglePosition(void)
+{
+	for (int i = 0; i < _NumVertices; ++i)
+	{
+		_vertices[i].color.x = (float)NormSin(_verticesRaw[i].a);
+		_vertices[i].color.y = (float)NormSin((_verticesRaw[i].a) + (XM_2PI / 3.0));
+		_vertices[i].color.z = (float)NormSin((_verticesRaw[i].a) + (XM_2PI * 2.0 / 3.0));
+	}
+}
+
+void		Hypotrochoid::ColorVerticiesByPolarCoordinates(void)
+{
+	for (int i = 0; i < _NumVertices; ++i)
+	{
+		_vertices[i].color.x = (float)NormSin(_verticesRaw[i].p);
+		_vertices[i].color.y = (float)NormSin((_verticesRaw[i].p) + (XM_2PI / 3.0));
+		_vertices[i].color.z = (float)NormSin((_verticesRaw[i].p) + (XM_2PI * 2.0 / 3.0));
+	}
+}
+
+void		Hypotrochoid::ColorVerticiesByRandom(void)
+{
+	float tempx, tempy, tempz;
+	tempx = rand() / (float)RAND_MAX;
+	tempy = rand() / (float)RAND_MAX;
+	tempz = rand() / (float)RAND_MAX;
+	for (int i = 0; i < _NumVertices; ++i)
+	{
+		_vertices[i].color.x = tempx;
+		_vertices[i].color.y = tempy;
+		_vertices[i].color.z = tempz;
+	}
 }

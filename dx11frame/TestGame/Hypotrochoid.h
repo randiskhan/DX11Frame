@@ -8,13 +8,14 @@
 
 struct DoublePoint
 {
-	double	x;
-	double	y;
-	double	a;
-	double	d;
+	double	x; // This vertex's  coordinate.
+	double	y; // This vertex's  coordinate.
+	double	a; // Angle used to calculate this vertex.
+	double	d; // This vertex's distance from origin.
+	double	p; // This vertex's angle in polar coordinates.
 	DoublePoint()
 	{
-		x = y = a = d = 0.0;
+		x = y = a = d = p = 0.0;
 	}
 };
 
@@ -42,6 +43,8 @@ private:
 	bool						_CopyOriginToEnd;
 	// Randomize cycloid parameters?
 	bool						_Randomize;
+	// Randomize color?
+	bool						_ColorRand;
 
 	double	_AnimationDelay;
 
@@ -66,4 +69,14 @@ public:
 	bool	Update(void);
 	bool	Render(void);
 	void	Cleanup(void);
+
+private:
+	// Color the raw verticies based on the angular position of the inner circle 
+	// to the outer circle (angle used in cycloid calculation).
+	void	ColorVerticiesByAnglePosition(void);
+	// Color the raw verticies based on the azmuth of the polar coordinate of the
+	// raw vertex after the quarter turn counter-clockwise.
+	void	ColorVerticiesByPolarCoordinates(void);
+	// Pick a random color for all verticies.
+	void	ColorVerticiesByRandom(void);
 };
