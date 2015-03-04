@@ -3,6 +3,11 @@
 
 #pragma once
 
+// Maxumum number of verticies.
+// Max DTK can handle is 65534.
+#define MAX_VERTICIES 65534
+#define MAX_CYCLES 16
+
 #include "CDX11Frame.h"
 #include "IEntity.h"
 
@@ -39,25 +44,52 @@ struct CycloidParameters
 
 	bool				CopyFirstToEnd;
 
-	CycloidParameters()
+	float				r, g, b;
+
+	CycloidParameters::CycloidParameters()
 	{
-		Radius2 = ArmLength = Cycles = 0.0;
+		Radius2 = 0.25;
+		ArmLength = 1.0;
+		Cycles = 32;
 		NumberOfVerticiesPerCycle = 2048;
+		NumberOfVerticies = MAX_VERTICIES;
 		CopyFirstToEnd = false;
+		r = g = b = 1.0f;
 	}
 
-	void	CalculateNeededCycles(int maxVerticies)
+	bool	CycloidParameters::CalculateNeededCycles(int maxCycles)
 	{
-		int cycles = 0;
+		bool found = false;
+		int cycles = 1;
 		while (Radius2 != 0)
 		{
+			if ((cycles / Radius2) == (int)(cycles / Radius2))
+			{
+				found = true;
+				break;
+			}
+			if (cycles > maxCycles) break;
+			if (NumberOfVerticiesPerCycle * cycles > MAX_VERTICIES - 1) break;
 			++cycles;
-			if ((cycles / Radius2) == (int)(cycles / Radius2)) break;
-			if (NumberOfVerticiesPerCycle * cycles > maxVerticies) break;
 		}
-		Cycles = cycles;
+		Cycles = cycles + (1.0 / (double)NumberOfVerticiesPerCycle);
 		// Also base the number of verticies on how many cycles are needed.
 		NumberOfVerticies = NumberOfVerticiesPerCycle * cycles;
+
+		return found;
+	}
+
+	void	CycloidParameters::CopyTo(CycloidParameters& cycloid)
+	{
+		cycloid.Radius2 = Radius2;
+		cycloid.ArmLength = ArmLength;
+		cycloid.Cycles = Cycles;
+		cycloid.NumberOfVerticies = NumberOfVerticies;
+		cycloid.NumberOfVerticiesPerCycle = NumberOfVerticiesPerCycle;
+		cycloid.CopyFirstToEnd = CopyFirstToEnd;
+		cycloid.r = r;
+		cycloid.g = g;
+		cycloid.b = b;
 	}
 };
 
@@ -68,16 +100,19 @@ private:
 	unique_ptr<BasicEffect>							_pBasicEffect;
 	ID3D11InputLayout*								_pID3D11InputLayout;
 
-	// Maxumum number of verticies. Used to declare arrays.
-	// Max DTK can handle is 65534.
-	static const int			_MaxVertices = 65534;
 	// Array of verticies to send to GPU.
-	VertexPositionColor			_vertices[_MaxVertices];
+	VertexPositionColor			_vertices[MAX_VERTICIES];
 	// Array of raw verticies in coordinate [-1, 1] range.
-	DoublePoint					_verticesRaw[_MaxVertices];
+	DoublePoint					_verticesRaw[MAX_VERTICIES];
 
 	CycloidParameters	_CycloidCurrent;
 	CycloidParameters	_CycloidNext;
+	CycloidParameters	_CycloidPrevious;
+
+	double	_TimeDeltaMorph;
+	double	_TimeDeltaNewCycloid;
+	double	_TimeStampMorph;
+	double	_TimeStampNewCycloid;
 
 public:
 	Cycloid(CDX11Frame* pCDX11Frame);

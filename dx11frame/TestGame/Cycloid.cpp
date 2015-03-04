@@ -17,10 +17,23 @@ bool		Cycloid::Init(void)
 {
 	bool good = true;
 
-	// Initial values. See header for descriptions.
-	_CycloidCurrent.Radius2 = 0.4;
-	_CycloidCurrent.ArmLength = 0.4;
-	_CycloidCurrent.Cycles = 32;
+	bool valid = false;
+	while (!valid)
+	{
+		RandomCycloid(_CycloidPrevious);
+		valid = _CycloidPrevious.CalculateNeededCycles(MAX_CYCLES);
+	}
+	valid = false;
+	while (!valid)
+	{
+		RandomCycloid(_CycloidNext);
+		valid = _CycloidNext.CalculateNeededCycles(MAX_CYCLES);
+	}
+
+	_TimeDeltaMorph = 1.0;
+	_TimeDeltaNewCycloid = 30.0;
+	_TimeStampMorph = 0;
+	_TimeStampNewCycloid = 0;
 
 	HRESULT hr;
 
@@ -55,7 +68,7 @@ bool		Cycloid::Init(void)
 		&_pID3D11InputLayout);
 	if (FAILED(hr)) good = false;
 
-	for (int i = 0; i < _MaxVertices; ++i)
+	for (int i = 0; i < MAX_VERTICIES; ++i)
 		_vertices[i].color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	return _IsInit = good;
@@ -67,16 +80,40 @@ bool		Cycloid::Update(void)
 
 	double t = GetCDX11Frame()->GetCTimer()->GetTotalElapsed();
 
-	_CycloidCurrent.CalculateNeededCycles(_MaxVertices);
+	if (_TimeStampNewCycloid + _TimeDeltaNewCycloid < t)
+	{
+		_TimeStampNewCycloid = t;
+		_CycloidCurrent.CopyTo(_CycloidPrevious);
+		bool valid = false;
+		while (!valid)
+		{
+			RandomCycloid(_CycloidNext);
+			valid = _CycloidNext.CalculateNeededCycles(MAX_CYCLES);
+		}
+	}
+	double lerpAmt = (t - _TimeStampNewCycloid) / (_TimeDeltaNewCycloid - 2.0);
+	_CycloidCurrent.ArmLength = lerp(_CycloidPrevious.ArmLength, _CycloidNext.ArmLength, lerpAmt);
+	_CycloidCurrent.Radius2 = lerp(_CycloidPrevious.Radius2, _CycloidNext.Radius2, lerpAmt);
+	_CycloidCurrent.Cycles = lerp(_CycloidPrevious.Cycles, _CycloidNext.Cycles, lerpAmt);
+	_CycloidCurrent.r = lerp(_CycloidPrevious.r, _CycloidNext.r, (float)lerpAmt);
+	_CycloidCurrent.g = lerp(_CycloidPrevious.g, _CycloidNext.g, (float)lerpAmt);
+	_CycloidCurrent.b = lerp(_CycloidPrevious.b, _CycloidNext.b, (float)lerpAmt);
+
 	CalculateRawVerticies(
 		_CycloidCurrent,
 		_verticesRaw,
-		_MaxVertices);
+		MAX_VERTICIES);
 	ConvertToScreen(
 		_CycloidCurrent,
 		_verticesRaw,
 		_vertices,
 		GetCDX11Frame()->GetCWin32()->GetScreenRect());
+	for (int i = 0; i < _CycloidCurrent.NumberOfVerticies; ++i)
+	{
+		_vertices[i].color.x = _CycloidCurrent.r;
+		_vertices[i].color.y = _CycloidCurrent.g;
+		_vertices[i].color.z = _CycloidCurrent.b;
+	}
 
 	return good;
 }
@@ -204,29 +241,14 @@ void		Cycloid::CalculateRawVerticies(
 
 void		Cycloid::RandomCycloid(CycloidParameters &cycloid)
 {
-	bool valid = false;
-	//if number of cycles is valid exit loop
-	while (!valid)
-	{
-		// Generate random radius2 [0.2, 0.8] in 0.001 increments.
-		cycloid.Radius2 = (rand() % 601 + 200) / 1000.0;
-		// Generate random arm length [0.2,2.0] in 0.01 increments.
-		cycloid.ArmLength = (rand() % 181 + 20) / 100.0;
-		// Calculate needed cycles to complete
-		int cycles = 0;
-		while (cycloid.NumberOfVerticiesPerCycle * cycles < _MaxVertices)
-		{
-			++cycles;
-			if ((cycles / cycloid.Radius2) == (int)(cycles / cycloid.Radius2))
-			{
-				valid = true;
-				break;
-			}
-		}
-		cycloid.Cycles = cycles;
-		// Also base the number of verticies on how many cycles are needed.
-		cycloid.NumberOfVerticies = cycloid.NumberOfVerticiesPerCycle * cycles;
-	}
+	// Generate random radius2 [0.2, 0.8] in 0.001 increments.
+	cycloid.Radius2 = (rand() % 601 + 200) / 1000.0;
+	// Generate random arm length [0.2,2.0] in 0.01 increments.
+	cycloid.ArmLength = (rand() % 181 + 20) / 100.0;
+	// Generate a random color.
+	cycloid.r = rand() / (float)RAND_MAX;
+	cycloid.g = rand() / (float)RAND_MAX;
+	cycloid.b = rand() / (float)RAND_MAX;
 }
 
 void		Cycloid::ConvertToScreen(
