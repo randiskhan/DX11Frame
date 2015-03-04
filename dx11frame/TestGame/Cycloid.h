@@ -19,6 +19,48 @@ struct DoublePoint
 	}
 };
 
+struct CycloidParameters
+{
+	// Parameters for Cycloid.
+	// Fixed circle radius: _Radius1
+	// Moving circle radius: _Radius2
+	// Drawing point distance from center of moving circle: _ArmLength
+	// I find it easiest to "normalize" these values. I keep radius1 at 1.0, so I
+	// can think of radius2 as a ratio to/of radius1. This also helps with
+	// _ArmLength - If _Radius1 is 1, then when _ArmLength equals _Radius2,
+	// The Drawing point is exactly on the cirumfrence of the moving circle.
+	const double		Radius1 = 1.0;
+	double				Radius2;
+	double				ArmLength;
+	double				Cycles;
+
+	int					NumberOfVerticiesPerCycle;
+	int					NumberOfVerticies;
+
+	bool				CopyFirstToEnd;
+
+	CycloidParameters()
+	{
+		Radius2 = ArmLength = Cycles = 0.0;
+		NumberOfVerticiesPerCycle = 2048;
+		CopyFirstToEnd = false;
+	}
+
+	void	CalculateNeededCycles(int maxVerticies)
+	{
+		int cycles = 0;
+		while (Radius2 != 0)
+		{
+			++cycles;
+			if ((cycles / Radius2) == (int)(cycles / Radius2)) break;
+			if (NumberOfVerticiesPerCycle * cycles > maxVerticies) break;
+		}
+		Cycles = cycles;
+		// Also base the number of verticies on how many cycles are needed.
+		NumberOfVerticies = NumberOfVerticiesPerCycle * cycles;
+	}
+};
+
 class Cycloid : public IEntity
 {
 private:
@@ -29,37 +71,13 @@ private:
 	// Maxumum number of verticies. Used to declare arrays.
 	// Max DTK can handle is 65534.
 	static const int			_MaxVertices = 65534;
-	// Number of verticies to update and render.
-	int							_NumVertices;
-	// Density of verticies in one revolution of inner circle along outer circle.
-	int							_NumVerticesPerCycle;
 	// Array of verticies to send to GPU.
 	VertexPositionColor			_vertices[_MaxVertices];
 	// Array of raw verticies in coordinate [-1, 1] range.
 	DoublePoint					_verticesRaw[_MaxVertices];
-	// Recalculate cycles each update?
-	bool						_CalcCycles;
-	// Add origin vertex to end of array to close pattern?
-	bool						_CopyOriginToEnd;
-	// Randomize cycloid parameters?
-	bool						_Randomize;
-	// Randomize color?
-	bool						_ColorRand;
 
-	double	_AnimationDelay;
-
-	// Parameters for Cycloid.
-	// Fixed circle radius: _Radius1
-	// Moving circle radius: _Radius2
-	// Drawing point distance from center of moving circle: _ArmLength
-	// I find it easiest to "normalize" these values. I keep radius1 at 1.0, so I
-	// can think of radius2 as a ratio to/of radius1. This also helps with
-	// _ArmLength - If _Radius1 is 1, then when _ArmLength equals _Radius2,
-	// The Drawing point is exactly on the cirumfrence of the moving circle.
-	double		_Radius1;
-	double		_Radius2;
-	double		_ArmLength;
-	double		_Cycles;
+	CycloidParameters	_CycloidCurrent;
+	CycloidParameters	_CycloidNext;
 
 public:
 	Cycloid(CDX11Frame* pCDX11Frame);
@@ -71,12 +89,30 @@ public:
 	void	Cleanup(void);
 
 private:
+	void	CalculateRawVerticies(
+		CycloidParameters&,
+		DoublePoint[],
+		int);
 	// Color the raw verticies based on the angular position of the inner circle
 	// to the outer circle (angle used in cycloid calculation).
-	void	ColorVerticiesByAnglePosition(void);
+	void	ColorVerticiesByAnglePosition(
+		CycloidParameters&,
+		DoublePoint[],
+		VertexPositionColor[]);
 	// Color the raw verticies based on the azmuth of the polar coordinate of the
 	// raw vertex after the quarter turn counter-clockwise.
-	void	ColorVerticiesByPolarCoordinates(void);
+	void	ColorVerticiesByPolarCoordinates(
+		CycloidParameters&,
+		DoublePoint[],
+		VertexPositionColor[]);
 	// Pick a random color for all verticies.
-	void	ColorVerticiesByRandom(void);
+	void	ColorVerticiesByRandom(
+		CycloidParameters &cycloid,
+		VertexPositionColor vert[]);
+	void	RandomCycloid(CycloidParameters &);
+	void	ConvertToScreen(
+		CycloidParameters&,
+		DoublePoint[],
+		VertexPositionColor[],
+		RECT);
 };

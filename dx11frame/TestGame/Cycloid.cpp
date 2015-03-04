@@ -18,17 +18,9 @@ bool		Cycloid::Init(void)
 	bool good = true;
 
 	// Initial values. See header for descriptions.
-	_Radius1 = 1.0;
-	_Radius2 = 0.5;
-	_ArmLength = 0.4;
-	_NumVerticesPerCycle = 2048;
-	_AnimationDelay = 2.5;
-	_NumVertices = 16384;
-	_Cycles = 32;
-	_CalcCycles = false;
-	_CopyOriginToEnd = true;
-	_Randomize = true;
-	_ColorRand = false;
+	_CycloidCurrent.Radius2 = 0.4;
+	_CycloidCurrent.ArmLength = 0.4;
+	_CycloidCurrent.Cycles = 32;
 
 	HRESULT hr;
 
@@ -74,120 +66,17 @@ bool		Cycloid::Update(void)
 	bool good = true;
 
 	double t = GetCDX11Frame()->GetCTimer()->GetTotalElapsed();
-	RECT r = GetCDX11Frame()->GetCWin32()->GetScreenRect();
-	double maxDist = 0;
-	int maxSquareEdgeScreenCoords = min(r.right, r.bottom);
 
-	// Animate the radius of rolling circle.
-	static double timestamp = -_AnimationDelay, recalcArmLength = 0;
-	if (t > timestamp + _AnimationDelay)
-	{
-		timestamp += _AnimationDelay;
-		// Make changes to cycloid parameters.
-		if (_Randomize)
-		{
-			bool valid = false;
-			//if number of cycles is valid exit loop
-			while (!valid)
-			{
-				// Generate random radius2 [0.2, 0.8] in 0.001 increments.
-				_Radius2 = (rand() % 601 + 200) / 1000.0;
-				// Generate random arm length [0.2,2.0] in 0.01 increments.
-				_ArmLength = (rand() % 181 + 20) / 100.0;
-				// Calculate needed cycles to complete
-				int cycles = 0;
-				while (_NumVerticesPerCycle * cycles < _MaxVertices)
-				{
-					++cycles;
-					if ((cycles / _Radius2) == (int)(cycles / _Radius2))
-					{
-						valid = true;
-						break;
-					}
-				}
-				_Cycles = cycles;
-				// Also base the number of verticies on how many cycles are needed.
-				_NumVertices = _NumVerticesPerCycle * cycles;
-			}
-		}
-		else
-		{
-			_Radius2 = NormSin(t * 0.002) * 0.8 + 0.1;
-
-			// Calculate the number of cycles needed to return to the starting vertex.
-			// This method only works if _Radius1 says at 1.
-			if (_CalcCycles)
-			{
-				int cycles = 0;
-				while (_Radius2 != 0)
-				{
-					++cycles;
-					if ((cycles / _Radius2) == (int)(cycles / _Radius2)) break;
-					if (_NumVerticesPerCycle * cycles > _MaxVertices) break;
-				}
-				_Cycles = cycles;
-				// Also base the number of verticies on how many cycles are needed.
-				_NumVertices = _NumVerticesPerCycle * cycles;
-			}
-		}
-
-		// Recalculate the drawing point position.
-		recalcArmLength = _ArmLength * _Radius2;
-
-		// Verify the number of verticies does not exceed our array and max count for
-		// DTK primitive batch.
-		if (_NumVertices > _MaxVertices - (_CopyOriginToEnd ? 1 : 0))
-			_NumVertices = _MaxVertices - (_CopyOriginToEnd ? 1 : 0);
-
-		// Calculate the raw coordinates, and find max absolute component.
-		int i = 0;
-		for (; i < _NumVertices; ++i)
-		{
-			_verticesRaw[i].a = ((1.0 / (double)_NumVertices) * (i - (_NumVertices / 2.0)) * XM_2PI *_Cycles);
-			_verticesRaw[i].x =
-				((_Radius1 - _Radius2) * cos(_verticesRaw[i].a)) + (recalcArmLength * cos(((_Radius1 - _Radius2) / _Radius2) * _verticesRaw[i].a));
-			_verticesRaw[i].y =
-				((_Radius1 - _Radius2) * sin(_verticesRaw[i].a)) - (recalcArmLength * sin(((_Radius1 - _Radius2) / _Radius2) * _verticesRaw[i].a));
-			_verticesRaw[i].d = sqrt(pow(_verticesRaw[i].x, 2) + pow(_verticesRaw[i].y, 2));
-			_verticesRaw[i].p = atan2(_verticesRaw[i].y, _verticesRaw[i].x);
-			if (abs(_verticesRaw[i].p) != _verticesRaw[i].p)
-				_verticesRaw[i].p = (double)XM_2PI + _verticesRaw[i].p;
-			maxDist = max(maxDist, _verticesRaw[i].d);
-		}
-		if (_CopyOriginToEnd)
-			// Copy the starting raw vertex to the end of the used array.
-			_verticesRaw[i] = _verticesRaw[0];
-		// Use maxDist to make sure all raw points are within a normalized circle on xy plane.
-		// Rotate the coordinates one quarter turn counter clockwise so zero angle is at top
-		// of window, then convert to screen pixels.
-		double swap = 0;
-		for (int i = 0; i < _NumVertices + (_CopyOriginToEnd ? 1 : 0); ++i)
-		{
-			// First normalize the coordinate components.
-			_verticesRaw[i].x *= (1.0 / maxDist);
-			_verticesRaw[i].y *= (1.0 / maxDist);
-
-			// Then rotate one quarter turn counter-clockwise.
-			swap = _verticesRaw[i].x;
-			_verticesRaw[i].x = -(_verticesRaw[i].y);
-			_verticesRaw[i].y = -swap;
-
-			// Now translate the raw coordinates to screen coordinates.
-			// The * 0.XX is to move the drawing just a tad away from the window border.
-			_vertices[i].position.x =
-				(float)(((_verticesRaw[i].x * 0.95) * maxSquareEdgeScreenCoords * 0.5) + (r.right * 0.5));
-			_vertices[i].position.y =
-				(float)(((_verticesRaw[i].y * 0.95) * maxSquareEdgeScreenCoords * 0.5) + (r.bottom * 0.5));
-		}
-		if (_ColorRand)
-		{
-			ColorVerticiesByRandom();
-		}
-		else
-		{
-			ColorVerticiesByAnglePosition();
-		}
-	}
+	_CycloidCurrent.CalculateNeededCycles(_MaxVertices);
+	CalculateRawVerticies(
+		_CycloidCurrent,
+		_verticesRaw,
+		_MaxVertices);
+	ConvertToScreen(
+		_CycloidCurrent,
+		_verticesRaw,
+		_vertices,
+		GetCDX11Frame()->GetCWin32()->GetScreenRect());
 
 	return good;
 }
@@ -203,7 +92,7 @@ bool		Cycloid::Render(void)
 	_pPrimtiveBatch->Draw(
 		D3D10_PRIMITIVE_TOPOLOGY_LINESTRIP,
 		_vertices,
-		_NumVertices + (_CopyOriginToEnd ? 1 : 0)
+		_CycloidCurrent.NumberOfVerticies + (_CycloidCurrent.CopyFirstToEnd ? 1 : 0)
 		);
 	_pPrimtiveBatch->End();
 
@@ -215,36 +104,145 @@ void		Cycloid::Cleanup(void)
 	SafeRelease(_pID3D11InputLayout);
 }
 
-void		Cycloid::ColorVerticiesByAnglePosition(void)
+#pragma region Private methods
+
+void		Cycloid::ColorVerticiesByAnglePosition(
+	CycloidParameters &cycloid,
+	DoublePoint raw[],
+	VertexPositionColor vert[])
 {
-	for (int i = 0; i < _NumVertices; ++i)
+	for (int i = 0; i < cycloid.NumberOfVerticies; ++i)
 	{
-		_vertices[i].color.x = (float)NormSin(_verticesRaw[i].a);
-		_vertices[i].color.y = (float)NormSin((_verticesRaw[i].a) + (XM_2PI / 3.0));
-		_vertices[i].color.z = (float)NormSin((_verticesRaw[i].a) + (XM_2PI * 2.0 / 3.0));
+		vert[i].color.x = (float)NormSin(raw[i].a);
+		vert[i].color.y = (float)NormSin((raw[i].a) + (XM_2PI / 3.0));
+		vert[i].color.z = (float)NormSin((raw[i].a) + (XM_2PI * 2.0 / 3.0));
 	}
 }
 
-void		Cycloid::ColorVerticiesByPolarCoordinates(void)
+void		Cycloid::ColorVerticiesByPolarCoordinates(
+	CycloidParameters &cycloid,
+	DoublePoint raw[],
+	VertexPositionColor vert[])
 {
-	for (int i = 0; i < _NumVertices; ++i)
+	for (int i = 0; i < cycloid.NumberOfVerticies; ++i)
 	{
-		_vertices[i].color.x = (float)NormSin(_verticesRaw[i].p);
-		_vertices[i].color.y = (float)NormSin((_verticesRaw[i].p) + (XM_2PI / 3.0));
-		_vertices[i].color.z = (float)NormSin((_verticesRaw[i].p) + (XM_2PI * 2.0 / 3.0));
+		vert[i].color.x = (float)NormSin(raw[i].p);
+		vert[i].color.y = (float)NormSin((raw[i].p) + (XM_2PI / 3.0));
+		vert[i].color.z = (float)NormSin((raw[i].p) + (XM_2PI * 2.0 / 3.0));
 	}
 }
 
-void		Cycloid::ColorVerticiesByRandom(void)
+void		Cycloid::ColorVerticiesByRandom(
+	CycloidParameters &cycloid,
+	VertexPositionColor vert[])
 {
 	float tempx, tempy, tempz;
 	tempx = rand() / (float)RAND_MAX;
 	tempy = rand() / (float)RAND_MAX;
 	tempz = rand() / (float)RAND_MAX;
-	for (int i = 0; i < _NumVertices; ++i)
+	for (int i = 0; i < cycloid.NumberOfVerticies; ++i)
 	{
-		_vertices[i].color.x = tempx;
-		_vertices[i].color.y = tempy;
-		_vertices[i].color.z = tempz;
+		vert[i].color.x = tempx;
+		vert[i].color.y = tempy;
+		vert[i].color.z = tempz;
 	}
 }
+
+void		Cycloid::CalculateRawVerticies(
+	CycloidParameters &cycloid,
+	DoublePoint raw[],
+	int maxVert)
+{
+	double maxDist = 0, recalcArmLength = 0;
+	// Recalculate the drawing point position.
+	recalcArmLength = _CycloidCurrent.ArmLength * _CycloidCurrent.Radius2;
+
+	// Verify the number of verticies does not exceed our array and max count for
+	// DTK primitive batch.
+	if (cycloid.NumberOfVerticies > maxVert - (cycloid.CopyFirstToEnd ? 1 : 0))
+		cycloid.NumberOfVerticies = maxVert - (cycloid.CopyFirstToEnd ? 1 : 0);
+
+	// Calculate the raw coordinates, and find max absolute component.
+	int i = 0;
+	for (; i < cycloid.NumberOfVerticies; ++i)
+	{
+		raw[i].a =
+			((1.0 / (double)cycloid.NumberOfVerticies) * (i - (cycloid.NumberOfVerticies / 2.0)) *
+			XM_2PI * cycloid.Cycles);
+		raw[i].x =
+			((cycloid.Radius1 - cycloid.Radius2) * cos(raw[i].a)) +
+			(recalcArmLength * cos(((cycloid.Radius1 - cycloid.Radius2) / cycloid.Radius2) * raw[i].a));
+		raw[i].y =
+			((cycloid.Radius1 - cycloid.Radius2) * sin(raw[i].a)) -
+			(recalcArmLength * sin(((cycloid.Radius1 - cycloid.Radius2) / cycloid.Radius2) * raw[i].a));
+		raw[i].d = sqrt(pow(raw[i].x, 2) + pow(raw[i].y, 2));
+		raw[i].p = atan2(raw[i].y, raw[i].x);
+		if (abs(raw[i].p) != raw[i].p)
+			raw[i].p = (double)XM_2PI + raw[i].p;
+		maxDist = max(maxDist, raw[i].d);
+	}
+	if (cycloid.CopyFirstToEnd)
+		// Copy the starting raw vertex to the end of the used array.
+		raw[i] = raw[0];
+
+	// Use maxDist to make sure all raw points are within a normalized circle
+	// on xy plane. Rotate the coordinates one quarter turn counter clockwise
+	// so zero angle is at top of window.
+	double swap = 0;
+	for (int i = 0; i < cycloid.NumberOfVerticies + (cycloid.CopyFirstToEnd ? 1 : 0); ++i)
+	{
+		// First normalize the coordinate components.
+		raw[i].x *= (1.0 / maxDist);
+		raw[i].y *= (1.0 / maxDist);
+
+		// Then rotate one quarter turn counter-clockwise.
+		swap = raw[i].x;
+		raw[i].x = -(raw[i].y);
+		raw[i].y = -swap;
+	}
+}
+
+void		Cycloid::RandomCycloid(CycloidParameters &cycloid)
+{
+	bool valid = false;
+	//if number of cycles is valid exit loop
+	while (!valid)
+	{
+		// Generate random radius2 [0.2, 0.8] in 0.001 increments.
+		cycloid.Radius2 = (rand() % 601 + 200) / 1000.0;
+		// Generate random arm length [0.2,2.0] in 0.01 increments.
+		cycloid.ArmLength = (rand() % 181 + 20) / 100.0;
+		// Calculate needed cycles to complete
+		int cycles = 0;
+		while (cycloid.NumberOfVerticiesPerCycle * cycles < _MaxVertices)
+		{
+			++cycles;
+			if ((cycles / cycloid.Radius2) == (int)(cycles / cycloid.Radius2))
+			{
+				valid = true;
+				break;
+			}
+		}
+		cycloid.Cycles = cycles;
+		// Also base the number of verticies on how many cycles are needed.
+		cycloid.NumberOfVerticies = cycloid.NumberOfVerticiesPerCycle * cycles;
+	}
+}
+
+void		Cycloid::ConvertToScreen(
+	CycloidParameters &cycloid,
+	DoublePoint raw[],
+	VertexPositionColor vert[],
+	RECT canvas)
+{
+	int max = min(canvas.right, canvas.bottom);
+	for (int i = 0; i < cycloid.NumberOfVerticies + (cycloid.CopyFirstToEnd ? 1 : 0); ++i)
+	{
+		vert[i].position.x =
+			(float)(((raw[i].x * 0.95) * max * 0.5) + (canvas.right * 0.5));
+		vert[i].position.y =
+			(float)(((raw[i].y * 0.95) * max * 0.5) + (canvas.bottom * 0.5));
+	}
+}
+
+#pragma endregion
