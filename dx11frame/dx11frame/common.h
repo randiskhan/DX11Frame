@@ -110,4 +110,22 @@ __forceinline long double NormSin(long double angle)
 {
 	return (sin(angle) + 1.0l) / 2.0l;
 }
+__forceinline float lerp(float a, float b, float f)
+{
+	if (f < 0) f = 0;
+	if (f > 1.0f) f = 1.0f;
+	return (a * (1.0f - f)) + (b * f);
+}
+__forceinline double lerp(double a, double b, double f)
+{
+	if (f < 0) f = 0;
+	if (f > 1.0) f = 1.0;
+	return (a * (1.0 - f)) + (b * f);
+}
+__forceinline long double lerp(long double a, long double b, long double f)
+{
+	if (f < 0) f = 0;
+	if (f > 1.0l) f = 1.0l;
+	return (a * (1.0l - f)) + (b * f);
+}
 #pragma endregion
