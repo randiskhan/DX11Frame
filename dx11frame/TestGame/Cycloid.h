@@ -5,8 +5,9 @@
 
 // Maxumum number of verticies.
 // Max DTK can handle is 65534.
-#define MAX_VERTICIES 65534
-#define MAX_CYCLES 16
+#define MAX_VERTICIES 32768
+#define DEFAULT_VERTICIES_PER_CYCLE 512
+#define MAX_CYCLES 24
 
 #include "CDX11Frame.h"
 #include "IEntity.h"
@@ -50,8 +51,8 @@ struct CycloidParameters
 	{
 		Radius2 = 0.25;
 		ArmLength = 1.0;
-		Cycles = 32;
-		NumberOfVerticiesPerCycle = 2048;
+		Cycles = 1.0;
+		NumberOfVerticiesPerCycle = DEFAULT_VERTICIES_PER_CYCLE;
 		NumberOfVerticies = MAX_VERTICIES;
 		CopyFirstToEnd = false;
 		r = g = b = 1.0f;
