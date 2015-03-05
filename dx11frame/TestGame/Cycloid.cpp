@@ -31,7 +31,7 @@ bool		Cycloid::Init(void)
 	}
 
 	_TimeDeltaMorph = 1.0;
-	_TimeDeltaNewCycloid = 30.0;
+	_TimeDeltaNewCycloid = 15.0;
 	_TimeStampMorph = 0;
 	_TimeStampNewCycloid = 0;
 
@@ -92,12 +92,12 @@ bool		Cycloid::Update(void)
 		}
 	}
 	double lerpAmt = (t - _TimeStampNewCycloid) / (_TimeDeltaNewCycloid - 2.0);
-	_CycloidCurrent.ArmLength = lerp(_CycloidPrevious.ArmLength, _CycloidNext.ArmLength, lerpAmt);
-	_CycloidCurrent.Radius2 = lerp(_CycloidPrevious.Radius2, _CycloidNext.Radius2, lerpAmt);
-	_CycloidCurrent.Cycles = lerp(_CycloidPrevious.Cycles, _CycloidNext.Cycles, lerpAmt);
-	_CycloidCurrent.r = lerp(_CycloidPrevious.r, _CycloidNext.r, (float)lerpAmt);
-	_CycloidCurrent.g = lerp(_CycloidPrevious.g, _CycloidNext.g, (float)lerpAmt);
-	_CycloidCurrent.b = lerp(_CycloidPrevious.b, _CycloidNext.b, (float)lerpAmt);
+	_CycloidCurrent.ArmLength = InterpolateCos(_CycloidPrevious.ArmLength, _CycloidNext.ArmLength, lerpAmt);
+	_CycloidCurrent.Radius2 = InterpolateCos(_CycloidPrevious.Radius2, _CycloidNext.Radius2, lerpAmt);
+	_CycloidCurrent.Cycles = InterpolateCos(_CycloidPrevious.Cycles, _CycloidNext.Cycles, lerpAmt);
+	_CycloidCurrent.r = InterpolateCos(_CycloidPrevious.r, _CycloidNext.r, (float)lerpAmt);
+	_CycloidCurrent.g = InterpolateCos(_CycloidPrevious.g, _CycloidNext.g, (float)lerpAmt);
+	_CycloidCurrent.b = InterpolateCos(_CycloidPrevious.b, _CycloidNext.b, (float)lerpAmt);
 
 	CalculateRawVerticies(
 		_CycloidCurrent,

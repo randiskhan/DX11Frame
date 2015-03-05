@@ -100,32 +100,65 @@ __forceinline void SafeDelete(T& Obj)
 #pragma region Math helpers
 __forceinline float NormSin(float angle)
 {
-	return (sin(angle) + 1.0f) / 2.0f;
+	return (sin(angle) + 1.0f) * 0.5f;
 }
 __forceinline double NormSin(double angle)
 {
-	return (sin(angle) + 1.0) / 2.0;
+	return (sin(angle) + 1.0) * 0.5;
 }
 __forceinline long double NormSin(long double angle)
 {
-	return (sin(angle) + 1.0l) / 2.0l;
+	return (sin(angle) + 1.0l) * 0.5l;
 }
-__forceinline float lerp(float a, float b, float f)
+__forceinline float NormCos(float angle)
+{
+	return (cos(angle) + 1.0f) * 0.5f;
+}
+__forceinline double NormCos(double angle)
+{
+	return (cos(angle) + 1.0) * 0.5;
+}
+__forceinline long double NormCos(long double angle)
+{
+	return (cos(angle) + 1.0l) * 0.5l;
+}
+__forceinline float InterpolateLinear(float a, float b, float f)
 {
 	if (f < 0) f = 0;
 	if (f > 1.0f) f = 1.0f;
 	return (a * (1.0f - f)) + (b * f);
 }
-__forceinline double lerp(double a, double b, double f)
+__forceinline double InterpolateLinear(double a, double b, double f)
 {
 	if (f < 0) f = 0;
 	if (f > 1.0) f = 1.0;
 	return (a * (1.0 - f)) + (b * f);
 }
-__forceinline long double lerp(long double a, long double b, long double f)
+__forceinline long double InterpolateLinear(long double a, long double b, long double f)
 {
 	if (f < 0) f = 0;
 	if (f > 1.0l) f = 1.0l;
 	return (a * (1.0l - f)) + (b * f);
+}
+__forceinline float InterpolateCos(float a, float b, float f)
+{
+	if (f < 0) f = 0;
+	if (f > 1.0f) f = 1.0f;
+	float fcs = 1.0f - NormCos(f * XM_PI);
+	return  (a * (1.0f - fcs)) + (b * fcs);
+}
+__forceinline double InterpolateCos(double a, double b, double f)
+{
+	if (f < 0) f = 0;
+	if (f > 1.0) f = 1.0;
+	double fcs = 1.0 - NormCos(f * XM_PI);
+	return  (a * (1.0 - fcs)) + (b * fcs);
+}
+__forceinline long double InterpolateCos(long double a, long double b, long double f)
+{
+	if (f < 0) f = 0;
+	if (f > 1.0l) f = 1.0l;
+	long double fcs = 1.0l - NormCos(f * XM_PI);
+	return  (a * (1.0l - fcs)) + (b * fcs);
 }
 #pragma endregion
