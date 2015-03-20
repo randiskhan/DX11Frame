@@ -19,7 +19,4 @@ public:
 	bool	Update(void);
 	bool	Render(void);
 	void	Cleanup(void);
-
-	void	SetDoUpdate(bool);
-	void	SetDoRender(bool);
 };

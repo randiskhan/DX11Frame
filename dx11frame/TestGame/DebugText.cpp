@@ -66,13 +66,3 @@ bool		DebugText::Render(void)
 void		DebugText::Cleanup(void)
 {
 }
-
-void		DebugText::SetDoRender(bool render)
-{
-	_DoRender = render;
-}
-
-void		DebugText::SetDoUpdate(bool update)
-{
-	_DoUpdate = update;
-}

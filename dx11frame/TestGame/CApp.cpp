@@ -19,8 +19,8 @@ bool CApp::PreInit(void)
 	srand((unsigned int)time(NULL));
 
 #if defined(_DEBUG)
-	_CWin32Data.width = 800;
-	_CWin32Data.height = 800;
+	_CWin32Data.width = 900;
+	_CWin32Data.height = 900;
 	_CDirectXData.startWindowed = true;
 #else
 	_CWin32Data.width = 1280;
@@ -46,13 +46,9 @@ bool CApp::PostInit(void)
 	if (!(_pCycloid && _pCycloid->IsInit()))
 		good &= false;
 
-#if defined(_DEBUG)
 	_pDebugText->SetDoUpdate(true);
-	_pDebugText->SetDoRender(true);
-#else
-	_pDebugText->SetDoUpdate(false);
-	_pDebugText->SetDoRender(false);
-#endif
+	_pCycloid->SetDoUpdate(true);
+	_pCycloid->SetDoRender(true);
 
 	return good;
 }
@@ -61,8 +57,17 @@ bool CApp::Update(void)
 {
 	bool good = true;
 
-	if (GetCInput()->IsKeyDown(VK_ESCAPE)) PostQuit();
-	if (GetCInput()->IsKeyDownSinceLastFrame(VK_SPACE)) TakeScreenshot();
+	// Quit application.
+	if (GetCInput()->IsKeyDown(VK_ESCAPE))
+		PostQuit();
+	// Take a screenshot. Overwrites previous screenshot.
+	if (GetCInput()->IsKeyDownSinceLastFrame(VK_SNAPSHOT))
+		TakeScreenshot();
+	// Hold spacebar to show debug text.
+	if (GetCInput()->IsKeyDown(VK_SPACE))
+		_pDebugText->SetDoRender(true);
+	else
+		_pDebugText->SetDoRender(false);
 
 	if (good && _pDebugText->GetDoUpdate()) good &= _pDebugText->Update();
 	if (good && _pCycloid->GetDoUpdate()) good &= _pCycloid->Update();
