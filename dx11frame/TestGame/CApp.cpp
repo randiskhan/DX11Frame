@@ -23,8 +23,8 @@ bool CApp::PreInit(void)
 	_CWin32Data.height = 900;
 	_CDirectXData.startWindowed = true;
 #else
-	_CWin32Data.width = 1280;
-	_CWin32Data.height = 1024;
+	_CWin32Data.width = 1920;
+	_CWin32Data.height = 1080;
 	_CDirectXData.startWindowed = false;
 #endif
 	_CDirectXData.backcolor = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
