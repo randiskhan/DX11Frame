@@ -45,7 +45,7 @@ void CDirectX::Cleanup(void)
 #pragma region Initialization
 bool	CDirectX::Init(void)
 {
-	bool good = true;
+	auto good = true;
 
 	HRESULT hr;
 
@@ -120,7 +120,7 @@ bool	CDirectX::Init(void)
 
 bool	CDirectX::Reset(int x, int y)
 {
-	bool good = true;
+	auto good = true;
 	HRESULT hr;
 
 	// Release the old views, as they hold references to the buffers we
@@ -221,7 +221,7 @@ IDXGISwapChain*			CDirectX::GetSwapChain(void)
 #pragma region Begin/End rendering
 bool	CDirectX::BeginRender(void)
 {
-	bool good = true;
+	auto good = true;
 
 	float bc[4] = {
 		_CDirectXData.backcolor.x,
@@ -243,7 +243,7 @@ bool	CDirectX::BeginRender(void)
 
 bool	CDirectX::EndRender(void)
 {
-	bool good = true;
+	auto good = true;
 	HRESULT hr;
 
 	hr = _pDXGISwapChain->Present(0, 0);

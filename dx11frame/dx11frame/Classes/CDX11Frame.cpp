@@ -40,7 +40,7 @@ WPARAM CDX11Frame::Run(void)
 }
 bool CDX11Frame::MainLoopIteration(void)
 {
-	bool good = true;
+	auto good = true;
 
 	// Clear the message queue.
 	if (good = _pCWin32->MsgQueueProc())
@@ -53,7 +53,7 @@ bool CDX11Frame::MainLoopIteration(void)
 }
 bool CDX11Frame::InitBase(void)
 {
-	bool good = true;
+	auto good = true;
 
 	if (good) good = PreInit();
 
@@ -100,7 +100,7 @@ bool CDX11Frame::InitBase(void)
 }
 bool CDX11Frame::UpdateBase(void)
 {
-	bool good = true;
+	auto good = true;
 
 	good &= GetCTimer()->Update();
 	if (good) good = GetCInput()->Update();
@@ -110,7 +110,7 @@ bool CDX11Frame::UpdateBase(void)
 }
 bool CDX11Frame::RenderBase(void)
 {
-	bool good = true;
+	auto good = true;
 
 	good = GetCDirectX()->BeginRender();
 	if (good) good = Render();
@@ -154,7 +154,7 @@ LRESULT CALLBACK	CDX11Frame::MsgProc(
 	LPARAM lParam)
 {
 	LRESULT result = 0;
-	bool handled = false;
+	auto handled = false;
 
 	if (!handled)
 		result = DefWindowProc(hwnd, msg, wParam, lParam);

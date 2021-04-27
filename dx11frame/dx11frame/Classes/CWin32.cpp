@@ -20,7 +20,7 @@ CWin32::~CWin32(void)
 #pragma region Initialization/Cleanup
 bool CWin32::Init(void)
 {
-	bool good = true;
+	auto good = true;
 	_HWnd = nullptr;
 
 	WNDCLASS wc;
@@ -35,7 +35,7 @@ bool CWin32::Init(void)
 	wc.lpszMenuName = 0;
 	wc.lpszClassName = _CWin32Data.wndClassName.c_str();
 
-	ATOM atom = RegisterClass(&wc);
+	auto atom = RegisterClass(&wc);
 	if (!atom) good &= false;
 
 	RECT rect = { 0, 0, _CWin32Data.width, _CWin32Data.height };
@@ -68,7 +68,7 @@ bool CWin32::Init(void)
 	{
 		SetLastError(0);
 		// Store a pointer to this object to use a memmber message handler.
-		LONG lresult = SetWindowLong(_HWnd, GWL_USERDATA, (LONG)this);
+		auto lresult = SetWindowLong(_HWnd, GWL_USERDATA, (LONG)this);
 		if (lresult == 0 && GetLastError() != 0) good = false;
 	}
 
@@ -102,13 +102,18 @@ bool CWin32::MsgQueueProc(void)
 {
 	switch (msg)
 	{
+		case WM_SETCURSOR:
+		{
+			SetCursor(nullptr);
+			return 0;
+		}
 		// This WM_DESTROY case left here to handle messages from window destruction
 		// just to be safe
-	case WM_DESTROY:
-	{
-		PostQuitMessage(0);
-		return 0;
-	}
+		case WM_DESTROY:
+		{
+			PostQuitMessage(0);
+			return 0;
+		}
 	}
 #ifdef MEMBER_MSGPROC
 	// Only dispatch a message to the CWin32 object for this window

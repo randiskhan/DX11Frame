@@ -15,7 +15,7 @@ DebugText::~DebugText(void)
 
 bool		DebugText::Init(void)
 {
-	bool good = true;
+	auto good = true;
 
 	_msg = L"";
 
@@ -24,11 +24,11 @@ bool		DebugText::Init(void)
 
 bool		DebugText::Update(void)
 {
-	bool good = true;
-	static int count = 0; ++count;
+	auto good = true;
+	static auto count = 0; ++count;
 	static float last = 0;
 	static float fps = 0;
-	static float interval = 0.5f;
+	static auto interval = 0.5f;
 
 	if (GetCDX11Frame()->GetCTimer()->GetTotalElapsed() > last + interval)
 	{
@@ -53,7 +53,7 @@ bool		DebugText::Update(void)
 
 bool		DebugText::Render(void)
 {
-	bool good = true;
+	auto good = true;
 
 	GetCDX11Frame()->DrawDebugString(
 		_msg,

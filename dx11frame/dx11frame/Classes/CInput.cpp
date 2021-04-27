@@ -10,7 +10,7 @@ CInput::CInput(CInputData id)
 	_CInputData = id;
 	_mousePos.x = 0;
 	_mousePos.y = 0;
-	for (int i = 0; i < 256; ++i)
+	for (auto i = 0; i < 256; ++i)
 		_keysCurr[i] = _keysPrev[i] = 0;
 }
 
@@ -25,15 +25,15 @@ CInput::~CInput(void)
 
 bool CInput::Init(void)
 {
-	bool good = true;
+	auto good = true;
 	return good;
 }
 
 bool CInput::Update(void)
 {
-	bool good = true;
+	auto good = true;
 
-	for (int i = 0; i < 256; ++i)
+	for (auto i = 0; i < 256; ++i)
 		_keysPrev[i] = _keysCurr[i];
 
 	good = (0 < GetKeyboardState(_keysCurr));

@@ -19,13 +19,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -41,13 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\references\DirectXTK\inc;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\references\DirectXTK\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>V:\Projects\DirectXTK\Inc;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(IncludePath)</IncludePath>
+    <LibraryPath>V:\Projects\DirectXTK\Bin\Desktop_2019_Win10\Win32\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\references\DirectXTK\inc;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\references\DirectXTK\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>V:\Projects\DirectXTK\Inc;$(SolutionDir)\dx11frame;$(SolutionDir)\dx11frame\Classes;$(SolutionDir)\dx11frame\Interfaces;$(IncludePath)</IncludePath>
+    <LibraryPath>V:\Projects\DirectXTK\Bin\Desktop_2019_Win10\Win32\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -61,6 +61,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /s /d /i "$(ProjectDir)Assets" "$(TargetDir)Assets"</Command>

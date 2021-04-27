@@ -36,10 +36,10 @@
 
 #if defined(_DEBUG)
 #pragma comment(lib, "DirectXTK_d.lib")
-#pragma comment(lib, "DirectXTKAudioDX_d.lib")
+//#pragma comment(lib, "DirectXTKAudioDX_d.lib")
 #else
 #pragma comment(lib, "DirectXTK.lib")
-#pragma comment(lib, "DirectXTKAudioDX.lib")
+//#pragma comment(lib, "DirectXTKAudioDX.lib")
 #endif
 
 using namespace std;
@@ -144,21 +144,21 @@ __forceinline float InterpolateCos(float a, float b, float f)
 {
 	if (f < 0) f = 0;
 	if (f > 1.0f) f = 1.0f;
-	float fcs = 1.0f - NormCos(f * XM_PI);
+	auto fcs = 1.0f - NormCos(f * XM_PI);
 	return  (a * (1.0f - fcs)) + (b * fcs);
 }
 __forceinline double InterpolateCos(double a, double b, double f)
 {
 	if (f < 0) f = 0;
 	if (f > 1.0) f = 1.0;
-	double fcs = 1.0 - NormCos(f * XM_PI);
+	auto fcs = 1.0 - NormCos(f * XM_PI);
 	return  (a * (1.0 - fcs)) + (b * fcs);
 }
 __forceinline long double InterpolateCos(long double a, long double b, long double f)
 {
 	if (f < 0) f = 0;
 	if (f > 1.0l) f = 1.0l;
-	long double fcs = 1.0l - NormCos(f * XM_PI);
+	auto fcs = 1.0l - NormCos(f * XM_PI);
 	return  (a * (1.0l - fcs)) + (b * fcs);
 }
 #pragma endregion

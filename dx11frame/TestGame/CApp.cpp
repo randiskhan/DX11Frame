@@ -4,28 +4,27 @@
 #include "CApp.h"
 
 CApp::CApp(void)
-{
-}
+= default;
 
 CApp::~CApp(void)
 {
-	Cleanup();
+	CApp::Cleanup();
 }
 
 bool CApp::PreInit(void)
 {
-	bool good = true;
+	auto good = true;
 
-	srand((unsigned int)time(NULL));
+	srand(static_cast<unsigned int>(time(nullptr)));  // NOLINT(cert-msc51-cpp)
 
 #if defined(_DEBUG)
-	_CWin32Data.width = 900;
-	_CWin32Data.height = 900;
+	_CWin32Data.width = 800;
+	_CWin32Data.height = 800;
 	_CDirectXData.startWindowed = true;
 #else
 	_CWin32Data.width = 1920;
 	_CWin32Data.height = 1080;
-	_CDirectXData.startWindowed = false;
+	_CDirectXData.startWindowed = true;
 #endif
 	_CDirectXData.backcolor = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
 
@@ -37,7 +36,7 @@ bool CApp::PreInit(void)
 
 bool CApp::PostInit(void)
 {
-	bool good = true;
+	auto good = true;
 
 	_pDebugText.reset(new DebugText(this));
 	if (!(_pDebugText && _pDebugText->IsInit()))
@@ -55,7 +54,7 @@ bool CApp::PostInit(void)
 
 bool CApp::Update(void)
 {
-	bool good = true;
+	auto good = true;
 
 	// Quit application.
 	if (GetCInput()->IsKeyDown(VK_ESCAPE))
@@ -77,7 +76,7 @@ bool CApp::Update(void)
 
 bool CApp::Render(void)
 {
-	bool good = true;
+	auto good = true;
 
 	GetSpriteBatch()->Begin();
 	if (good && _pDebugText->GetDoRender()) good &= _pDebugText->Render();
@@ -94,11 +93,11 @@ void CApp::Cleanup(void)
 // Save the backbuffer to a .bmp file.
 bool CApp::TakeScreenshot(void)
 {
-	bool good = true;
+	auto good = true;
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
-	HRESULT hr = GetCDirectX()->GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D),
-		reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
+	auto hr = GetCDirectX()->GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D),
+	                                                   reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
 	if (SUCCEEDED(hr))
 	{
 		hr = SaveWICTextureToFile(GetCDirectX()->GetContext(), backBuffer.Get(),

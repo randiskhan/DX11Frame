@@ -60,8 +60,8 @@ struct CycloidParameters
 
 	bool	CycloidParameters::CalculateNeededCycles(int maxCycles)
 	{
-		bool found = false;
-		int cycles = 1;
+		auto found = false;
+		auto cycles = 1;
 		while (Radius2 != 0)
 		{
 			if ((cycles / Radius2) == (int)(cycles / Radius2))
@@ -99,10 +99,10 @@ class Cycloid : public IEntity
 private:
 	unique_ptr<PrimitiveBatch<VertexPositionColor>>	_pPrimtiveBatch;
 	unique_ptr<BasicEffect>							_pBasicEffect;
-	ID3D11InputLayout*								_pID3D11InputLayout;
+	ID3D11InputLayout*								_pID3D11InputLayout{};
 
 	// Array of verticies to send to GPU.
-	VertexPositionColor			_vertices[MAX_VERTICIES];
+	VertexPositionColor			_vertices[MAX_VERTICIES]{};
 	// Array of raw verticies in coordinate [-1, 1] range.
 	DoublePoint					_verticesRaw[MAX_VERTICIES];
 
@@ -110,10 +110,10 @@ private:
 	CycloidParameters	_CycloidNext;
 	CycloidParameters	_CycloidPrevious;
 
-	double	_TimeDeltaMorph;
-	double	_TimeDeltaNewCycloid;
-	double	_TimeStampMorph;
-	double	_TimeStampNewCycloid;
+	double	_TimeDeltaMorph{};
+	double	_TimeDeltaNewCycloid{};
+	double	_TimeStampMorph{};
+	double	_TimeStampNewCycloid{};
 
 public:
 	Cycloid(CDX11Frame* pCDX11Frame);

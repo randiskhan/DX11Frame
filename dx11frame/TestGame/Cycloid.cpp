@@ -5,19 +5,19 @@
 
 Cycloid::Cycloid(CDX11Frame* pCDX11Frame) : IEntity(pCDX11Frame)
 {
-	Init();
+	Cycloid::Init();
 }
 
 Cycloid::~Cycloid(void)
 {
-	Cleanup();
+	Cycloid::Cleanup();
 }
 
 bool		Cycloid::Init(void)
 {
-	bool good = true;
+	auto good = true;
 
-	bool valid = false;
+	auto valid = false;
 	while (!valid)
 	{
 		RandomCycloid(_CycloidPrevious);
@@ -43,7 +43,7 @@ bool		Cycloid::Init(void)
 	_pBasicEffect.reset(
 		new BasicEffect(GetCDX11Frame()->GetCDirectX()->GetDevice()));
 
-	RECT r = GetCDX11Frame()->GetCWin32()->GetScreenRect();
+	auto r = GetCDX11Frame()->GetCWin32()->GetScreenRect();
 
 	_pBasicEffect->SetProjection(
 		XMMatrixOrthographicOffCenterRH(
@@ -68,7 +68,7 @@ bool		Cycloid::Init(void)
 		&_pID3D11InputLayout);
 	if (FAILED(hr)) good = false;
 
-	for (int i = 0; i < MAX_VERTICIES; ++i)
+	for (auto i = 0; i < MAX_VERTICIES; ++i)
 		_vertices[i].color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	return _IsInit = good;
@@ -76,22 +76,22 @@ bool		Cycloid::Init(void)
 
 bool		Cycloid::Update(void)
 {
-	bool good = true;
+	auto good = true;
 
-	double t = GetCDX11Frame()->GetCTimer()->GetTotalElapsed();
+	auto t = GetCDX11Frame()->GetCTimer()->GetTotalElapsed();
 
 	if (_TimeStampNewCycloid + _TimeDeltaNewCycloid < t)
 	{
 		_TimeStampNewCycloid = t;
 		_CycloidCurrent.CopyTo(_CycloidPrevious);
-		bool valid = false;
+		auto valid = false;
 		while (!valid)
 		{
 			RandomCycloid(_CycloidNext);
 			valid = _CycloidNext.CalculateNeededCycles(MAX_CYCLES);
 		}
 	}
-	double lerpAmt = (t - _TimeStampNewCycloid) / (_TimeDeltaNewCycloid - 2.0);
+	auto lerpAmt = (t - _TimeStampNewCycloid) / (_TimeDeltaNewCycloid - 2.0);
 	_CycloidCurrent.ArmLength = InterpolateCos(_CycloidPrevious.ArmLength, _CycloidNext.ArmLength, lerpAmt);
 	_CycloidCurrent.Radius2 = InterpolateCos(_CycloidPrevious.Radius2, _CycloidNext.Radius2, lerpAmt);
 	_CycloidCurrent.Cycles = InterpolateCos(_CycloidPrevious.Cycles, _CycloidNext.Cycles, lerpAmt);
@@ -108,7 +108,7 @@ bool		Cycloid::Update(void)
 		_verticesRaw,
 		_vertices,
 		GetCDX11Frame()->GetCWin32()->GetScreenRect());
-	for (int i = 0; i < _CycloidCurrent.NumberOfVerticies; ++i)
+	for (auto i = 0; i < _CycloidCurrent.NumberOfVerticies; ++i)
 	{
 		_vertices[i].color.x = _CycloidCurrent.r;
 		_vertices[i].color.y = _CycloidCurrent.g;
@@ -120,7 +120,7 @@ bool		Cycloid::Update(void)
 
 bool		Cycloid::Render(void)
 {
-	bool good = true;
+	auto good = true;
 
 	_pBasicEffect->Apply(GetCDX11Frame()->GetCDirectX()->GetContext());
 	GetCDX11Frame()->GetCDirectX()->GetContext()->IASetInputLayout(_pID3D11InputLayout);
@@ -148,7 +148,7 @@ void		Cycloid::ColorVerticiesByAnglePosition(
 	DoublePoint raw[],
 	VertexPositionColor vert[])
 {
-	for (int i = 0; i < cycloid.NumberOfVerticies; ++i)
+	for (auto i = 0; i < cycloid.NumberOfVerticies; ++i)
 	{
 		vert[i].color.x = (float)NormSin(raw[i].a);
 		vert[i].color.y = (float)NormSin((raw[i].a) + (XM_2PI / 3.0));
@@ -161,7 +161,7 @@ void		Cycloid::ColorVerticiesByPolarCoordinates(
 	DoublePoint raw[],
 	VertexPositionColor vert[])
 {
-	for (int i = 0; i < cycloid.NumberOfVerticies; ++i)
+	for (auto i = 0; i < cycloid.NumberOfVerticies; ++i)
 	{
 		vert[i].color.x = (float)NormSin(raw[i].p);
 		vert[i].color.y = (float)NormSin((raw[i].p) + (XM_2PI / 3.0));
@@ -177,7 +177,7 @@ void		Cycloid::ColorVerticiesByRandom(
 	tempx = rand() / (float)RAND_MAX;
 	tempy = rand() / (float)RAND_MAX;
 	tempz = rand() / (float)RAND_MAX;
-	for (int i = 0; i < cycloid.NumberOfVerticies; ++i)
+	for (auto i = 0; i < cycloid.NumberOfVerticies; ++i)
 	{
 		vert[i].color.x = tempx;
 		vert[i].color.y = tempy;
@@ -200,7 +200,7 @@ void		Cycloid::CalculateRawVerticies(
 		cycloid.NumberOfVerticies = maxVert - (cycloid.CopyFirstToEnd ? 1 : 0);
 
 	// Calculate the raw coordinates, and find max absolute component.
-	int i = 0;
+	auto i = 0;
 	for (; i < cycloid.NumberOfVerticies; ++i)
 	{
 		raw[i].a =
@@ -226,7 +226,7 @@ void		Cycloid::CalculateRawVerticies(
 	// on xy plane. Rotate the coordinates one quarter turn counter clockwise
 	// so zero angle is at top of window.
 	double swap = 0;
-	for (int i = 0; i < cycloid.NumberOfVerticies + (cycloid.CopyFirstToEnd ? 1 : 0); ++i)
+	for (auto i = 0; i < cycloid.NumberOfVerticies + (cycloid.CopyFirstToEnd ? 1 : 0); ++i)
 	{
 		// First normalize the coordinate components.
 		raw[i].x *= (1.0 / maxDist);
@@ -258,7 +258,7 @@ void		Cycloid::ConvertToScreen(
 	RECT canvas)
 {
 	int max = min(canvas.right, canvas.bottom);
-	for (int i = 0; i < cycloid.NumberOfVerticies + (cycloid.CopyFirstToEnd ? 1 : 0); ++i)
+	for (auto i = 0; i < cycloid.NumberOfVerticies + (cycloid.CopyFirstToEnd ? 1 : 0); ++i)
 	{
 		vert[i].position.x =
 			(float)(((raw[i].x * 0.95) * max * 0.5) + (canvas.right * 0.5));
