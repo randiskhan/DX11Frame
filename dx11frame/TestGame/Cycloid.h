@@ -9,7 +9,7 @@
 #define DEFAULT_VERTICIES_PER_CYCLE 512
 #define MAX_CYCLES 24
 
-#include "CDX11Frame.h"
+#include "dx11_frame.h"
 #include "IEntity.h"
 
 struct DoublePoint

@@ -1,7 +1,7 @@
-// dx11frame.cpp
-// Implementation file for dx11frame.
+// dx11_frame.cpp
+// Implementation file for dx11_frame.
 
-#include "CDX11Frame.h"
+#include "dx11_frame.h"
 
 #pragma region Construction/destruction
 

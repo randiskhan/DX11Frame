@@ -1,5 +1,5 @@
-// dx11frame.h
-// Declaration file for CDX11Frame.
+// dx11_frame.h
+// Declaration file for dx11_frame.
 
 #pragma once
 

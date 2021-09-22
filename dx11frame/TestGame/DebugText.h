@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "CDX11Frame.h"
+#include "dx11_frame.h"
 #include "IEntity.h"
 
 class DebugText : public IEntity

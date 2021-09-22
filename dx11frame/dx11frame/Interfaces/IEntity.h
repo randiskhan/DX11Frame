@@ -1,6 +1,6 @@
 #pragma once
 
-#include "CDX11Frame.h"
+#include "dx11_frame.h"
 
 class IEntity : public IInitializable, public IUpdateable, public IRenderable, public ICleanupable
 {
