@@ -44,7 +44,7 @@ private:
 	IDXGIDevice*				_pDXGIDevice;
 	IDXGIAdapter*				_pDXGIAdapter;
 	IDXGIFactory*				_pDXGIFactory;
-	D3D11_VIEWPORT				_ScreenViewport;
+	D3D11_VIEWPORT				_ScreenViewport{};
 
 	CDirectXData				_CDirectXData;
 
@@ -53,13 +53,13 @@ public:
 	virtual ~CDirectX(void);
 
 	bool	Init(void);
-	bool	Reset(int x, int y);
-	void	Cleanup(void);
+	bool	reset(int x, int y);
+	void	cleanup(void);
 
-	bool	BeginRender(void);
-	bool	EndRender(void);
+	bool	begin_render(void) const;
+	bool	end_render(void) const;
 
-	ID3D11Device*			GetDevice(void);
-	ID3D11DeviceContext*	GetContext(void);
-	IDXGISwapChain*			GetSwapChain(void);
+	ID3D11Device*			get_device(void) const;
+	ID3D11DeviceContext*	get_context(void) const;
+	IDXGISwapChain*			get_swap_chain(void) const;
 };

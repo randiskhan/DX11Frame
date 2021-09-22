@@ -5,27 +5,28 @@
 
 #pragma region Construction/Destruction
 
-CDirectX::CDirectX(CDirectXData dd) :
-_pD3D11Device(nullptr),
-_pD3D11DeviceContext(nullptr),
-_pDXGISwapChain(nullptr),
-_pD3D11Texture2D(nullptr),
-_pD3D11RenderTargetView(nullptr),
-_pD3D11DepthStencilView(nullptr),
-_pDXGIDevice(nullptr),
-_pDXGIAdapter(nullptr),
-_pDXGIFactory(nullptr),
-_CDirectXData(dd)
+CDirectX::CDirectX(const CDirectXData dd) :
+	_pD3D11Device(nullptr),
+	_pD3D10Device(nullptr),
+	_pD3D11DeviceContext(nullptr),
+	_pDXGISwapChain(nullptr),
+	_pD3D11Texture2D(nullptr),
+	_pD3D11RenderTargetView(nullptr),
+	_pD3D11DepthStencilView(nullptr),
+	_pDXGIDevice(nullptr),
+	_pDXGIAdapter(nullptr),
+	_pDXGIFactory(nullptr),
+	_CDirectXData(dd)
 {
 	ZeroMemory(&_ScreenViewport, sizeof(D3D11_VIEWPORT));
 }
 
 CDirectX::~CDirectX(void)
 {
-	Cleanup();
+	cleanup();
 }
 
-void CDirectX::Cleanup(void)
+void CDirectX::cleanup(void)
 {
 	SafeRelease(_pD3D11Device);
 	if (_pD3D11DeviceContext)
@@ -43,31 +44,33 @@ void CDirectX::Cleanup(void)
 #pragma endregion
 
 #pragma region Initialization
+
 bool	CDirectX::Init(void)
 {
+
 	auto good = true;
 
 	HRESULT hr;
 
-	UINT createDeviceFlags = 0;
+	UINT create_device_flags = 0;
 #if defined(DEBUG) || defined(_DEBUG)
-	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+	create_device_flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-	D3D_FEATURE_LEVEL featureLevel;
+	D3D_FEATURE_LEVEL feature_level;
 	hr = D3D11CreateDevice(
-		0,
+		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
-		0,
-		createDeviceFlags,
-		0,
+		nullptr,
+		create_device_flags,
+		nullptr,
 		0,
 		D3D11_SDK_VERSION,
 		&_pD3D11Device,
-		&featureLevel,
+		&feature_level,
 		&_pD3D11DeviceContext);
 
-	if (featureLevel != D3D_FEATURE_LEVEL_11_0)
+	if (feature_level != D3D_FEATURE_LEVEL_11_0)
 		good = false;
 
 	DXGI_SWAP_CHAIN_DESC sd;
@@ -91,37 +94,49 @@ bool	CDirectX::Init(void)
 		sd.Windowed = _CDirectXData.startWindowed;
 		sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		sd.Flags = 0;
-		hr = _pD3D11Device->QueryInterface(__uuidof(IDXGIDevice), (void**)&_pDXGIDevice);
+		hr = _pD3D11Device->QueryInterface(
+			__uuidof(IDXGIDevice), 
+			reinterpret_cast<void**>(&_pDXGIDevice));
 	}
 	if (SUCCEEDED(hr) && good)
 	{
-		hr = _pDXGIDevice->GetParent(__uuidof(IDXGIAdapter), (void**)&_pDXGIAdapter);
+		hr = _pDXGIDevice->GetParent(
+			__uuidof(IDXGIAdapter), 
+			reinterpret_cast<void**>(&_pDXGIAdapter));
 	}
 	if (SUCCEEDED(hr) && good)
 	{
-		hr = _pDXGIAdapter->GetParent(__uuidof(IDXGIFactory), (void**)&_pDXGIFactory);
+		hr = _pDXGIAdapter->GetParent(
+			__uuidof(IDXGIFactory), 
+			reinterpret_cast<void**>(&_pDXGIFactory));
 	}
 	if (SUCCEEDED(hr) && good)
 	{
-		hr = _pDXGIFactory->CreateSwapChain(_pD3D11Device, &sd, &_pDXGISwapChain);
+		hr = _pDXGIFactory->CreateSwapChain(
+			_pD3D11Device, 
+			&sd, 
+			&_pDXGISwapChain);
 	}
 	if (SUCCEEDED(hr) && good)
 	{
 		// Block alt-enter for fullscreen toggle, for now.
-		_pDXGIFactory->MakeWindowAssociation(_CDirectXData.hwnd, DXGI_MWA_NO_ALT_ENTER);
+		_pDXGIFactory->MakeWindowAssociation(
+			_CDirectXData.hwnd, 
+			DXGI_MWA_NO_ALT_ENTER);
 	}
 	if (SUCCEEDED(hr) && good)
-		good &= Reset(_CDirectXData.width, _CDirectXData.height);
+		good &= reset(_CDirectXData.width, _CDirectXData.height);
 
 	if (FAILED(hr)) good = false;
 
 	return _IsInit = good;
+
 }
 
-bool	CDirectX::Reset(int x, int y)
+bool	CDirectX::reset(const int x, const int y)
 {
+
 	auto good = true;
-	HRESULT hr;
 
 	// Release the old views, as they hold references to the buffers we
 	// will be destroying.  Also release the old depth/stencil buffer.
@@ -129,53 +144,53 @@ bool	CDirectX::Reset(int x, int y)
 	SafeRelease(_pD3D11DepthStencilView);
 	SafeRelease(_pD3D11Texture2D);
 
-	hr = _pDXGISwapChain->ResizeBuffers(
+	HRESULT hr = _pDXGISwapChain->ResizeBuffers(
 		1,
 		x,
 		y,
 		DXGI_FORMAT_R8G8B8A8_UNORM,
 		0);
-	ID3D11Texture2D* backBuffer = NULL;
+	ID3D11Texture2D* back_buffer = nullptr;
 	if (SUCCEEDED(hr))
 	{
 		hr = _pDXGISwapChain->GetBuffer(
 			0,
 			__uuidof(ID3D11Texture2D),
-			reinterpret_cast<void**>(&backBuffer));
+			reinterpret_cast<void**>(&back_buffer));
 	}
 	if (SUCCEEDED(hr))
 	{
 		hr = _pD3D11Device->CreateRenderTargetView(
-			backBuffer,
-			0,
+			back_buffer,
+			nullptr,
 			&_pD3D11RenderTargetView);
 	}
 	if (SUCCEEDED(hr))
 	{
-		D3D11_TEXTURE2D_DESC depthStencilDesc;
+		D3D11_TEXTURE2D_DESC depth_stencil_desc;
 
-		depthStencilDesc.Width = x;
-		depthStencilDesc.Height = y;
-		depthStencilDesc.MipLevels = 1;
-		depthStencilDesc.ArraySize = 1;
-		depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-		depthStencilDesc.SampleDesc.Count = 1;
-		depthStencilDesc.SampleDesc.Quality = 0;
-		depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
-		depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-		depthStencilDesc.CPUAccessFlags = 0;
-		depthStencilDesc.MiscFlags = 0;
+		depth_stencil_desc.Width = x;
+		depth_stencil_desc.Height = y;
+		depth_stencil_desc.MipLevels = 1;
+		depth_stencil_desc.ArraySize = 1;
+		depth_stencil_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		depth_stencil_desc.SampleDesc.Count = 1;
+		depth_stencil_desc.SampleDesc.Quality = 0;
+		depth_stencil_desc.Usage = D3D11_USAGE_DEFAULT;
+		depth_stencil_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+		depth_stencil_desc.CPUAccessFlags = 0;
+		depth_stencil_desc.MiscFlags = 0;
 
 		hr = _pD3D11Device->CreateTexture2D(
-			&depthStencilDesc,
-			0,
+			&depth_stencil_desc,
+			nullptr,
 			&_pD3D11Texture2D);
 	}
 	if (SUCCEEDED(hr))
 	{
 		hr = _pD3D11Device->CreateDepthStencilView(
 			_pD3D11Texture2D,
-			0,
+			nullptr,
 			&_pD3D11DepthStencilView);
 	}
 	if (SUCCEEDED(hr))
@@ -187,43 +202,50 @@ bool	CDirectX::Reset(int x, int y)
 
 		_ScreenViewport.TopLeftX = 0;
 		_ScreenViewport.TopLeftY = 0;
-		_ScreenViewport.Width = (float)x;
-		_ScreenViewport.Height = (float)y;
+		_ScreenViewport.Width = static_cast<float>(x);
+		_ScreenViewport.Height = static_cast<float>(y);
 		_ScreenViewport.MinDepth = 0.0f;
 		_ScreenViewport.MaxDepth = 1.0f;
 
 		_pD3D11DeviceContext->RSSetViewports(1, &_ScreenViewport);
 	}
-	SafeRelease(backBuffer);
+	SafeRelease(back_buffer);
 
 	if (FAILED(hr)) good &= false;
 
 	return _IsInit = good;
+
 }
 
 #pragma endregion
 
 #pragma region Instance methods
-ID3D11Device*			CDirectX::GetDevice(void)
+
+auto CDirectX::get_device(void) const -> ID3D11Device*
 {
 	return _pD3D11Device;
 }
-ID3D11DeviceContext*	CDirectX::GetContext(void)
+
+ID3D11DeviceContext*	CDirectX::get_context(void) const
 {
 	return _pD3D11DeviceContext;
 }
-IDXGISwapChain*			CDirectX::GetSwapChain(void)
+
+IDXGISwapChain*			CDirectX::get_swap_chain(void) const
 {
 	return _pDXGISwapChain;
 }
+
 #pragma endregion
 
 #pragma region Begin/End rendering
-bool	CDirectX::BeginRender(void)
-{
-	auto good = true;
 
-	float bc[4] = {
+bool	CDirectX::begin_render() const
+{
+
+	constexpr auto good = true;
+
+	const float bc[4] = {
 		_CDirectXData.backcolor.x,
 		_CDirectXData.backcolor.y,
 		_CDirectXData.backcolor.z,
@@ -239,16 +261,19 @@ bool	CDirectX::BeginRender(void)
 		0);
 
 	return good;
+
 }
 
-bool	CDirectX::EndRender(void)
+bool	CDirectX::end_render(void) const
 {
-	auto good = true;
-	HRESULT hr;
 
-	hr = _pDXGISwapChain->Present(0, 0);
+	auto good = true;
+
+	const HRESULT hr = _pDXGISwapChain->Present(0, 0);
 	if (FAILED(hr)) good = false;
 
 	return good;
+
 }
+
 #pragma endregion

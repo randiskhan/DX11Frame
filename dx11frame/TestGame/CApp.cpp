@@ -96,11 +96,11 @@ bool CApp::TakeScreenshot(void)
 	auto good = true;
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
-	auto hr = GetCDirectX()->GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D),
+	auto hr = GetCDirectX()->get_swap_chain()->GetBuffer(0, __uuidof(ID3D11Texture2D),
 	                                                   reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
 	if (SUCCEEDED(hr))
 	{
-		hr = SaveWICTextureToFile(GetCDirectX()->GetContext(), backBuffer.Get(),
+		hr = SaveWICTextureToFile(GetCDirectX()->get_context(), backBuffer.Get(),
 			GUID_ContainerFormatBmp, L"screenshot.bmp");
 	}
 	if (FAILED(hr)) good = false;

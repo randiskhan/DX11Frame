@@ -39,9 +39,9 @@ bool		Cycloid::Init(void)
 
 	_pPrimtiveBatch.reset(
 		new PrimitiveBatch<VertexPositionColor>(
-		GetCDX11Frame()->GetCDirectX()->GetContext(), 65535U, 65535U));
+		GetCDX11Frame()->GetCDirectX()->get_context(), 65535U, 65535U));
 	_pBasicEffect.reset(
-		new BasicEffect(GetCDX11Frame()->GetCDirectX()->GetDevice()));
+		new BasicEffect(GetCDX11Frame()->GetCDirectX()->get_device()));
 
 	auto r = GetCDX11Frame()->GetCWin32()->GetScreenRect();
 
@@ -60,7 +60,7 @@ bool		Cycloid::Init(void)
 
 	_pBasicEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 
-	hr = GetCDX11Frame()->GetCDirectX()->GetDevice()->CreateInputLayout(
+	hr = GetCDX11Frame()->GetCDirectX()->get_device()->CreateInputLayout(
 		VertexPositionColor::InputElements,
 		VertexPositionColor::InputElementCount,
 		shaderByteCode,
@@ -122,8 +122,8 @@ bool		Cycloid::Render(void)
 {
 	auto good = true;
 
-	_pBasicEffect->Apply(GetCDX11Frame()->GetCDirectX()->GetContext());
-	GetCDX11Frame()->GetCDirectX()->GetContext()->IASetInputLayout(_pID3D11InputLayout);
+	_pBasicEffect->Apply(GetCDX11Frame()->GetCDirectX()->get_context());
+	GetCDX11Frame()->GetCDirectX()->get_context()->IASetInputLayout(_pID3D11InputLayout);
 
 	_pPrimtiveBatch->Begin();
 	_pPrimtiveBatch->Draw(

@@ -87,12 +87,12 @@ bool CDX11Frame::InitBase(void)
 	if (good) good = GetCInput()->Init();
 
 	// DirectXTK object creation
-	if (good) _pSpriteBatch.reset(new SpriteBatch(GetCDirectX()->GetContext()));
+	if (good) _pSpriteBatch.reset(new SpriteBatch(GetCDirectX()->get_context()));
 	if (!_pSpriteBatch) good = false;
 
 	// Create SpriteFont for debugging, but don't exit if failed.
 	if (good && (_DebugSpritefontPath.length() > 0))
-		_pDebugFont.reset(new SpriteFont(GetCDirectX()->GetDevice(), _DebugSpritefontPath.c_str()));
+		_pDebugFont.reset(new SpriteFont(GetCDirectX()->get_device(), _DebugSpritefontPath.c_str()));
 
 	if (good) good = PostInit();
 
@@ -112,9 +112,9 @@ bool CDX11Frame::RenderBase(void)
 {
 	auto good = true;
 
-	good = GetCDirectX()->BeginRender();
+	good = GetCDirectX()->begin_render();
 	if (good) good = Render();
-	if (good) good = GetCDirectX()->EndRender();
+	if (good) good = GetCDirectX()->end_render();
 
 	return good;
 }
