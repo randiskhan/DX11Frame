@@ -25,7 +25,7 @@ class CDX11Frame
 private:
 	// DX11Frame primary objects.
 	unique_ptr<CWin32>		_pCWin32;
-	unique_ptr<CDirectX>	_pCDirectX;
+	unique_ptr<directx>	_pCDirectX;
 	unique_ptr<CInput>		_pCInput;
 	unique_ptr<CTimer>		_pCTimer;
 	// DirectXTK objects.
@@ -40,7 +40,7 @@ public:
 
 	// Get DX11Frame object references.
 	CWin32*			GetCWin32(void);
-	CDirectX*		GetCDirectX(void);
+	directx*		GetCDirectX(void);
 	CInput*			GetCInput(void);
 	CTimer*			GetCTimer(void);
 	// Get DirectXTK object references.
@@ -50,7 +50,7 @@ public:
 
 protected:
 	CWin32Data		_CWin32Data;
-	CDirectXData	_CDirectXData;
+	directx_data	_CDirectXData;
 	CInputData		_CInputData;
 	wstring			_DebugSpritefontPath;
 

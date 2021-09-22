@@ -71,14 +71,14 @@ bool CDX11Frame::InitBase(void)
 		_CInputData.hwnd = GetCWin32()->GetWindow();
 		_CDirectXData.hwnd = GetCWin32()->GetWindow();
 		// Synchronize window and backbuffer dimentions if desired.
-		if (_CDirectXData.useHWndDimentions)
+		if (_CDirectXData.use_hwnd_dimensions)
 		{
 			_CDirectXData.width = _CWin32Data.width;
 			_CDirectXData.height = _CWin32Data.height;
 		}
 	}
 
-	if (good) _pCDirectX.reset(new CDirectX(_CDirectXData));
+	if (good) _pCDirectX.reset(new directx(_CDirectXData));
 	if (!_pCDirectX) good = false;
 	if (good) good = GetCDirectX()->Init();
 
@@ -128,7 +128,7 @@ CWin32*			CDX11Frame::GetCWin32(void)
 {
 	return _pCWin32.get();
 }
-CDirectX*		CDX11Frame::GetCDirectX(void)
+directx*		CDX11Frame::GetCDirectX(void)
 {
 	return _pCDirectX.get();
 }

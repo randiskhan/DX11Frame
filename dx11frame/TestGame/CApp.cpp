@@ -20,13 +20,13 @@ bool CApp::PreInit(void)
 #if defined(_DEBUG)
 	_CWin32Data.width = 800;
 	_CWin32Data.height = 800;
-	_CDirectXData.startWindowed = true;
+	_CDirectXData.start_windowed = true;
 #else
 	_CWin32Data.width = 1920;
 	_CWin32Data.height = 1080;
 	_CDirectXData.startWindowed = true;
 #endif
-	_CDirectXData.backcolor = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
+	_CDirectXData.back_color = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
 
 	// Set the path to CAppBase spritefont file.
 	_DebugSpritefontPath = L"assets\\debug.spritefont";

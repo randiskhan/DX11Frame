@@ -5,47 +5,47 @@
 
 #pragma region Construction/Destruction
 
-CDirectX::CDirectX(const CDirectXData dd) :
-	_pD3D11Device(nullptr),
-	_pD3D10Device(nullptr),
-	_pD3D11DeviceContext(nullptr),
-	_pDXGISwapChain(nullptr),
-	_pD3D11Texture2D(nullptr),
-	_pD3D11RenderTargetView(nullptr),
-	_pD3D11DepthStencilView(nullptr),
-	_pDXGIDevice(nullptr),
-	_pDXGIAdapter(nullptr),
-	_pDXGIFactory(nullptr),
-	_CDirectXData(dd)
+directx::directx(const directx_data dd) :
+	d3d11_device_(nullptr),
+	d3d10_device_(nullptr),
+	d3d11_device_context_(nullptr),
+	dxgi_swap_chain_(nullptr),
+	d3d11_texture_2d_(nullptr),
+	d3d11_render_target_view_(nullptr),
+	d3d11_depth_stencil_view_(nullptr),
+	dxgi_device_(nullptr),
+	dxgi_adapter_(nullptr),
+	dxgi_factory_(nullptr),
+	directx_data_(dd)
 {
-	ZeroMemory(&_ScreenViewport, sizeof(D3D11_VIEWPORT));
+	ZeroMemory(&screen_viewport_, sizeof(D3D11_VIEWPORT));
 }
 
-CDirectX::~CDirectX(void)
+directx::~directx(void)
 {
 	cleanup();
 }
 
-void CDirectX::cleanup(void)
+void directx::cleanup(void)
 {
-	SafeRelease(_pD3D11Device);
-	if (_pD3D11DeviceContext)
-		_pD3D11DeviceContext->ClearState();
-	SafeRelease(_pD3D11DeviceContext);
-	SafeRelease(_pDXGISwapChain);
-	SafeRelease(_pD3D11Texture2D);
-	SafeRelease(_pD3D11RenderTargetView);
-	SafeRelease(_pD3D11DepthStencilView);
-	SafeRelease(_pDXGIDevice);
-	SafeRelease(_pDXGIAdapter);
-	SafeRelease(_pDXGIFactory);
+	SafeRelease(d3d11_device_);
+	if (d3d11_device_context_)
+		d3d11_device_context_->ClearState();
+	SafeRelease(d3d11_device_context_);
+	SafeRelease(dxgi_swap_chain_);
+	SafeRelease(d3d11_texture_2d_);
+	SafeRelease(d3d11_render_target_view_);
+	SafeRelease(d3d11_depth_stencil_view_);
+	SafeRelease(dxgi_device_);
+	SafeRelease(dxgi_adapter_);
+	SafeRelease(dxgi_factory_);
 }
 
 #pragma endregion
 
 #pragma region Initialization
 
-bool	CDirectX::Init(void)
+bool	directx::Init(void)
 {
 
 	auto good = true;
@@ -66,9 +66,9 @@ bool	CDirectX::Init(void)
 		nullptr,
 		0,
 		D3D11_SDK_VERSION,
-		&_pD3D11Device,
+		&d3d11_device_,
 		&feature_level,
-		&_pD3D11DeviceContext);
+		&d3d11_device_context_);
 
 	if (feature_level != D3D_FEATURE_LEVEL_11_0)
 		good = false;
@@ -77,8 +77,8 @@ bool	CDirectX::Init(void)
 
 	if (SUCCEEDED(hr) && good)
 	{
-		sd.BufferDesc.Width = _CDirectXData.width;
-		sd.BufferDesc.Height = _CDirectXData.height;
+		sd.BufferDesc.Width = directx_data_.width;
+		sd.BufferDesc.Height = directx_data_.height;
 		sd.BufferDesc.RefreshRate.Numerator = 60;
 		sd.BufferDesc.RefreshRate.Denominator = 1;
 		sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -90,42 +90,42 @@ bool	CDirectX::Init(void)
 
 		sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		sd.BufferCount = 1;
-		sd.OutputWindow = _CDirectXData.hwnd;
-		sd.Windowed = _CDirectXData.startWindowed;
+		sd.OutputWindow = directx_data_.hwnd;
+		sd.Windowed = directx_data_.start_windowed;
 		sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 		sd.Flags = 0;
-		hr = _pD3D11Device->QueryInterface(
+		hr = d3d11_device_->QueryInterface(
 			__uuidof(IDXGIDevice), 
-			reinterpret_cast<void**>(&_pDXGIDevice));
+			reinterpret_cast<void**>(&dxgi_device_));
 	}
 	if (SUCCEEDED(hr) && good)
 	{
-		hr = _pDXGIDevice->GetParent(
+		hr = dxgi_device_->GetParent(
 			__uuidof(IDXGIAdapter), 
-			reinterpret_cast<void**>(&_pDXGIAdapter));
+			reinterpret_cast<void**>(&dxgi_adapter_));
 	}
 	if (SUCCEEDED(hr) && good)
 	{
-		hr = _pDXGIAdapter->GetParent(
+		hr = dxgi_adapter_->GetParent(
 			__uuidof(IDXGIFactory), 
-			reinterpret_cast<void**>(&_pDXGIFactory));
+			reinterpret_cast<void**>(&dxgi_factory_));
 	}
 	if (SUCCEEDED(hr) && good)
 	{
-		hr = _pDXGIFactory->CreateSwapChain(
-			_pD3D11Device, 
+		hr = dxgi_factory_->CreateSwapChain(
+			d3d11_device_, 
 			&sd, 
-			&_pDXGISwapChain);
+			&dxgi_swap_chain_);
 	}
 	if (SUCCEEDED(hr) && good)
 	{
 		// Block alt-enter for fullscreen toggle, for now.
-		_pDXGIFactory->MakeWindowAssociation(
-			_CDirectXData.hwnd, 
+		dxgi_factory_->MakeWindowAssociation(
+			directx_data_.hwnd, 
 			DXGI_MWA_NO_ALT_ENTER);
 	}
 	if (SUCCEEDED(hr) && good)
-		good &= reset(_CDirectXData.width, _CDirectXData.height);
+		good &= reset(directx_data_.width, directx_data_.height);
 
 	if (FAILED(hr)) good = false;
 
@@ -133,18 +133,18 @@ bool	CDirectX::Init(void)
 
 }
 
-bool	CDirectX::reset(const int x, const int y)
+bool	directx::reset(const int x, const int y)
 {
 
 	auto good = true;
 
 	// Release the old views, as they hold references to the buffers we
 	// will be destroying.  Also release the old depth/stencil buffer.
-	SafeRelease(_pD3D11RenderTargetView);
-	SafeRelease(_pD3D11DepthStencilView);
-	SafeRelease(_pD3D11Texture2D);
+	SafeRelease(d3d11_render_target_view_);
+	SafeRelease(d3d11_depth_stencil_view_);
+	SafeRelease(d3d11_texture_2d_);
 
-	HRESULT hr = _pDXGISwapChain->ResizeBuffers(
+	HRESULT hr = dxgi_swap_chain_->ResizeBuffers(
 		1,
 		x,
 		y,
@@ -153,17 +153,17 @@ bool	CDirectX::reset(const int x, const int y)
 	ID3D11Texture2D* back_buffer = nullptr;
 	if (SUCCEEDED(hr))
 	{
-		hr = _pDXGISwapChain->GetBuffer(
+		hr = dxgi_swap_chain_->GetBuffer(
 			0,
 			__uuidof(ID3D11Texture2D),
 			reinterpret_cast<void**>(&back_buffer));
 	}
 	if (SUCCEEDED(hr))
 	{
-		hr = _pD3D11Device->CreateRenderTargetView(
+		hr = d3d11_device_->CreateRenderTargetView(
 			back_buffer,
 			nullptr,
-			&_pD3D11RenderTargetView);
+			&d3d11_render_target_view_);
 	}
 	if (SUCCEEDED(hr))
 	{
@@ -181,33 +181,33 @@ bool	CDirectX::reset(const int x, const int y)
 		depth_stencil_desc.CPUAccessFlags = 0;
 		depth_stencil_desc.MiscFlags = 0;
 
-		hr = _pD3D11Device->CreateTexture2D(
+		hr = d3d11_device_->CreateTexture2D(
 			&depth_stencil_desc,
 			nullptr,
-			&_pD3D11Texture2D);
+			&d3d11_texture_2d_);
 	}
 	if (SUCCEEDED(hr))
 	{
-		hr = _pD3D11Device->CreateDepthStencilView(
-			_pD3D11Texture2D,
+		hr = d3d11_device_->CreateDepthStencilView(
+			d3d11_texture_2d_,
 			nullptr,
-			&_pD3D11DepthStencilView);
+			&d3d11_depth_stencil_view_);
 	}
 	if (SUCCEEDED(hr))
 	{
-		_pD3D11DeviceContext->OMSetRenderTargets(
+		d3d11_device_context_->OMSetRenderTargets(
 			1,
-			&_pD3D11RenderTargetView,
-			_pD3D11DepthStencilView);
+			&d3d11_render_target_view_,
+			d3d11_depth_stencil_view_);
 
-		_ScreenViewport.TopLeftX = 0;
-		_ScreenViewport.TopLeftY = 0;
-		_ScreenViewport.Width = static_cast<float>(x);
-		_ScreenViewport.Height = static_cast<float>(y);
-		_ScreenViewport.MinDepth = 0.0f;
-		_ScreenViewport.MaxDepth = 1.0f;
+		screen_viewport_.TopLeftX = 0;
+		screen_viewport_.TopLeftY = 0;
+		screen_viewport_.Width = static_cast<float>(x);
+		screen_viewport_.Height = static_cast<float>(y);
+		screen_viewport_.MinDepth = 0.0f;
+		screen_viewport_.MaxDepth = 1.0f;
 
-		_pD3D11DeviceContext->RSSetViewports(1, &_ScreenViewport);
+		d3d11_device_context_->RSSetViewports(1, &screen_viewport_);
 	}
 	SafeRelease(back_buffer);
 
@@ -221,41 +221,41 @@ bool	CDirectX::reset(const int x, const int y)
 
 #pragma region Instance methods
 
-auto CDirectX::get_device(void) const -> ID3D11Device*
+auto directx::get_device(void) const -> ID3D11Device*
 {
-	return _pD3D11Device;
+	return d3d11_device_;
 }
 
-ID3D11DeviceContext*	CDirectX::get_context(void) const
+ID3D11DeviceContext*	directx::get_context(void) const
 {
-	return _pD3D11DeviceContext;
+	return d3d11_device_context_;
 }
 
-IDXGISwapChain*			CDirectX::get_swap_chain(void) const
+IDXGISwapChain*			directx::get_swap_chain(void) const
 {
-	return _pDXGISwapChain;
+	return dxgi_swap_chain_;
 }
 
 #pragma endregion
 
 #pragma region Begin/End rendering
 
-bool	CDirectX::begin_render() const
+bool	directx::begin_render() const
 {
 
 	constexpr auto good = true;
 
 	const float bc[4] = {
-		_CDirectXData.backcolor.x,
-		_CDirectXData.backcolor.y,
-		_CDirectXData.backcolor.z,
-		_CDirectXData.backcolor.w
+		directx_data_.back_color.x,
+		directx_data_.back_color.y,
+		directx_data_.back_color.z,
+		directx_data_.back_color.w
 	};
-	_pD3D11DeviceContext->ClearRenderTargetView(
-		_pD3D11RenderTargetView,
+	d3d11_device_context_->ClearRenderTargetView(
+		d3d11_render_target_view_,
 		reinterpret_cast<const float*>(bc));
-	_pD3D11DeviceContext->ClearDepthStencilView(
-		_pD3D11DepthStencilView,
+	d3d11_device_context_->ClearDepthStencilView(
+		d3d11_depth_stencil_view_,
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,
 		1.0f,
 		0);
@@ -264,12 +264,12 @@ bool	CDirectX::begin_render() const
 
 }
 
-bool	CDirectX::end_render(void) const
+bool	directx::end_render(void) const
 {
 
 	auto good = true;
 
-	const HRESULT hr = _pDXGISwapChain->Present(0, 0);
+	const HRESULT hr = dxgi_swap_chain_->Present(0, 0);
 	if (FAILED(hr)) good = false;
 
 	return good;
