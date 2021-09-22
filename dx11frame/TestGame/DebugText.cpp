@@ -3,7 +3,7 @@
 
 #include "DebugText.h"
 
-DebugText::DebugText(CDX11Frame* pCDX11Frame) : IEntity(pCDX11Frame)
+DebugText::DebugText(dx11_frame* pCDX11Frame) : IEntity(pCDX11Frame)
 {
 	Init();
 }
@@ -30,7 +30,7 @@ bool		DebugText::Update(void)
 	static float fps = 0;
 	static auto interval = 0.5f;
 
-	if (GetCDX11Frame()->GetCTimer()->GetTotalElapsed() > last + interval)
+	if (GetCDX11Frame()->get_timer()->GetTotalElapsed() > last + interval)
 	{
 		fps = count / interval;
 		count = 0;
@@ -41,9 +41,9 @@ bool		DebugText::Update(void)
 	{
 		_msg =
 			L"Press escape to exit.\n" +
-			ToString(GetCDX11Frame()->GetCInput()->GetMouseScreenPos()->x) +
+			ToString(GetCDX11Frame()->get_input()->GetMouseScreenPos()->x) +
 			L"," +
-			ToString(GetCDX11Frame()->GetCInput()->GetMouseScreenPos()->y) +
+			ToString(GetCDX11Frame()->get_input()->GetMouseScreenPos()->y) +
 			L" - FPS: " +
 			ToString(fps);
 	}
@@ -55,7 +55,7 @@ bool		DebugText::Render(void)
 {
 	auto good = true;
 
-	GetCDX11Frame()->DrawDebugString(
+	GetCDX11Frame()->draw_debug_string(
 		_msg,
 		XMFLOAT2(5, 5),
 		Colors::Yellow);

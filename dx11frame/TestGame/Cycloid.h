@@ -116,7 +116,7 @@ private:
 	double	_TimeStampNewCycloid{};
 
 public:
-	Cycloid(CDX11Frame* pCDX11Frame);
+	Cycloid(dx11_frame* pCDX11Frame);
 	virtual ~Cycloid(void);
 
 	bool	Init(void);

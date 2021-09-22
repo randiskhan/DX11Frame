@@ -3,7 +3,7 @@
 
 #include "Cycloid.h"
 
-Cycloid::Cycloid(CDX11Frame* pCDX11Frame) : IEntity(pCDX11Frame)
+Cycloid::Cycloid(dx11_frame* pCDX11Frame) : IEntity(pCDX11Frame)
 {
 	Cycloid::Init();
 }
@@ -39,11 +39,11 @@ bool		Cycloid::Init(void)
 
 	_pPrimtiveBatch.reset(
 		new PrimitiveBatch<VertexPositionColor>(
-		GetCDX11Frame()->GetCDirectX()->get_context(), 65535U, 65535U));
+		GetCDX11Frame()->get_directx()->get_context(), 65535U, 65535U));
 	_pBasicEffect.reset(
-		new BasicEffect(GetCDX11Frame()->GetCDirectX()->get_device()));
+		new BasicEffect(GetCDX11Frame()->get_directx()->get_device()));
 
-	auto r = GetCDX11Frame()->GetCWin32()->GetScreenRect();
+	auto r = GetCDX11Frame()->get_win32()->GetScreenRect();
 
 	_pBasicEffect->SetProjection(
 		XMMatrixOrthographicOffCenterRH(
@@ -60,7 +60,7 @@ bool		Cycloid::Init(void)
 
 	_pBasicEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
 
-	hr = GetCDX11Frame()->GetCDirectX()->get_device()->CreateInputLayout(
+	hr = GetCDX11Frame()->get_directx()->get_device()->CreateInputLayout(
 		VertexPositionColor::InputElements,
 		VertexPositionColor::InputElementCount,
 		shaderByteCode,
@@ -78,7 +78,7 @@ bool		Cycloid::Update(void)
 {
 	auto good = true;
 
-	auto t = GetCDX11Frame()->GetCTimer()->GetTotalElapsed();
+	auto t = GetCDX11Frame()->get_timer()->GetTotalElapsed();
 
 	if (_TimeStampNewCycloid + _TimeDeltaNewCycloid < t)
 	{
@@ -107,7 +107,7 @@ bool		Cycloid::Update(void)
 		_CycloidCurrent,
 		_verticesRaw,
 		_vertices,
-		GetCDX11Frame()->GetCWin32()->GetScreenRect());
+		GetCDX11Frame()->get_win32()->GetScreenRect());
 	for (auto i = 0; i < _CycloidCurrent.NumberOfVerticies; ++i)
 	{
 		_vertices[i].color.x = _CycloidCurrent.r;
@@ -122,8 +122,8 @@ bool		Cycloid::Render(void)
 {
 	auto good = true;
 
-	_pBasicEffect->Apply(GetCDX11Frame()->GetCDirectX()->get_context());
-	GetCDX11Frame()->GetCDirectX()->get_context()->IASetInputLayout(_pID3D11InputLayout);
+	_pBasicEffect->Apply(GetCDX11Frame()->get_directx()->get_context());
+	GetCDX11Frame()->get_directx()->get_context()->IASetInputLayout(_pID3D11InputLayout);
 
 	_pPrimtiveBatch->Begin();
 	_pPrimtiveBatch->Draw(

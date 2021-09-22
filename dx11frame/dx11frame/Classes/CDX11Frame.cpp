@@ -1,175 +1,240 @@
 // dx11frame.cpp
-// Implementation file for CDX11Frame.
+// Implementation file for dx11frame.
 
 #include "CDX11Frame.h"
 
 #pragma region Construction/destruction
-CDX11Frame::CDX11Frame(void) :
-_pCWin32(nullptr),
-_pCDirectX(nullptr),
-_pCInput(nullptr),
-_pSpriteBatch(nullptr),
-_pDebugFont(nullptr),
-_DebugSpritefontPath(L"")
+
+dx11_frame::dx11_frame() = default;
+
+dx11_frame::~dx11_frame()
 {
+	cleanup_base();
 }
-CDX11Frame::~CDX11Frame(void)
-{
-	CleanupBase();
-}
+
 #pragma endregion
 
 #pragma region Base methods
-WPARAM CDX11Frame::Run(void)
+
+WPARAM dx11_frame::run()
 {
+
 	WPARAM ret = 0;
-	if (InitBase())
+
+	if (init_base())
 	{
-		// Main loop in one statement - Woohoo!
-		while (MainLoopIteration());
+		// Main loop.
+		// ReSharper disable once CppPossiblyErroneousEmptyStatements
+		while (main_loop_iteration());
 
 		// If a WM_QUIT message was received through message queue,
 		//	return the wParam. Otherwise, return zero. Advised by MSDN.
-		if (_pCWin32->GetLastMsg()->message == WM_QUIT)
-			ret = _pCWin32->GetLastMsg()->wParam;
+		if (win32_->GetLastMsg()->message == WM_QUIT)
+			ret = win32_->GetLastMsg()->wParam;
 	}
 
-	CleanupBase();
+	cleanup_base();
 
 	return ret;
+
 }
-bool CDX11Frame::MainLoopIteration(void)
+
+bool dx11_frame::main_loop_iteration()
 {
-	auto good = true;
+
+	bool good;
 
 	// Clear the message queue.
-	if (good = _pCWin32->MsgQueueProc())
+	if ((good = win32_->MsgQueueProc()))
 	{
-		good = UpdateBase();
-		good &= RenderBase();
+		good = update_base();
+		good &= render_base();
 	}
 
 	return good;
+
 }
-bool CDX11Frame::InitBase(void)
+
+bool dx11_frame::init_base()
 {
+
 	auto good = true;
 
-	if (good) good = PreInit();
+	if (good) good = pre_init();
 
 	// DX11Frame object creation.
-	_pCTimer.reset(new CTimer());
-	if (!(_pCTimer && _pCTimer->IsInit())) good = false;
+	timer_.reset(new CTimer());
+	if (!(timer_ && timer_->IsInit())) 
+		good = false;
 
-	_pCWin32.reset(new CWin32(_CWin32Data));
-	if (!_pCWin32) good = false;
-	if (good) good = GetCWin32()->Init();
+	win32_.reset(new CWin32(win32_data_));
+	if (!win32_) 
+		good = false;
+	if (good) 
+		good = get_win32()->Init();
 
 	if (good)
 	{
 		// Make sure everyone is working with the same window.
-		_CInputData.hwnd = GetCWin32()->GetWindow();
-		_CDirectXData.hwnd = GetCWin32()->GetWindow();
-		// Synchronize window and backbuffer dimentions if desired.
-		if (_CDirectXData.use_hwnd_dimensions)
+		input_data_.hwnd = get_win32()->GetWindow();
+		directx_data_.hwnd = get_win32()->GetWindow();
+		// Synchronize window and back-buffer dimensions if desired.
+		if (directx_data_.use_hwnd_dimensions)
 		{
-			_CDirectXData.width = _CWin32Data.width;
-			_CDirectXData.height = _CWin32Data.height;
+			directx_data_.width = win32_data_.width;
+			directx_data_.height = win32_data_.height;
 		}
 	}
 
-	if (good) _pCDirectX.reset(new directx(_CDirectXData));
-	if (!_pCDirectX) good = false;
-	if (good) good = GetCDirectX()->Init();
+	if (good) 
+		directx_.reset(new directx(directx_data_));
+	if (!directx_) 
+		good = false;
+	if (good) 
+		good = get_directx()->Init();
 
-	if (good) _pCInput.reset(new CInput(_CInputData));
-	if (!_pCInput) good = false;
-	if (good) good = GetCInput()->Init();
+	if (good) 
+		input_.reset(new CInput(input_data_));
+	if (!input_) 
+		good = false;
+	if (good) 
+		good = get_input()->Init();
 
 	// DirectXTK object creation
-	if (good) _pSpriteBatch.reset(new SpriteBatch(GetCDirectX()->get_context()));
-	if (!_pSpriteBatch) good = false;
+	if (good) 
+		sprite_batch_.reset(new SpriteBatch(get_directx()->get_context()));
+	if (!sprite_batch_) 
+		good = false;
 
 	// Create SpriteFont for debugging, but don't exit if failed.
-	if (good && (_DebugSpritefontPath.length() > 0))
-		_pDebugFont.reset(new SpriteFont(GetCDirectX()->get_device(), _DebugSpritefontPath.c_str()));
+	if (good && (debug_spritefont_path_.length() > 0))
+		debug_font_.reset(
+			new SpriteFont(get_directx()->get_device(), 
+				debug_spritefont_path_.c_str()));
 
-	if (good) good = PostInit();
+	if (good) 
+		good = post_init();
 
 	return good;
+
 }
-bool CDX11Frame::UpdateBase(void)
+
+bool dx11_frame::update_base()
 {
+
 	auto good = true;
 
-	good &= GetCTimer()->Update();
-	if (good) good = GetCInput()->Update();
-	if (good) good = Update();
+	good &= get_timer()->Update();
+	if (good) good = get_input()->Update();
+	if (good) good = update();
 
 	return good;
-}
-bool CDX11Frame::RenderBase(void)
-{
-	auto good = true;
 
-	good = GetCDirectX()->begin_render();
-	if (good) good = Render();
-	if (good) good = GetCDirectX()->end_render();
+}
+
+bool dx11_frame::render_base()
+{
+
+	auto good = get_directx()->begin_render();
+	if (good) 
+		good = render();
+	if (good) 
+		good = get_directx()->end_render();
 
 	return good;
+
 }
-void CDX11Frame::CleanupBase(void)
+
+void dx11_frame::cleanup_base()
 {
 }
+
 #pragma endregion
 
 #pragma region Object reference getters
-CWin32*			CDX11Frame::GetCWin32(void)
+
+CWin32*			dx11_frame::get_win32() const
 {
-	return _pCWin32.get();
+	return win32_.get();
 }
-directx*		CDX11Frame::GetCDirectX(void)
+
+directx*		dx11_frame::get_directx() const
 {
-	return _pCDirectX.get();
+	return directx_.get();
 }
-CInput*			CDX11Frame::GetCInput(void)
+
+CInput*			dx11_frame::get_input() const
 {
-	return _pCInput.get();
+	return input_.get();
 }
-CTimer*			CDX11Frame::GetCTimer(void)
+
+CTimer*			dx11_frame::get_timer() const
 {
-	return _pCTimer.get();
+	return timer_.get();
 }
-SpriteBatch*	CDX11Frame::GetSpriteBatch(void)
+
+SpriteBatch*	dx11_frame::get_sprite_batch() const
 {
-	return _pSpriteBatch.get();
+	return sprite_batch_.get();
 }
+
 #pragma endregion
 
 #pragma region Win32 message processing
-LRESULT CALLBACK	CDX11Frame::MsgProc(
-	HWND hwnd,
-	UINT msg,
-	WPARAM wParam,
-	LPARAM lParam)
+
+auto			CALLBACK dx11_frame::msg_proc(
+	const HWND hwnd, // NOLINT(misc-misplaced-const)
+	const UINT msg,
+	const WPARAM w_param,
+	const LPARAM l_param) -> LRESULT
 {
-	LRESULT result = 0;
-	auto handled = false;
-
-	if (!handled)
-		result = DefWindowProc(hwnd, msg, wParam, lParam);
-
-	return result;
+	return DefWindowProc(hwnd, msg, w_param, l_param);
 }
+
 #pragma endregion
 
 #pragma region Instance methods
-void	CDX11Frame::PostQuit(void)
+
+void	dx11_frame::post_quit()
 {
 	PostQuitMessage(0);
 }
-void	CDX11Frame::DrawDebugString(wstring msg, XMFLOAT2 loc, FXMVECTOR color)
+
+bool	dx11_frame::pre_init()
 {
-	if (_pDebugFont) _pDebugFont->DrawString(GetSpriteBatch(), msg.c_str(), loc, color);
+	return true;
 }
+
+bool	dx11_frame::post_init()
+{
+	return true;
+}
+
+bool	dx11_frame::update()
+{
+	return true;
+}
+
+bool	dx11_frame::render()
+{
+	return true;
+}
+
+void	dx11_frame::cleanup()
+{
+}
+
+void	dx11_frame::draw_debug_string(
+	const wstring& msg,
+	const XMFLOAT2 loc, 
+	FXMVECTOR color) const
+{
+	if (debug_font_) 
+		debug_font_->DrawString(
+			get_sprite_batch(), 
+			msg.c_str(), 
+			loc, 
+			color);
+}
+
 #pragma endregion

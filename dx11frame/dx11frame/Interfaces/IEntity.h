@@ -5,12 +5,12 @@
 class IEntity : public IInitializable, public IUpdateable, public IRenderable, public ICleanupable
 {
 public:
-	IEntity(CDX11Frame* pCAppBase) : _pCDX11Frame(pCAppBase) {}
+	IEntity(dx11_frame* pCAppBase) : _pCDX11Frame(pCAppBase) {}
 	virtual ~IEntity(void) { _pCDX11Frame = nullptr; };
 
 private:
-	CDX11Frame*	_pCDX11Frame;
+	dx11_frame*	_pCDX11Frame;
 
 protected:
-	CDX11Frame*	GetCDX11Frame(void) { return _pCDX11Frame; }
+	dx11_frame*	GetCDX11Frame(void) { return _pCDX11Frame; }
 };

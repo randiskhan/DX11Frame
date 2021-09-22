@@ -12,7 +12,7 @@ private:
 	wstring		_msg;
 
 public:
-	DebugText(CDX11Frame* pCDX11Frame);
+	DebugText(dx11_frame* pCDX11Frame);
 	virtual ~DebugText(void);
 
 	bool	Init(void);

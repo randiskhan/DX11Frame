@@ -8,33 +8,33 @@ CApp::CApp(void)
 
 CApp::~CApp(void)
 {
-	CApp::Cleanup();
+	CApp::cleanup();
 }
 
-bool CApp::PreInit(void)
+bool CApp::pre_init(void)
 {
 	auto good = true;
 
 	srand(static_cast<unsigned int>(time(nullptr)));  // NOLINT(cert-msc51-cpp)
 
 #if defined(_DEBUG)
-	_CWin32Data.width = 800;
-	_CWin32Data.height = 800;
-	_CDirectXData.start_windowed = true;
+	win32_data_.width = 800;
+	win32_data_.height = 800;
+	directx_data_.start_windowed = true;
 #else
 	_CWin32Data.width = 1920;
 	_CWin32Data.height = 1080;
 	_CDirectXData.startWindowed = true;
 #endif
-	_CDirectXData.back_color = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
+	directx_data_.back_color = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
 
 	// Set the path to CAppBase spritefont file.
-	_DebugSpritefontPath = L"assets\\debug.spritefont";
+	debug_spritefont_path_ = L"assets\\debug.spritefont";
 
 	return good;
 }
 
-bool CApp::PostInit(void)
+bool CApp::post_init(void)
 {
 	auto good = true;
 
@@ -52,18 +52,18 @@ bool CApp::PostInit(void)
 	return good;
 }
 
-bool CApp::Update(void)
+bool CApp::update(void)
 {
 	auto good = true;
 
 	// Quit application.
-	if (GetCInput()->IsKeyDown(VK_ESCAPE))
-		PostQuit();
+	if (get_input()->IsKeyDown(VK_ESCAPE))
+		post_quit();
 	// Take a screenshot. Overwrites previous screenshot.
-	if (GetCInput()->IsKeyDownSinceLastFrame(VK_SNAPSHOT))
+	if (get_input()->IsKeyDownSinceLastFrame(VK_SNAPSHOT))
 		TakeScreenshot();
 	// Hold spacebar to show debug text.
-	if (GetCInput()->IsKeyDown(VK_SPACE))
+	if (get_input()->IsKeyDown(VK_SPACE))
 		_pDebugText->SetDoRender(true);
 	else
 		_pDebugText->SetDoRender(false);
@@ -74,19 +74,19 @@ bool CApp::Update(void)
 	return good;
 }
 
-bool CApp::Render(void)
+bool CApp::render(void)
 {
 	auto good = true;
 
-	GetSpriteBatch()->Begin();
+	get_sprite_batch()->Begin();
 	if (good && _pDebugText->GetDoRender()) good &= _pDebugText->Render();
 	if (good && _pCycloid->GetDoRender()) good &= _pCycloid->Render();
-	GetSpriteBatch()->End();
+	get_sprite_batch()->End();
 
 	return good;
 }
 
-void CApp::Cleanup(void)
+void CApp::cleanup(void)
 {
 }
 
@@ -96,11 +96,11 @@ bool CApp::TakeScreenshot(void)
 	auto good = true;
 
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
-	auto hr = GetCDirectX()->get_swap_chain()->GetBuffer(0, __uuidof(ID3D11Texture2D),
+	auto hr = get_directx()->get_swap_chain()->GetBuffer(0, __uuidof(ID3D11Texture2D),
 	                                                   reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
 	if (SUCCEEDED(hr))
 	{
-		hr = SaveWICTextureToFile(GetCDirectX()->get_context(), backBuffer.Get(),
+		hr = SaveWICTextureToFile(get_directx()->get_context(), backBuffer.Get(),
 			GUID_ContainerFormatBmp, L"screenshot.bmp");
 	}
 	if (FAILED(hr)) good = false;

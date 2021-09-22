@@ -14,6 +14,6 @@ int WINAPI WinMain(
 #endif
 	WPARAM exitmsg = NULL;
 	unique_ptr<CApp> pCApp(new CApp());
-	if (pCApp) exitmsg = pCApp->Run();
+	if (pCApp) exitmsg = pCApp->run();
 	return exitmsg;
 }

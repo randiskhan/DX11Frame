@@ -1,9 +1,9 @@
 // dx11frame.h
 // Declaration file for CDX11Frame.
 
-#pragma region preprocessor directives
-
 #pragma once
+
+#pragma region preprocessor directives
 
 // Common header.
 #include "common.h"
@@ -17,60 +17,64 @@
 
 // Base class for "root" class/object in executable.
 #ifdef MEMBER_MSGPROC
-class CDX11Frame : public ICWin32App
+class dx11_frame : public ICWin32App  // NOLINT(cppcoreguidelines-special-member-functions)
 #else
-class CDX11Frame
+class dx11_frame  // NOLINT(cppcoreguidelines-special-member-functions)
 #endif
 {
-private:
+
 	// DX11Frame primary objects.
-	unique_ptr<CWin32>		_pCWin32;
-	unique_ptr<directx>	_pCDirectX;
-	unique_ptr<CInput>		_pCInput;
-	unique_ptr<CTimer>		_pCTimer;
+	unique_ptr<CWin32>		win32_{};
+	unique_ptr<directx>		directx_{};
+	unique_ptr<CInput>		input_{};
+	unique_ptr<CTimer>		timer_{};
 	// DirectXTK objects.
-	unique_ptr<SpriteBatch>	_pSpriteBatch;
-	unique_ptr<SpriteFont>	_pDebugFont;
+	unique_ptr<SpriteBatch>	sprite_batch_{};
+	unique_ptr<SpriteFont>	debug_font_{};
 
 public:
-	CDX11Frame(void);
-	virtual ~CDX11Frame(void);
+	dx11_frame();
+	virtual ~dx11_frame();
 
-	WPARAM			Run();
+	WPARAM			run();
 
 	// Get DX11Frame object references.
-	CWin32*			GetCWin32(void);
-	directx*		GetCDirectX(void);
-	CInput*			GetCInput(void);
-	CTimer*			GetCTimer(void);
+	CWin32*			get_win32() const;
+	directx*		get_directx() const;
+	CInput*			get_input() const;
+	CTimer*			get_timer() const;
 	// Get DirectXTK object references.
-	SpriteBatch*	GetSpriteBatch(void);
+	SpriteBatch*	get_sprite_batch() const;
 
-	void			DrawDebugString(wstring msg, XMFLOAT2 loc, FXMVECTOR color);
+	void			draw_debug_string(
+		const wstring& msg, 
+		XMFLOAT2 loc, 
+		FXMVECTOR color) const;
 
 protected:
-	CWin32Data		_CWin32Data;
-	directx_data	_CDirectXData;
-	CInputData		_CInputData;
-	wstring			_DebugSpritefontPath;
+	CWin32Data		win32_data_;
+	directx_data	directx_data_;
+	CInputData		input_data_;
+	wstring			debug_spritefont_path_;
 
-	void			PostQuit(void);
+	static void		post_quit();
 
 	// Pure virtual methods.
-	virtual bool	PreInit(void) = 0;
-	virtual bool	PostInit(void) = 0;
-	virtual bool	Update(void) = 0;
-	virtual bool	Render(void) = 0;
-	virtual void	Cleanup(void) = 0;
+	virtual bool	pre_init();
+	virtual bool	post_init();
+	virtual bool	update();
+	virtual bool	render();
+	virtual void	cleanup();
 
 private:
-	bool			MainLoopIteration(void);
+	bool			main_loop_iteration();
 
 	// Win32 message handler basic implementation. Available for overriding in CAppBase child classes.
-	virtual LRESULT CALLBACK	MsgProc(HWND, UINT, WPARAM, LPARAM);
+	virtual LRESULT CALLBACK	msg_proc(HWND, UINT, WPARAM, LPARAM);
 
-	bool			InitBase(void);
-	bool			UpdateBase(void);
-	bool			RenderBase(void);
-	void			CleanupBase(void);
+	bool			init_base();
+	bool			update_base();
+	bool			render_base();
+	static void		cleanup_base();
+
 };

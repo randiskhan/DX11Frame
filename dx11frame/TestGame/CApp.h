@@ -11,7 +11,7 @@
 
 #pragma comment(lib, "dx11frame.lib")
 
-class CApp : public CDX11Frame
+class CApp : public dx11_frame
 {
 private:
 	unique_ptr<DebugText>		_pDebugText;
@@ -23,9 +23,9 @@ public:
 	CApp(void);
 	virtual ~CApp(void);
 
-	bool		PreInit(void);
-	bool		PostInit(void);
-	bool		Update(void);
-	bool		Render(void);
-	void		Cleanup(void);
+	bool		pre_init(void);
+	bool		post_init(void);
+	bool		update(void);
+	bool		render(void);
+	void		cleanup(void);
 };
