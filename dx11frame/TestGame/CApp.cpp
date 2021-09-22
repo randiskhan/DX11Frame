@@ -57,13 +57,13 @@ bool CApp::update(void)
 	auto good = true;
 
 	// Quit application.
-	if (get_input()->IsKeyDown(VK_ESCAPE))
+	if (get_input()->is_key_down(VK_ESCAPE))
 		post_quit();
 	// Take a screenshot. Overwrites previous screenshot.
-	if (get_input()->IsKeyDownSinceLastFrame(VK_SNAPSHOT))
+	if (get_input()->is_key_down_since_last_frame(VK_SNAPSHOT))
 		TakeScreenshot();
 	// Hold spacebar to show debug text.
-	if (get_input()->IsKeyDown(VK_SPACE))
+	if (get_input()->is_key_down(VK_SPACE))
 		_pDebugText->SetDoRender(true);
 	else
 		_pDebugText->SetDoRender(false);

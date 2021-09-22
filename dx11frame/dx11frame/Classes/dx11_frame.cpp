@@ -94,11 +94,11 @@ bool dx11_frame::init_base()
 		good = get_directx()->Init();
 
 	if (good) 
-		input_.reset(new CInput(input_data_));
+		input_.reset(new input(input_data_));
 	if (!input_) 
 		good = false;
 	if (good) 
-		good = get_input()->Init();
+		good = get_input()->init();
 
 	// DirectXTK object creation
 	if (good) 
@@ -125,7 +125,7 @@ bool dx11_frame::update_base()
 	auto good = true;
 
 	good &= get_timer()->Update();
-	if (good) good = get_input()->Update();
+	if (good) good = get_input()->update();
 	if (good) good = update();
 
 	return good;
@@ -163,7 +163,7 @@ directx*		dx11_frame::get_directx() const
 	return directx_.get();
 }
 
-CInput*			dx11_frame::get_input() const
+input*			dx11_frame::get_input() const
 {
 	return input_.get();
 }

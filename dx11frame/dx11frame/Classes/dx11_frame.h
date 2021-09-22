@@ -10,7 +10,7 @@
 // DX11Frame object headers.
 #include "CWin32.h"
 #include "directx.h"
-#include "CInput.h"
+#include "input.h"
 #include "CTimer.h"
 
 #pragma endregion
@@ -26,7 +26,7 @@ class dx11_frame  // NOLINT(cppcoreguidelines-special-member-functions)
 	// DX11Frame primary objects.
 	unique_ptr<CWin32>		win32_{};
 	unique_ptr<directx>		directx_{};
-	unique_ptr<CInput>		input_{};
+	unique_ptr<input>		input_{};
 	unique_ptr<CTimer>		timer_{};
 	// DirectXTK objects.
 	unique_ptr<SpriteBatch>	sprite_batch_{};
@@ -41,7 +41,7 @@ public:
 	// Get DX11Frame object references.
 	CWin32*			get_win32() const;
 	directx*		get_directx() const;
-	CInput*			get_input() const;
+	input*			get_input() const;
 	CTimer*			get_timer() const;
 	// Get DirectXTK object references.
 	SpriteBatch*	get_sprite_batch() const;
@@ -54,7 +54,7 @@ public:
 protected:
 	CWin32Data		win32_data_;
 	directx_data	directx_data_;
-	CInputData		input_data_;
+	input_data		input_data_;
 	wstring			debug_spritefont_path_;
 
 	static void		post_quit();

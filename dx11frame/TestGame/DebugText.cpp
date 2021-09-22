@@ -41,9 +41,9 @@ bool		DebugText::Update(void)
 	{
 		_msg =
 			L"Press escape to exit.\n" +
-			ToString(GetCDX11Frame()->get_input()->GetMouseScreenPos()->x) +
+			ToString(GetCDX11Frame()->get_input()->get_mouse_screen_pos()->x) +
 			L"," +
-			ToString(GetCDX11Frame()->get_input()->GetMouseScreenPos()->y) +
+			ToString(GetCDX11Frame()->get_input()->get_mouse_screen_pos()->y) +
 			L" - FPS: " +
 			ToString(fps);
 	}

@@ -8,7 +8,7 @@
     <ClInclude Include="Classes\directx.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Classes\CInput.h">
+    <ClInclude Include="Classes\input.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\IUpdateable.h">
@@ -40,7 +40,7 @@
     <ClCompile Include="Classes\directx.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Classes\CInput.cpp">
+    <ClCompile Include="Classes\input.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="Classes\CTimer.cpp">
