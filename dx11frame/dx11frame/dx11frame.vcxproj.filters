@@ -5,7 +5,7 @@
     <ClInclude Include="Classes\CWin32.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Classes\CDirectX.h">
+    <ClInclude Include="Classes\directx.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Classes\CInput.h">
@@ -37,7 +37,7 @@
     <ClCompile Include="Classes\CWin32.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Classes\CDirectX.cpp">
+    <ClCompile Include="Classes\directx.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="Classes\CInput.cpp">

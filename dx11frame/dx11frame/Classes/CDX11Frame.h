@@ -9,7 +9,7 @@
 #include "common.h"
 // DX11Frame object headers.
 #include "CWin32.h"
-#include "CDirectX.h"
+#include "directx.h"
 #include "CInput.h"
 #include "CTimer.h"
 

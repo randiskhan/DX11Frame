@@ -1,7 +1,7 @@
-// CDirectX.cpp
-// Implementation file for CDirectX.
+// directx.cpp
+// Implementation file for class directx.
 
-#include "CDirectX.h"
+#include "directx.h"
 
 #pragma region Construction/Destruction
 
