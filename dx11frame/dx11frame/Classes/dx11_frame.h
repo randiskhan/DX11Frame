@@ -11,7 +11,7 @@
 #include "CWin32.h"
 #include "directx.h"
 #include "input.h"
-#include "CTimer.h"
+#include "timer.h"
 
 #pragma endregion
 
@@ -27,7 +27,7 @@ class dx11_frame  // NOLINT(cppcoreguidelines-special-member-functions)
 	unique_ptr<CWin32>		win32_{};
 	unique_ptr<directx>		directx_{};
 	unique_ptr<input>		input_{};
-	unique_ptr<CTimer>		timer_{};
+	unique_ptr<timer>		timer_{};
 	// DirectXTK objects.
 	unique_ptr<SpriteBatch>	sprite_batch_{};
 	unique_ptr<SpriteFont>	debug_font_{};
@@ -42,7 +42,7 @@ public:
 	CWin32*			get_win32() const;
 	directx*		get_directx() const;
 	input*			get_input() const;
-	CTimer*			get_timer() const;
+	timer*			get_timer() const;
 	// Get DirectXTK object references.
 	SpriteBatch*	get_sprite_batch() const;
 

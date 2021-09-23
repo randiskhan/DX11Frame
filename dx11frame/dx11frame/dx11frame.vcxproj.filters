@@ -26,10 +26,10 @@
     <ClInclude Include="Interfaces\ICleanupable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Classes\CTimer.h">
+    <ClInclude Include="Classes\dx11_frame.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Classes\dx11_frame.h">
+    <ClInclude Include="Classes\timer.h">
       <Filter>Classes</Filter>
     </ClInclude>
   </ItemGroup>
@@ -43,10 +43,10 @@
     <ClCompile Include="Classes\input.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Classes\CTimer.cpp">
+    <ClCompile Include="Classes\dx11_frame.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Classes\dx11_frame.cpp">
+    <ClCompile Include="Classes\timer.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>

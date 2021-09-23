@@ -78,7 +78,7 @@ bool		Cycloid::Update(void)
 {
 	auto good = true;
 
-	auto t = GetCDX11Frame()->get_timer()->GetTotalElapsed();
+	auto t = GetCDX11Frame()->get_timer()->get_total_elapsed();
 
 	if (_TimeStampNewCycloid + _TimeDeltaNewCycloid < t)
 	{

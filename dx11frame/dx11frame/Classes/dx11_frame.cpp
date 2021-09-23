@@ -63,7 +63,7 @@ bool dx11_frame::init_base()
 	if (good) good = pre_init();
 
 	// DX11Frame object creation.
-	timer_.reset(new CTimer());
+	timer_.reset(new timer());
 	if (!(timer_ && timer_->IsInit())) 
 		good = false;
 
@@ -168,7 +168,7 @@ input*			dx11_frame::get_input() const
 	return input_.get();
 }
 
-CTimer*			dx11_frame::get_timer() const
+timer*			dx11_frame::get_timer() const
 {
 	return timer_.get();
 }

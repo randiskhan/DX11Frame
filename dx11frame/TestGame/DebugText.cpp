@@ -30,7 +30,7 @@ bool		DebugText::Update(void)
 	static float fps = 0;
 	static auto interval = 0.5f;
 
-	if (GetCDX11Frame()->get_timer()->GetTotalElapsed() > last + interval)
+	if (GetCDX11Frame()->get_timer()->get_total_elapsed() > last + interval)
 	{
 		fps = count / interval;
 		count = 0;
