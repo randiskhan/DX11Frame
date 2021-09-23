@@ -84,11 +84,9 @@
     <ClCompile Include="Classes\input.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="Classes\CWin32.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="Classes\dx11_frame.cpp" />
     <ClCompile Include="Classes\timer.cpp" />
+    <ClCompile Include="Classes\win32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Classes\directx.h">
@@ -97,11 +95,9 @@
     <ClInclude Include="Classes\input.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="Classes\CWin32.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClInclude>
     <ClInclude Include="Classes\dx11_frame.h" />
     <ClInclude Include="Classes\timer.h" />
+    <ClInclude Include="Classes\win32.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="Interfaces\ICleanupable.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>

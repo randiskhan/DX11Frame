@@ -8,7 +8,7 @@
 // Common header.
 #include "common.h"
 // DX11Frame object headers.
-#include "CWin32.h"
+#include "win32.h"
 #include "directx.h"
 #include "input.h"
 #include "timer.h"

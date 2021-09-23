@@ -1,7 +1,7 @@
 // CWin32.cpp
 // Implementation file for CWin32.
 
-#include "CWin32.h"
+#include "win32.h"
 
 #pragma region Construction/Destruction
 CWin32::CWin32(CWin32Data wd) :

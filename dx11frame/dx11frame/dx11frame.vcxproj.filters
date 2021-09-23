@@ -2,9 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClInclude Include="common.h" />
-    <ClInclude Include="Classes\CWin32.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
     <ClInclude Include="Classes\directx.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -32,11 +29,11 @@
     <ClInclude Include="Classes\timer.h">
       <Filter>Classes</Filter>
     </ClInclude>
+    <ClInclude Include="Classes\win32.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Classes\CWin32.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="Classes\directx.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
@@ -47,6 +44,9 @@
       <Filter>Classes</Filter>
     </ClCompile>
     <ClCompile Include="Classes\timer.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="Classes\win32.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
   </ItemGroup>
