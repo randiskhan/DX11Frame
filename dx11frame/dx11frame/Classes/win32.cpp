@@ -1,24 +1,24 @@
-// CWin32.cpp
-// Implementation file for CWin32.
+// win32.cpp
+// Implementation file for class win32.
 
 #include "win32.h"
 
 #pragma region Construction/Destruction
-CWin32::CWin32(CWin32Data wd) :
+win32::win32(const win32_data wd) :
 _HWnd(nullptr),
 _IsInit(false)
 {
 	ZeroMemory(&_msg, sizeof(MSG));
 	_CWin32Data = wd;
 }
-CWin32::~CWin32(void)
+win32::~win32(void)
 {
 	Cleanup();
 }
 #pragma endregion
 
 #pragma region Initialization/Cleanup
-bool CWin32::Init(void)
+bool win32::Init(void)
 {
 	auto good = true;
 	_HWnd = nullptr;
@@ -62,7 +62,7 @@ bool CWin32::Init(void)
 		0);
 	if (!_HWnd) good &= false;
 
-	// Store a reference to this CWin32 object in the window's GWL_USERDATA
+	// Store a reference to this win32 object in the window's GWL_USERDATA
 	//	so we can call a member method to handle Win32 messages.
 	if (good)
 	{
@@ -78,13 +78,13 @@ bool CWin32::Init(void)
 
 	return _IsInit = good;
 }
-void CWin32::Cleanup(void)
+void win32::Cleanup(void)
 {
 }
 #pragma endregion
 
 #pragma region Win32 message processing
-bool CWin32::MsgQueueProc(void)
+bool win32::MsgQueueProc(void)
 {
 	while (PeekMessage(&_msg, nullptr, 0, 0, PM_REMOVE))
 	{
@@ -94,7 +94,7 @@ bool CWin32::MsgQueueProc(void)
 	}
 	return true;
 }
-/*static*/ LRESULT CALLBACK CWin32::StaticMsgProc(
+/*static*/ LRESULT CALLBACK win32::StaticMsgProc(
 	HWND hwnd,
 	UINT msg,
 	WPARAM wParam,
@@ -116,43 +116,43 @@ bool CWin32::MsgQueueProc(void)
 		}
 	}
 #ifdef MEMBER_MSGPROC
-	// Only dispatch a message to the CWin32 object for this window
+	// Only dispatch a message to the win32 object for this window
 	//	if it has a reference to one in its GWL_USERDATA.
 	if (GetWindowLong(hwnd, GWL_USERDATA))
-		return ((CWin32*)GetWindowLong(hwnd, GWL_USERDATA))->
+		return ((win32*)GetWindowLong(hwnd, GWL_USERDATA))->
 		MsgProc(hwnd, msg, wParam, lParam);
 	else
 #endif
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 }
-LRESULT CALLBACK CWin32::MsgProc(
+LRESULT CALLBACK win32::MsgProc(
 	HWND hwnd,
 	UINT msg,
 	WPARAM wParam,
 	LPARAM lParam)
 {
-	// Only dispatch a message to the ICWin32App object if we have a reference.
+	// Only dispatch a message to the i_win32_app object if we have a reference.
 	if (_CWin32Data.pICWin32App)
-		return _CWin32Data.pICWin32App->MsgProc(hwnd, msg, wParam, lParam);
+		return _CWin32Data.pICWin32App->msg_proc(hwnd, msg, wParam, lParam);
 	else
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 #pragma endregion
 
 #pragma region Set/Get methods
-HWND	CWin32::GetWindow(void)
+HWND	win32::GetWindow(void)
 {
 	return _HWnd;
 }
-MSG*	CWin32::GetLastMsg(void)
+MSG*	win32::GetLastMsg(void)
 {
 	return &_msg;
 }
-bool	CWin32::IsInit(void)
+bool	win32::IsInit(void)
 {
 	return _IsInit;
 }
-RECT	CWin32::GetScreenRect(void)
+RECT	win32::GetScreenRect(void)
 {
 	RECT	ScreenRect;
 	GetClientRect(_HWnd, &ScreenRect);

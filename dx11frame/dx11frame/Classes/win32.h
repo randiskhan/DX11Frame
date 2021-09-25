@@ -1,5 +1,5 @@
-// CWin32.h
-// Declaration file for CWin32.
+// win32.h
+// Declaration file for class win32.
 
 #pragma once
 
@@ -10,33 +10,35 @@
 // This macro eliminates the need to pass an HINSTANCE reference
 //	for window creation. Will always use current HINSTANCE.
 #ifndef HINST_THISCOMPONENT
-EXTERN_C IMAGE_DOS_HEADER __ImageBase;
-#define HINST_THISCOMPONENT ((HINSTANCE)&__ImageBase)
+EXTERN_C IMAGE_DOS_HEADER __ImageBase;  // NOLINT(bugprone-reserved-identifier)
+#define HINST_THISCOMPONENT ((HINSTANCE)&__ImageBase)  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 // Interface for handling Win32 messages in an object
 //	that creates this object.
-class ICWin32App
+class i_win32_app  // NOLINT(cppcoreguidelines-special-member-functions)
 {
+protected:
+	~i_win32_app() = default;
 public:
-	virtual	LRESULT CALLBACK MsgProc(
+	virtual	LRESULT CALLBACK msg_proc(
 		HWND,
 		UINT,
 		WPARAM,
 		LPARAM) = 0;
 };
 
-struct CWin32Data
+struct win32_data
 {
-	ICWin32App*	pICWin32App;
-	wstring		wndClassName;
-	wstring		wndTitle;
-	int			height;
-	int			width;
-	DWORD		windowStyle;
-	BOOL		isWindowMenu;
+	i_win32_app*	pICWin32App;
+	wstring			wndClassName;
+	wstring			wndTitle;
+	int				height;
+	int				width;
+	DWORD			windowStyle;
+	BOOL			isWindowMenu;
 
-	CWin32Data()
+	win32_data()
 	{
 		pICWin32App = nullptr;
 		wndClassName = L"WindowClass";
@@ -49,17 +51,17 @@ struct CWin32Data
 };
 
 // Class to encapsulate the code for generating a window in a Win32 application.
-class CWin32
+class win32
 {
-private:
+
 	MSG			_msg;
 	HWND		_HWnd;
 	bool		_IsInit;
-	CWin32Data	_CWin32Data;
+	win32_data	_CWin32Data;
 
 public:
-	CWin32(CWin32Data wd);
-	virtual ~CWin32(void);
+	win32(win32_data wd);
+	virtual ~win32(void);
 
 	RECT		GetScreenRect(void);
 	HWND		GetWindow(void);
@@ -73,7 +75,7 @@ public:
 	// Method for clearing the Win32 message queue.
 	bool		MsgQueueProc(void);
 
-	// Default satic WNDPROC callback
+	// Default static WNDPROC callback
 	static	LRESULT CALLBACK StaticMsgProc(
 		HWND,
 		UINT,
@@ -85,4 +87,5 @@ public:
 		UINT,
 		WPARAM,
 		LPARAM);
+
 };

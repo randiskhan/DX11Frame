@@ -67,7 +67,7 @@ bool dx11_frame::init_base()
 	if (!(timer_ && timer_->IsInit())) 
 		good = false;
 
-	win32_.reset(new CWin32(win32_data_));
+	win32_.reset(new win32(win32_data_));
 	if (!win32_) 
 		good = false;
 	if (good) 
@@ -153,7 +153,7 @@ void dx11_frame::cleanup_base()
 
 #pragma region Object reference getters
 
-CWin32*			dx11_frame::get_win32() const
+win32*			dx11_frame::get_win32() const
 {
 	return win32_.get();
 }

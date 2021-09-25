@@ -17,14 +17,14 @@
 
 // Base class for "root" class/object in executable.
 #ifdef MEMBER_MSGPROC
-class dx11_frame : public ICWin32App  // NOLINT(cppcoreguidelines-special-member-functions)
+class dx11_frame : public i_win32_app  // NOLINT(cppcoreguidelines-special-member-functions)
 #else
 class dx11_frame  // NOLINT(cppcoreguidelines-special-member-functions)
 #endif
 {
 
 	// DX11Frame primary objects.
-	unique_ptr<CWin32>		win32_{};
+	unique_ptr<win32>		win32_{};
 	unique_ptr<directx>		directx_{};
 	unique_ptr<input>		input_{};
 	unique_ptr<timer>		timer_{};
@@ -39,7 +39,7 @@ public:
 	WPARAM			run();
 
 	// Get DX11Frame object references.
-	CWin32*			get_win32() const;
+	win32*			get_win32() const;
 	directx*		get_directx() const;
 	input*			get_input() const;
 	timer*			get_timer() const;
@@ -52,7 +52,7 @@ public:
 		FXMVECTOR color) const;
 
 protected:
-	CWin32Data		win32_data_;
+	win32_data		win32_data_;
 	directx_data	directx_data_;
 	input_data		input_data_;
 	wstring			debug_spritefont_path_;
