@@ -34,13 +34,8 @@
 #include "VertexTypes.h"
 #include "WICTextureLoader.h"
 
-#if defined(_DEBUG)
-#pragma comment(lib, "DirectXTK_d.lib")
-//#pragma comment(lib, "DirectXTKAudioDX_d.lib")
-#else
 #pragma comment(lib, "DirectXTK.lib")
-//#pragma comment(lib, "DirectXTKAudioDX.lib")
-#endif
+//#pragma comment(lib, "DirectXTKAudioWin8.lib")
 
 using namespace std;
 using namespace DirectX;
