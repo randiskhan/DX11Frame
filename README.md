@@ -16,3 +16,5 @@ This project is dependant on DirectX Tool Kit (http://directxtk.codeplex.com/). 
 150223: Although this project lately has been used more for playing with the math to generate and render cycloids (specifically hypotrochoids), the goal is still to keep the engine as a library for use in other projects of mine.
 
 150212: Added a #if to CApp.cpp to use windowed@800x800 mode when running a debug build, fullscreen@1280x1024 when running release build. This made it easier for me to switch between the two.
+
+210926: The DirectXTK references included are now built with Visual Studio 2019 using DirectXTK release may2020.
