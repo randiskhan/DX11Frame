@@ -8,9 +8,6 @@
     <ClInclude Include="Classes\input.h">
       <Filter>Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IUpdateable.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="Classes\dx11_frame.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -30,6 +27,9 @@
       <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\i_renderable.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\i_updateable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
