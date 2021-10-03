@@ -64,7 +64,7 @@ bool dx11_frame::init_base()
 
 	// DX11Frame object creation.
 	timer_.reset(new timer());
-	if (!(timer_ && timer_->IsInit())) 
+	if (!(timer_ && timer_->is_init())) 
 		good = false;
 
 	win32_.reset(new win32(win32_data_));
@@ -91,7 +91,7 @@ bool dx11_frame::init_base()
 	if (!directx_) 
 		good = false;
 	if (good) 
-		good = get_directx()->Init();
+		good = get_directx()->init();
 
 	if (good) 
 		input_.reset(new input(input_data_));

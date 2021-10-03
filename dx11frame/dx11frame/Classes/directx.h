@@ -31,7 +31,7 @@ struct directx_data
 
 // Class for all DirectX rendering objects.
 // ReSharper disable once CommentTypo
-class directx final : public IInitializable  // NOLINT(cppcoreguidelines-special-member-functions)
+class directx final : public i_initializable  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 
 	// Direct3D object fields
@@ -53,7 +53,7 @@ public:
 	explicit directx(directx_data dd);
 	~directx() override;
 
-	bool	Init() override;
+	bool	init() override;
 	bool	reset(int x, int y);
 	void	cleanup();
 

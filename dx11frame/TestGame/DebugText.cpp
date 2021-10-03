@@ -5,7 +5,7 @@
 
 DebugText::DebugText(dx11_frame* pCDX11Frame) : i_entity(pCDX11Frame)
 {
-	Init();
+	init();
 }
 
 DebugText::~DebugText(void)
@@ -13,13 +13,13 @@ DebugText::~DebugText(void)
 	cleanup();
 }
 
-bool		DebugText::Init(void)
+bool		DebugText::init(void)
 {
 	auto good = true;
 
 	_msg = L"";
 
-	return _IsInit = good;
+	return is_init_ = good;
 }
 
 bool		DebugText::Update(void)

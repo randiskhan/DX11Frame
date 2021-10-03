@@ -5,7 +5,7 @@
 
 Cycloid::Cycloid(dx11_frame* pCDX11Frame) : i_entity(pCDX11Frame)
 {
-	Cycloid::Init();
+	Cycloid::init();
 }
 
 Cycloid::~Cycloid(void)
@@ -13,7 +13,7 @@ Cycloid::~Cycloid(void)
 	Cycloid::cleanup();
 }
 
-bool		Cycloid::Init(void)
+bool		Cycloid::init(void)
 {
 	auto good = true;
 
@@ -71,7 +71,7 @@ bool		Cycloid::Init(void)
 	for (auto i = 0; i < MAX_VERTICIES; ++i)
 		_vertices[i].color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
-	return _IsInit = good;
+	return is_init_ = good;
 }
 
 bool		Cycloid::Update(void)

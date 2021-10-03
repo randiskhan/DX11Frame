@@ -4,7 +4,7 @@
 
 // ReSharper disable once CommentTypo
 class i_entity :  // NOLINT(cppcoreguidelines-special-member-functions)
-	public IInitializable,
+	public i_initializable,
 	public IUpdateable,
 	public IRenderable,
 	public i_cleanupable

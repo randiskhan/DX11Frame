@@ -1,18 +1,22 @@
 #pragma once
-class IInitializable
+
+// ReSharper disable once CommentTypo
+class i_initializable  // NOLINT(cppcoreguidelines-special-member-functions)
 {
+
 protected:
-	bool			_IsInit;
+	bool			is_init_;
 
 public:
 
 	// Construction/Destruction
-	IInitializable(void) : _IsInit(false) {}
-	virtual			~IInitializable(void) {};
+	i_initializable() : is_init_(false) {}
+	virtual			~i_initializable() = default;
 
 	// Pure virtual members
-	virtual bool	Init(void) = 0;
+	virtual bool	init() = 0;
 
 	// Instance members
-	bool			IsInit(void) { return _IsInit; }
+	bool			is_init() const { return is_init_; }
+
 };

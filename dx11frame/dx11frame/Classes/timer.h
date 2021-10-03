@@ -10,7 +10,7 @@ using namespace std::chrono;
 
 // ReSharper disable once CommentTypo
 class timer final :  // NOLINT(cppcoreguidelines-special-member-functions)
-	public IInitializable, public IUpdateable, public i_cleanupable
+	public i_initializable, public IUpdateable, public i_cleanupable
 {
 
 	high_resolution_clock::time_point	init_time_point_{};
@@ -21,7 +21,7 @@ public:
 	timer();
 	~timer() override;
 
-	bool	Init() override;
+	bool	init() override;
 	bool	Update() override;
 	void	cleanup() override;
 

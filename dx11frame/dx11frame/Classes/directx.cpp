@@ -45,7 +45,7 @@ void directx::cleanup(void)
 
 #pragma region Initialization
 
-bool	directx::Init(void)
+bool	directx::init(void)
 {
 
 	auto good = true;
@@ -129,7 +129,7 @@ bool	directx::Init(void)
 
 	if (FAILED(hr)) good = false;
 
-	return _IsInit = good;
+	return is_init_ = good;
 
 }
 
@@ -213,7 +213,7 @@ bool	directx::reset(const int x, const int y)
 
 	if (FAILED(hr)) good &= false;
 
-	return _IsInit = good;
+	return is_init_ = good;
 
 }
 

@@ -15,7 +15,7 @@ public:
 	DebugText(dx11_frame* pCDX11Frame);
 	virtual ~DebugText(void);
 
-	bool	Init(void);
+	bool	init(void);
 	bool	Update(void);
 	bool	Render(void);
 	void	cleanup(void);

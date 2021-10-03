@@ -39,10 +39,10 @@ bool CApp::post_init(void)
 	auto good = true;
 
 	_pDebugText.reset(new DebugText(this));
-	if (!(_pDebugText && _pDebugText->IsInit()))
+	if (!(_pDebugText && _pDebugText->is_init()))
 		good &= false;
 	_pCycloid.reset(new Cycloid(this));
-	if (!(_pCycloid && _pCycloid->IsInit()))
+	if (!(_pCycloid && _pCycloid->is_init()))
 		good &= false;
 
 	_pDebugText->SetDoUpdate(true);

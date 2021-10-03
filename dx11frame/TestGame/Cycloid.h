@@ -119,7 +119,7 @@ public:
 	Cycloid(dx11_frame* pCDX11Frame);
 	virtual ~Cycloid(void);
 
-	bool	Init(void);
+	bool	init(void);
 	bool	Update(void);
 	bool	Render(void);
 	void	cleanup(void);

@@ -5,7 +5,7 @@
 
 timer::timer()
 {
-	Init();
+	init();
 }
 
 timer::~timer()
@@ -13,19 +13,19 @@ timer::~timer()
 	cleanup();
 }
 
-bool	timer::Init()
+bool	timer::init()
 {
 
-	_IsInit = false;
+	is_init_ = false;
 
 	init_time_point_ = 
 		time_point_previous_ = 
 		time_point_current_ = 
 		high_resolution_clock::now();
 
-	_IsInit = true;
+	is_init_ = true;
 
-	return _IsInit;
+	return is_init_;
 
 }
 
