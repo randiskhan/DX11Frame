@@ -1,7 +1,7 @@
-// CApp.cpp
+// app.cpp
 // Implementation file for app.
 
-#include "CApp.h"
+#include "app.h"
 
 app::app() = default;
 

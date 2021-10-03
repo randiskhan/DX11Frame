@@ -89,13 +89,13 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CApp.cpp" />
+    <ClCompile Include="app.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="Cycloid.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CApp.h" />
+    <ClInclude Include="app.h" />
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="Cycloid.h" />
   </ItemGroup>

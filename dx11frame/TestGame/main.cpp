@@ -1,7 +1,7 @@
 //	main.cpp
 //	Entry point for executable.
 
-#include "CApp.h"
+#include "app.h"
 
 int WINAPI WinMain(
 	HINSTANCE	/*hInstance*/,
