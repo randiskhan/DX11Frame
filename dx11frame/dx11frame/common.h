@@ -16,7 +16,7 @@
 // DX11Frame interface headers.
 #include "i_initializable.h"
 #include "IUpdateable.h"
-#include "IRenderable.h"
+#include "i_renderable.h"
 #include "i_cleanupable.h"
 // DirectXTK headers.
 #include "Audio.h"

@@ -11,9 +11,6 @@
     <ClInclude Include="Interfaces\IUpdateable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IRenderable.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="Classes\dx11_frame.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -30,6 +27,9 @@
       <Filter>Interfaces</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\i_initializable.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\i_renderable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
