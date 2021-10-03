@@ -71,7 +71,8 @@ protected:
 private:
 	bool			main_loop_iteration();
 
-	// Win32 message handler basic implementation. Available for overriding in CAppBase child classes.
+	// Win32 message handler basic implementation. Available for overriding
+	// in dx11_frame child classes.
 	virtual LRESULT CALLBACK	msg_proc(HWND, UINT, WPARAM, LPARAM);
 
 	bool			init_base();

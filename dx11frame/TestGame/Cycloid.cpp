@@ -3,6 +3,8 @@
 
 #include "Cycloid.h"
 
+using namespace dx11_frame_helpers;
+
 Cycloid::Cycloid(dx11_frame* pCDX11Frame) : i_entity(pCDX11Frame)
 {
 	Cycloid::init();
@@ -92,12 +94,12 @@ bool		Cycloid::update(void)
 		}
 	}
 	auto lerpAmt = (t - _TimeStampNewCycloid) / (_TimeDeltaNewCycloid - 2.0);
-	_CycloidCurrent.ArmLength = InterpolateCos(_CycloidPrevious.ArmLength, _CycloidNext.ArmLength, lerpAmt);
-	_CycloidCurrent.Radius2 = InterpolateCos(_CycloidPrevious.Radius2, _CycloidNext.Radius2, lerpAmt);
-	_CycloidCurrent.Cycles = InterpolateCos(_CycloidPrevious.Cycles, _CycloidNext.Cycles, lerpAmt);
-	_CycloidCurrent.r = InterpolateCos(_CycloidPrevious.r, _CycloidNext.r, (float)lerpAmt);
-	_CycloidCurrent.g = InterpolateCos(_CycloidPrevious.g, _CycloidNext.g, (float)lerpAmt);
-	_CycloidCurrent.b = InterpolateCos(_CycloidPrevious.b, _CycloidNext.b, (float)lerpAmt);
+	_CycloidCurrent.ArmLength = interpolate_cos(_CycloidPrevious.ArmLength, _CycloidNext.ArmLength, lerpAmt);
+	_CycloidCurrent.Radius2 = interpolate_cos(_CycloidPrevious.Radius2, _CycloidNext.Radius2, lerpAmt);
+	_CycloidCurrent.Cycles = interpolate_cos(_CycloidPrevious.Cycles, _CycloidNext.Cycles, lerpAmt);
+	_CycloidCurrent.r = interpolate_cos(_CycloidPrevious.r, _CycloidNext.r, (float)lerpAmt);
+	_CycloidCurrent.g = interpolate_cos(_CycloidPrevious.g, _CycloidNext.g, (float)lerpAmt);
+	_CycloidCurrent.b = interpolate_cos(_CycloidPrevious.b, _CycloidNext.b, (float)lerpAmt);
 
 	CalculateRawVerticies(
 		_CycloidCurrent,
@@ -138,7 +140,7 @@ bool		Cycloid::render(void)
 
 void		Cycloid::cleanup(void)
 {
-	SafeRelease(_pID3D11InputLayout);
+	safe_release(_pID3D11InputLayout);
 }
 
 #pragma region Private methods
@@ -150,9 +152,9 @@ void		Cycloid::ColorVerticiesByAnglePosition(
 {
 	for (auto i = 0; i < cycloid.NumberOfVerticies; ++i)
 	{
-		vert[i].color.x = (float)NormSin(raw[i].a);
-		vert[i].color.y = (float)NormSin((raw[i].a) + (XM_2PI / 3.0));
-		vert[i].color.z = (float)NormSin((raw[i].a) + (XM_2PI * 2.0 / 3.0));
+		vert[i].color.x = (float)norm_sin(raw[i].a);
+		vert[i].color.y = (float)norm_sin((raw[i].a) + (XM_2PI / 3.0));
+		vert[i].color.z = (float)norm_sin((raw[i].a) + (XM_2PI * 2.0 / 3.0));
 	}
 }
 
@@ -163,9 +165,9 @@ void		Cycloid::ColorVerticiesByPolarCoordinates(
 {
 	for (auto i = 0; i < cycloid.NumberOfVerticies; ++i)
 	{
-		vert[i].color.x = (float)NormSin(raw[i].p);
-		vert[i].color.y = (float)NormSin((raw[i].p) + (XM_2PI / 3.0));
-		vert[i].color.z = (float)NormSin((raw[i].p) + (XM_2PI * 2.0 / 3.0));
+		vert[i].color.x = (float)norm_sin(raw[i].p);
+		vert[i].color.y = (float)norm_sin((raw[i].p) + (XM_2PI / 3.0));
+		vert[i].color.z = (float)norm_sin((raw[i].p) + (XM_2PI * 2.0 / 3.0));
 	}
 }
 

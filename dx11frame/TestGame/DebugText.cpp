@@ -3,6 +3,8 @@
 
 #include "DebugText.h"
 
+using namespace dx11_frame_helpers;
+
 DebugText::DebugText(dx11_frame* pCDX11Frame) : i_entity(pCDX11Frame)
 {
 	init();
@@ -41,11 +43,13 @@ bool		DebugText::update(void)
 	{
 		_msg =
 			L"Press escape to exit.\n" +
-			ToString(get_cdx11_frame()->get_input()->get_mouse_screen_pos()->x) +
+			dx11_frame_helpers::to_string(
+				get_cdx11_frame()->get_input()->get_mouse_screen_pos()->x) +
 			L"," +
-			ToString(get_cdx11_frame()->get_input()->get_mouse_screen_pos()->y) +
+			dx11_frame_helpers::to_string(
+				get_cdx11_frame()->get_input()->get_mouse_screen_pos()->y) +
 			L" - FPS: " +
-			ToString(fps);
+			dx11_frame_helpers::to_string(fps);
 	}
 
 	return good;

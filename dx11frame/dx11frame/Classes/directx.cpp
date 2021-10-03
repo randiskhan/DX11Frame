@@ -3,6 +3,8 @@
 
 #include "directx.h"
 
+using namespace dx11_frame_helpers;
+
 #pragma region Construction/Destruction
 
 directx::directx(const directx_data dd) :
@@ -28,17 +30,17 @@ directx::~directx(void)
 
 void directx::cleanup(void)
 {
-	SafeRelease(d3d11_device_);
+	safe_release(d3d11_device_);
 	if (d3d11_device_context_)
 		d3d11_device_context_->ClearState();
-	SafeRelease(d3d11_device_context_);
-	SafeRelease(dxgi_swap_chain_);
-	SafeRelease(d3d11_texture_2d_);
-	SafeRelease(d3d11_render_target_view_);
-	SafeRelease(d3d11_depth_stencil_view_);
-	SafeRelease(dxgi_device_);
-	SafeRelease(dxgi_adapter_);
-	SafeRelease(dxgi_factory_);
+	safe_release(d3d11_device_context_);
+	safe_release(dxgi_swap_chain_);
+	safe_release(d3d11_texture_2d_);
+	safe_release(d3d11_render_target_view_);
+	safe_release(d3d11_depth_stencil_view_);
+	safe_release(dxgi_device_);
+	safe_release(dxgi_adapter_);
+	safe_release(dxgi_factory_);
 }
 
 #pragma endregion
@@ -140,9 +142,9 @@ bool	directx::reset(const int x, const int y)
 
 	// Release the old views, as they hold references to the buffers we
 	// will be destroying.  Also release the old depth/stencil buffer.
-	SafeRelease(d3d11_render_target_view_);
-	SafeRelease(d3d11_depth_stencil_view_);
-	SafeRelease(d3d11_texture_2d_);
+	safe_release(d3d11_render_target_view_);
+	safe_release(d3d11_depth_stencil_view_);
+	safe_release(d3d11_texture_2d_);
 
 	HRESULT hr = dxgi_swap_chain_->ResizeBuffers(
 		1,
@@ -209,7 +211,7 @@ bool	directx::reset(const int x, const int y)
 
 		d3d11_device_context_->RSSetViewports(1, &screen_viewport_);
 	}
-	SafeRelease(back_buffer);
+	safe_release(back_buffer);
 
 	if (FAILED(hr)) good &= false;
 
