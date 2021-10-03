@@ -29,8 +29,8 @@ WPARAM dx11_frame::run()
 
 		// If a WM_QUIT message was received through message queue,
 		//	return the wParam. Otherwise, return zero. Advised by MSDN.
-		if (win32_->GetLastMsg()->message == WM_QUIT)
-			ret = win32_->GetLastMsg()->wParam;
+		if (win32_->get_last_msg()->message == WM_QUIT)
+			ret = win32_->get_last_msg()->wParam;
 	}
 
 	cleanup_base();
@@ -45,7 +45,7 @@ bool dx11_frame::main_loop_iteration()
 	bool good;
 
 	// Clear the message queue.
-	if ((good = win32_->MsgQueueProc()))
+	if ((good = win32_->msg_queue_proc()))
 	{
 		good = update_base();
 		good &= render_base();
@@ -71,13 +71,13 @@ bool dx11_frame::init_base()
 	if (!win32_) 
 		good = false;
 	if (good) 
-		good = get_win32()->Init();
+		good = get_win32()->init();
 
 	if (good)
 	{
 		// Make sure everyone is working with the same window.
-		input_data_.hwnd = get_win32()->GetWindow();
-		directx_data_.hwnd = get_win32()->GetWindow();
+		input_data_.hwnd = get_win32()->get_window();
+		directx_data_.hwnd = get_win32()->get_window();
 		// Synchronize window and back-buffer dimensions if desired.
 		if (directx_data_.use_hwnd_dimensions)
 		{
@@ -98,7 +98,7 @@ bool dx11_frame::init_base()
 	if (!input_) 
 		good = false;
 	if (good) 
-		good = get_input()->init();
+		good = get_input()->init();  // NOLINT(readability-static-accessed-through-instance)
 
 	// DirectXTK object creation
 	if (good) 

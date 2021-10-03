@@ -4,102 +4,129 @@
 #include "win32.h"
 
 #pragma region Construction/Destruction
-win32::win32(const win32_data wd) :
-_HWnd(nullptr),
-_IsInit(false)
+
+win32::win32(const win32_data& wd) :
+h_wnd_(nullptr),
+is_init_(false)
 {
-	ZeroMemory(&_msg, sizeof(MSG));
-	_CWin32Data = wd;
+	ZeroMemory(&msg_, sizeof(MSG));
+	win32_data_ = wd;
 }
-win32::~win32(void)
+
+win32::~win32()
 {
-	Cleanup();
+	cleanup();
 }
+
 #pragma endregion
 
 #pragma region Initialization/Cleanup
-bool win32::Init(void)
+
+bool win32::init()
 {
+
 	auto good = true;
-	_HWnd = nullptr;
+	h_wnd_ = nullptr;
 
 	WNDCLASS wc;
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.lpfnWndProc = StaticMsgProc;
+	wc.lpfnWndProc = static_msg_proc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = HINST_THISCOMPONENT;
-	wc.hIcon = LoadIcon(0, IDI_APPLICATION);
-	wc.hCursor = LoadCursor(0, IDC_ARROW);
-	wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
-	wc.lpszMenuName = 0;
-	wc.lpszClassName = _CWin32Data.wndClassName.c_str();
+	wc.hIcon = LoadIcon(nullptr, IDI_APPLICATION);
+	wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+	wc.hbrBackground = static_cast<HBRUSH>(GetStockObject(NULL_BRUSH));
+	wc.lpszMenuName = nullptr;
+	wc.lpszClassName = win32_data_.wnd_class_name.c_str();
 
-	auto atom = RegisterClass(&wc);
+	const auto atom = RegisterClass(&wc);
 	if (!atom) good &= false;
 
-	RECT rect = { 0, 0, _CWin32Data.width, _CWin32Data.height };
+	RECT rect = 
+	{
+		0,
+		0,
+		win32_data_.width,
+		win32_data_.height
+	};
 
-	// Added the extra evaluation operator to clear warning for mixing 'bool' and 'BOOL' types.
+	// Added the extra evaluation operator to clear warning for mixing 'bool'
+	// and 'BOOL' types.
 	if (good)
 		good &= (0 < AdjustWindowRect(
 		&rect,
-		_CWin32Data.windowStyle,
-		_CWin32Data.isWindowMenu));
+		win32_data_.window_style,
+		win32_data_.is_window_menu));
 
 	if (good)
-		_HWnd = CreateWindow(
-		_CWin32Data.wndClassName.c_str(),
-		_CWin32Data.wndTitle.c_str(),
-		_CWin32Data.windowStyle,
+		h_wnd_ = CreateWindow(
+		win32_data_.wnd_class_name.c_str(),
+		win32_data_.wnd_title.c_str(),
+		win32_data_.window_style,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		rect.right - rect.left,
 		rect.bottom - rect.top,
-		0,
-		0,
+		nullptr,
+		nullptr,
 		HINST_THISCOMPONENT,
-		0);
-	if (!_HWnd) good &= false;
+		nullptr);
+	if (!h_wnd_) good &= false;
 
 	// Store a reference to this win32 object in the window's GWL_USERDATA
 	//	so we can call a member method to handle Win32 messages.
 	if (good)
 	{
 		SetLastError(0);
-		// Store a pointer to this object to use a memmber message handler.
-		auto lresult = SetWindowLong(_HWnd, GWL_USERDATA, (LONG)this);
-		if (lresult == 0 && GetLastError() != 0) good = false;
+		// Store a pointer to this object to use a member message handler.
+		const auto l_result = 
+			SetWindowLong(
+				h_wnd_, 
+				GWL_USERDATA, 
+				reinterpret_cast<LONG>(this));
+		if (l_result == 0 && GetLastError() != 0) good = false;
 	}
 
-	ShowWindow(_HWnd, SW_SHOW);
-	// Removing this UpdateWindow call for now.
-	//if (good) good &= UpdateWindow(_HWnd);
+	if (h_wnd_)
+		ShowWindow(h_wnd_, SW_SHOW);
 
-	return _IsInit = good;
+	return is_init_ = good;
+
 }
-void win32::Cleanup(void)
+
+void win32::cleanup()
 {
 }
+
 #pragma endregion
 
 #pragma region Win32 message processing
-bool win32::MsgQueueProc(void)
+
+bool win32::msg_queue_proc()
 {
-	while (PeekMessage(&_msg, nullptr, 0, 0, PM_REMOVE))
+	while (PeekMessage(
+		&msg_, 
+		nullptr, 
+		0, 
+		0, 
+		PM_REMOVE))
 	{
-		TranslateMessage(&_msg);
-		DispatchMessage(&_msg);
-		if (_msg.message == WM_QUIT) return false;
+		TranslateMessage(&msg_);
+		DispatchMessage(&msg_);
+		if (msg_.message == WM_QUIT) 
+			return false;
 	}
 	return true;
 }
-/*static*/ LRESULT CALLBACK win32::StaticMsgProc(
-	HWND hwnd,
-	UINT msg,
-	WPARAM wParam,
-	LPARAM lParam)
+
+/*static*/ LRESULT CALLBACK win32::static_msg_proc(
+	const HWND hwnd, // NOLINT(misc-misplaced-const)
+	const UINT msg,
+	const WPARAM w_param,
+	const LPARAM l_param)
 {
+
 	switch (msg)
 	{
 		case WM_SETCURSOR:
@@ -107,55 +134,65 @@ bool win32::MsgQueueProc(void)
 			SetCursor(nullptr);
 			return 0;
 		}
-		// This WM_DESTROY case left here to handle messages from window destruction
-		// just to be safe
+		// This WM_DESTROY case left here to handle messages from window
+		// destruction just to be safe.
 		case WM_DESTROY:
 		{
 			PostQuitMessage(0);
 			return 0;
 		}
+		default: ;
 	}
 #ifdef MEMBER_MSGPROC
 	// Only dispatch a message to the win32 object for this window
 	//	if it has a reference to one in its GWL_USERDATA.
 	if (GetWindowLong(hwnd, GWL_USERDATA))
 		return ((win32*)GetWindowLong(hwnd, GWL_USERDATA))->
-		MsgProc(hwnd, msg, wParam, lParam);
+		MsgProc(hwnd, msg, w_param, l_param);
 	else
 #endif
-		return DefWindowProc(hwnd, msg, wParam, lParam);
+		return DefWindowProc(hwnd, msg, w_param, l_param);
+
 }
-LRESULT CALLBACK win32::MsgProc(
-	HWND hwnd,
-	UINT msg,
-	WPARAM wParam,
-	LPARAM lParam)
+
+LRESULT CALLBACK win32::msg_proc(
+	const HWND hwnd,  // NOLINT(misc-misplaced-const)
+	const UINT msg,
+	const WPARAM w_param,
+	const LPARAM l_param) const
 {
-	// Only dispatch a message to the i_win32_app object if we have a reference.
-	if (_CWin32Data.pICWin32App)
-		return _CWin32Data.pICWin32App->msg_proc(hwnd, msg, wParam, lParam);
+	// Only dispatch a message to the i_win32_app object if we have a
+	// reference.
+	if (win32_data_.i_win32_app)
+		return win32_data_.i_win32_app->msg_proc(hwnd, msg, w_param, l_param);
 	else
-		return DefWindowProc(hwnd, msg, wParam, lParam);
+		return DefWindowProc(hwnd, msg, w_param, l_param);
 }
+
 #pragma endregion
 
 #pragma region Set/Get methods
-HWND	win32::GetWindow(void)
+
+HWND	win32::get_window() const
 {
-	return _HWnd;
+	return h_wnd_;
 }
-MSG*	win32::GetLastMsg(void)
+
+MSG*	win32::get_last_msg()
 {
-	return &_msg;
+	return &msg_;
 }
-bool	win32::IsInit(void)
+
+bool	win32::is_init() const
 {
-	return _IsInit;
+	return is_init_;
 }
-RECT	win32::GetScreenRect(void)
+
+RECT	win32::get_screen_rect() const
 {
-	RECT	ScreenRect;
-	GetClientRect(_HWnd, &ScreenRect);
-	return ScreenRect;
+	RECT	screen_rect;
+	GetClientRect(h_wnd_, &screen_rect);
+	return screen_rect;
 }
+
 #pragma endregion

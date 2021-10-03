@@ -17,6 +17,7 @@ struct input_data
 };
 
 // Class for all input logic and objects
+// ReSharper disable once CommentTypo
 class input final  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 

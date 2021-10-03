@@ -17,8 +17,10 @@
 
 // Base class for "root" class/object in executable.
 #ifdef MEMBER_MSGPROC
+ // ReSharper disable once CommentTypo
 class dx11_frame : public i_win32_app  // NOLINT(cppcoreguidelines-special-member-functions)
 #else
+// ReSharper disable once CommentTypo
 class dx11_frame  // NOLINT(cppcoreguidelines-special-member-functions)
 #endif
 {

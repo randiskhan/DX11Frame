@@ -43,7 +43,7 @@ bool		Cycloid::Init(void)
 	_pBasicEffect.reset(
 		new BasicEffect(GetCDX11Frame()->get_directx()->get_device()));
 
-	auto r = GetCDX11Frame()->get_win32()->GetScreenRect();
+	auto r = GetCDX11Frame()->get_win32()->get_screen_rect();
 
 	_pBasicEffect->SetProjection(
 		XMMatrixOrthographicOffCenterRH(
@@ -107,7 +107,7 @@ bool		Cycloid::Update(void)
 		_CycloidCurrent,
 		_verticesRaw,
 		_vertices,
-		GetCDX11Frame()->get_win32()->GetScreenRect());
+		GetCDX11Frame()->get_win32()->get_screen_rect());
 	for (auto i = 0; i < _CycloidCurrent.NumberOfVerticies; ++i)
 	{
 		_vertices[i].color.x = _CycloidCurrent.r;

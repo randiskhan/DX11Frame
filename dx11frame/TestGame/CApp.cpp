@@ -22,8 +22,8 @@ bool CApp::pre_init(void)
 	win32_data_.height = 1600;
 	directx_data_.start_windowed = true;
 #else
-	_CWin32Data.width = 1920;
-	_CWin32Data.height = 1080;
+	win32_data_.width = 1920;
+	win32_data_.height = 1080;
 	_CDirectXData.startWindowed = true;
 #endif
 	directx_data_.back_color = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
