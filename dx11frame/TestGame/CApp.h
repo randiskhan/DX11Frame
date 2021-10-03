@@ -1,7 +1,7 @@
-// CApp.h
-// Declaration file for CApp.
+// app.h
+// Declaration file for app.
 // "Root" class of executable.
-// This class must extend CAppBase.
+// This class must extend dx11_frame.
 
 #pragma once
 
@@ -11,21 +11,23 @@
 
 #pragma comment(lib, "dx11frame.lib")
 
-class CApp : public dx11_frame
+// ReSharper disable once CommentTypo
+class app final : public dx11_frame  // NOLINT(cppcoreguidelines-special-member-functions)
 {
-private:
-	unique_ptr<DebugText>		_pDebugText;
-	unique_ptr<Cycloid>			_pCycloid;
 
-	bool		TakeScreenshot(void);
+	unique_ptr<DebugText>		debug_text_{};
+	unique_ptr<Cycloid>			cycloid_{};
+
+	bool		take_screenshot() const;
 
 public:
-	CApp(void);
-	virtual ~CApp(void);
+	app();
+	~app() override;
 
-	bool		pre_init(void);
-	bool		post_init(void);
-	bool		update(void);
-	bool		render(void);
-	void		cleanup(void);
+	bool		pre_init() override;
+	bool		post_init() override;
+	bool		update() override;
+	bool		render() override;
+	void		cleanup() override;
+
 };

@@ -1,18 +1,19 @@
 // CApp.cpp
-// Implementation file for CApp.
+// Implementation file for app.
 
 #include "CApp.h"
 
-CApp::CApp(void)
-= default;
+app::app() = default;
 
-CApp::~CApp(void)
+app::~app()
 {
-	CApp::cleanup();
+	app::cleanup();
 }
 
-bool CApp::pre_init(void)
+bool app::pre_init()
 {
+
+	// ReSharper disable once CppLocalVariableMayBeConst
 	auto good = true;
 
 	srand(static_cast<unsigned int>(time(nullptr)));  // NOLINT(cert-msc51-cpp)
@@ -32,28 +33,32 @@ bool CApp::pre_init(void)
 	debug_spritefont_path_ = L"assets\\debug.spritefont";
 
 	return good;
+
 }
 
-bool CApp::post_init(void)
+bool app::post_init()
 {
+
 	auto good = true;
 
-	_pDebugText.reset(new DebugText(this));
-	if (!(_pDebugText && _pDebugText->is_init()))
+	debug_text_.reset(new DebugText(this));
+	if (!(debug_text_ && debug_text_->is_init()))
 		good &= false;
-	_pCycloid.reset(new Cycloid(this));
-	if (!(_pCycloid && _pCycloid->is_init()))
+	cycloid_.reset(new Cycloid(this));
+	if (!(cycloid_ && cycloid_->is_init()))
 		good &= false;
 
-	_pDebugText->set_do_update(true);
-	_pCycloid->set_do_update(true);
-	_pCycloid->set_do_render(true);
+	debug_text_->set_do_update(true);
+	cycloid_->set_do_update(true);
+	cycloid_->set_do_render(true);
 
 	return good;
+
 }
 
-bool CApp::update(void)
+bool app::update()
 {
+
 	auto good = true;
 
 	// Quit application.
@@ -61,49 +66,61 @@ bool CApp::update(void)
 		post_quit();
 	// Take a screenshot. Overwrites previous screenshot.
 	if (get_input()->is_key_down_since_last_frame(VK_SNAPSHOT))
-		TakeScreenshot();
+		// ReSharper disable once CppExpressionWithoutSideEffects
+		take_screenshot();
 	// Hold spacebar to show debug text.
 	if (get_input()->is_key_down(VK_SPACE))
-		_pDebugText->set_do_render(true);
+		debug_text_->set_do_render(true);
 	else
-		_pDebugText->set_do_render(false);
+		debug_text_->set_do_render(false);
 
-	if (good && _pDebugText->get_do_update()) good &= _pDebugText->update();
-	if (good && _pCycloid->get_do_update()) good &= _pCycloid->update();
+	if (good && debug_text_->get_do_update()) good &= debug_text_->update();
+	if (good && cycloid_->get_do_update()) good &= cycloid_->update();
 
 	return good;
+
 }
 
-bool CApp::render(void)
+bool app::render()
 {
+
 	auto good = true;
 
 	get_sprite_batch()->Begin();
-	if (good && _pDebugText->get_do_render()) good &= _pDebugText->render();
-	if (good && _pCycloid->get_do_render()) good &= _pCycloid->render();
+	if (good && debug_text_->get_do_render()) good &= debug_text_->render();
+	if (good && cycloid_->get_do_render()) good &= cycloid_->render();
 	get_sprite_batch()->End();
 
 	return good;
+
 }
 
-void CApp::cleanup(void)
+void app::cleanup()
 {
 }
 
-// Save the backbuffer to a .bmp file.
-bool CApp::TakeScreenshot(void)
+// Save the back buffer to a .bmp file.
+bool app::take_screenshot() const
 {
+
 	auto good = true;
 
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
-	auto hr = get_directx()->get_swap_chain()->GetBuffer(0, __uuidof(ID3D11Texture2D),
-	                                                   reinterpret_cast<LPVOID*>(backBuffer.GetAddressOf()));
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> back_buffer;
+	auto hr = 
+		get_directx()->get_swap_chain()->GetBuffer(
+			0,
+			__uuidof(ID3D11Texture2D),
+	        reinterpret_cast<LPVOID*>(back_buffer.GetAddressOf()));
 	if (SUCCEEDED(hr))
 	{
-		hr = SaveWICTextureToFile(get_directx()->get_context(), backBuffer.Get(),
-			GUID_ContainerFormatBmp, L"screenshot.bmp");
+		hr = SaveWICTextureToFile(
+			get_directx()->get_context(), 
+			back_buffer.Get(),
+			GUID_ContainerFormatBmp, 
+			L"screenshot.bmp");
 	}
 	if (FAILED(hr)) good = false;
 
 	return good;
+
 }
