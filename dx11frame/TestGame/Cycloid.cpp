@@ -10,7 +10,7 @@ Cycloid::Cycloid(dx11_frame* pCDX11Frame) : IEntity(pCDX11Frame)
 
 Cycloid::~Cycloid(void)
 {
-	Cycloid::Cleanup();
+	Cycloid::cleanup();
 }
 
 bool		Cycloid::Init(void)
@@ -136,7 +136,7 @@ bool		Cycloid::Render(void)
 	return good;
 }
 
-void		Cycloid::Cleanup(void)
+void		Cycloid::cleanup(void)
 {
 	SafeRelease(_pID3D11InputLayout);
 }

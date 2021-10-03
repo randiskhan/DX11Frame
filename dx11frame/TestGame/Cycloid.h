@@ -122,7 +122,7 @@ public:
 	bool	Init(void);
 	bool	Update(void);
 	bool	Render(void);
-	void	Cleanup(void);
+	void	cleanup(void);
 
 private:
 	void	CalculateRawVerticies(

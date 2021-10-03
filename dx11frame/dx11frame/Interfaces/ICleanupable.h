@@ -1,12 +1,15 @@
 #pragma once
-class ICleanupable
-{
-public:
 
+// ReSharper disable once CommentTypo
+class i_cleanupable  // NOLINT(cppcoreguidelines-special-member-functions)
+{
+
+public:
 	// Construction/Destruction
-	ICleanupable(void) {}
-	virtual ~ICleanupable(void) {};
+	i_cleanupable() = default;
+	virtual ~i_cleanupable() = default;
 
 	// Pure virtual members
-	virtual void Cleanup(void) = 0;
+	virtual void cleanup() = 0;
+
 };

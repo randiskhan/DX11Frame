@@ -2,7 +2,7 @@
 
 #include "dx11_frame.h"
 
-class IEntity : public IInitializable, public IUpdateable, public IRenderable, public ICleanupable
+class IEntity : public IInitializable, public IUpdateable, public IRenderable, public i_cleanupable
 {
 public:
 	IEntity(dx11_frame* pCAppBase) : _pCDX11Frame(pCAppBase) {}

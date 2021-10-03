@@ -8,7 +8,7 @@
 
 class DebugText : public IEntity
 {
-private:
+
 	wstring		_msg;
 
 public:
@@ -18,5 +18,6 @@ public:
 	bool	Init(void);
 	bool	Update(void);
 	bool	Render(void);
-	void	Cleanup(void);
+	void	cleanup(void);
+
 };

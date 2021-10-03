@@ -10,7 +10,7 @@ timer::timer()
 
 timer::~timer()
 {
-	Cleanup();
+	cleanup();
 }
 
 bool	timer::Init()
@@ -39,7 +39,7 @@ bool	timer::Update()
 
 }
 
-void	timer::Cleanup()
+void	timer::cleanup()
 {
 }
 

@@ -10,7 +10,7 @@ DebugText::DebugText(dx11_frame* pCDX11Frame) : IEntity(pCDX11Frame)
 
 DebugText::~DebugText(void)
 {
-	Cleanup();
+	cleanup();
 }
 
 bool		DebugText::Init(void)
@@ -63,6 +63,6 @@ bool		DebugText::Render(void)
 	return good;
 }
 
-void		DebugText::Cleanup(void)
+void		DebugText::cleanup(void)
 {
 }
