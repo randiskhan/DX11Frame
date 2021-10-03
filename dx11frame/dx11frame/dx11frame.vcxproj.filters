@@ -20,9 +20,6 @@
     <ClInclude Include="Interfaces\IEntity.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\ICleanupable.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="Classes\dx11_frame.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -31,6 +28,9 @@
     </ClInclude>
     <ClInclude Include="Classes\win32.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\i_cleanupable.h">
+      <Filter>Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
