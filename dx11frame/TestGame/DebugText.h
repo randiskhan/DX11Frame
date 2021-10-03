@@ -6,7 +6,7 @@
 #include "dx11_frame.h"
 #include "IEntity.h"
 
-class DebugText : public IEntity
+class DebugText : public i_entity
 {
 
 	wstring		_msg;

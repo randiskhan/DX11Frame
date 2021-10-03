@@ -94,7 +94,7 @@ struct CycloidParameters
 	}
 };
 
-class Cycloid : public IEntity
+class Cycloid : public i_entity
 {
 private:
 	unique_ptr<PrimitiveBatch<VertexPositionColor>>	_pPrimtiveBatch;
