@@ -45,8 +45,8 @@ bool CApp::post_init(void)
 	if (!(_pCycloid && _pCycloid->is_init()))
 		good &= false;
 
-	_pDebugText->SetDoUpdate(true);
-	_pCycloid->SetDoUpdate(true);
+	_pDebugText->set_do_update(true);
+	_pCycloid->set_do_update(true);
 	_pCycloid->set_do_render(true);
 
 	return good;
@@ -68,8 +68,8 @@ bool CApp::update(void)
 	else
 		_pDebugText->set_do_render(false);
 
-	if (good && _pDebugText->GetDoUpdate()) good &= _pDebugText->Update();
-	if (good && _pCycloid->GetDoUpdate()) good &= _pCycloid->Update();
+	if (good && _pDebugText->get_do_update()) good &= _pDebugText->update();
+	if (good && _pCycloid->get_do_update()) good &= _pCycloid->update();
 
 	return good;
 }

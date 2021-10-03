@@ -29,7 +29,7 @@ bool	timer::init()
 
 }
 
-bool	timer::Update()
+bool	timer::update()
 {
 
 	time_point_previous_ = time_point_current_;

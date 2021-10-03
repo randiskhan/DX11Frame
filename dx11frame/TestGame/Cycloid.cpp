@@ -74,7 +74,7 @@ bool		Cycloid::init(void)
 	return is_init_ = good;
 }
 
-bool		Cycloid::Update(void)
+bool		Cycloid::update(void)
 {
 	auto good = true;
 

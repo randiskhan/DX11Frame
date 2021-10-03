@@ -1,19 +1,23 @@
 #pragma once
-class IUpdateable
+
+// ReSharper disable once CommentTypo
+class i_updateable  // NOLINT(cppcoreguidelines-special-member-functions)
 {
+
 protected:
-	bool			_DoUpdate;
+	bool			do_update_;
 
 public:
 
 	// Construction/Destruction
-	IUpdateable(void) : _DoUpdate(false) {}
-	virtual			~IUpdateable(void) {};
+	i_updateable() : do_update_(false) {}
+	virtual			~i_updateable() = default;
 
 	// Pure virtual members
-	virtual bool	Update(void) = 0;
+	virtual bool	update() = 0;
 
 	// Instance members
-	void			SetDoUpdate(bool update) { _DoUpdate = update; }
-	bool			GetDoUpdate(void) { return _DoUpdate; }
+	void			set_do_update(const bool update) { do_update_ = update; }
+	bool			get_do_update() const { return do_update_; }
+
 };

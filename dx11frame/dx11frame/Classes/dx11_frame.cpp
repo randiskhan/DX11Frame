@@ -124,7 +124,7 @@ bool dx11_frame::update_base()
 
 	auto good = true;
 
-	good &= get_timer()->Update();
+	good &= get_timer()->update();
 	if (good) good = get_input()->update();
 	if (good) good = update();
 

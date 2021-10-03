@@ -16,7 +16,7 @@ public:
 	virtual ~DebugText(void);
 
 	bool	init(void);
-	bool	Update(void);
+	bool	update(void);
 	bool	render(void);
 	void	cleanup(void);
 

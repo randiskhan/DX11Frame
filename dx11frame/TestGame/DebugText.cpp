@@ -22,7 +22,7 @@ bool		DebugText::init(void)
 	return is_init_ = good;
 }
 
-bool		DebugText::Update(void)
+bool		DebugText::update(void)
 {
 	auto good = true;
 	static auto count = 0; ++count;
@@ -37,7 +37,7 @@ bool		DebugText::Update(void)
 		last += interval;
 	}
 
-	if (GetDoUpdate())
+	if (get_do_update())
 	{
 		_msg =
 			L"Press escape to exit.\n" +
