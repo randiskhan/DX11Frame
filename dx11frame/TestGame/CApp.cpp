@@ -18,8 +18,8 @@ bool CApp::pre_init(void)
 	srand(static_cast<unsigned int>(time(nullptr)));  // NOLINT(cert-msc51-cpp)
 
 #if defined(_DEBUG)
-	win32_data_.width = 800;
-	win32_data_.height = 800;
+	win32_data_.width = 1600;
+	win32_data_.height = 1600;
 	directx_data_.start_windowed = true;
 #else
 	_CWin32Data.width = 1920;
