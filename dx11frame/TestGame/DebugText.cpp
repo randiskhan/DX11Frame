@@ -51,7 +51,7 @@ bool		DebugText::Update(void)
 	return good;
 }
 
-bool		DebugText::Render(void)
+bool		DebugText::render(void)
 {
 	auto good = true;
 

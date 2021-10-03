@@ -118,7 +118,7 @@ bool		Cycloid::Update(void)
 	return good;
 }
 
-bool		Cycloid::Render(void)
+bool		Cycloid::render(void)
 {
 	auto good = true;
 

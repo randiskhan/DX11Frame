@@ -1,19 +1,23 @@
 #pragma once
-class IRenderable
+
+// ReSharper disable once CommentTypo
+class i_renderable  // NOLINT(cppcoreguidelines-special-member-functions)
 {
+
 protected:
-	bool			_DoRender;
+	bool			do_render_;
 
 public:
 
 	// Construction/Destruction
-	IRenderable(void) :_DoRender(false) {}
-	virtual			~IRenderable(void) {};
+	i_renderable() :do_render_(false) {}
+	virtual			~i_renderable() = default;
 
 	// Pure virtual members
-	virtual bool	Render(void) = 0;
+	virtual bool	render() = 0;
 
 	// Instance members
-	void			SetDoRender(bool render) { _DoRender = render; }
-	bool			GetDoRender(void) { return _DoRender; }
+	void			set_do_render(const bool render) { do_render_ = render; }
+	bool			get_do_render() const { return do_render_; }
+
 };

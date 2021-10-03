@@ -14,7 +14,7 @@
 // Windows headers
 #include <wincodec.h> // Needed for DirectXTK ScreenGrab.
 // DX11Frame interface headers.
-#include "IInitializable.h"
+#include "i_initializable.h"
 #include "IUpdateable.h"
 #include "IRenderable.h"
 #include "i_cleanupable.h"

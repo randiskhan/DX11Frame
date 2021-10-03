@@ -17,7 +17,7 @@ public:
 
 	bool	init(void);
 	bool	Update(void);
-	bool	Render(void);
+	bool	render(void);
 	void	cleanup(void);
 
 };

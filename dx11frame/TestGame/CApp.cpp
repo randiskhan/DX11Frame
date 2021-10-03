@@ -47,7 +47,7 @@ bool CApp::post_init(void)
 
 	_pDebugText->SetDoUpdate(true);
 	_pCycloid->SetDoUpdate(true);
-	_pCycloid->SetDoRender(true);
+	_pCycloid->set_do_render(true);
 
 	return good;
 }
@@ -64,9 +64,9 @@ bool CApp::update(void)
 		TakeScreenshot();
 	// Hold spacebar to show debug text.
 	if (get_input()->is_key_down(VK_SPACE))
-		_pDebugText->SetDoRender(true);
+		_pDebugText->set_do_render(true);
 	else
-		_pDebugText->SetDoRender(false);
+		_pDebugText->set_do_render(false);
 
 	if (good && _pDebugText->GetDoUpdate()) good &= _pDebugText->Update();
 	if (good && _pCycloid->GetDoUpdate()) good &= _pCycloid->Update();
@@ -79,8 +79,8 @@ bool CApp::render(void)
 	auto good = true;
 
 	get_sprite_batch()->Begin();
-	if (good && _pDebugText->GetDoRender()) good &= _pDebugText->Render();
-	if (good && _pCycloid->GetDoRender()) good &= _pCycloid->Render();
+	if (good && _pDebugText->get_do_render()) good &= _pDebugText->render();
+	if (good && _pCycloid->get_do_render()) good &= _pCycloid->render();
 	get_sprite_batch()->End();
 
 	return good;

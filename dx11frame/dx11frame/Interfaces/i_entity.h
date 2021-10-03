@@ -6,7 +6,7 @@
 class i_entity :  // NOLINT(cppcoreguidelines-special-member-functions)
 	public i_initializable,
 	public IUpdateable,
-	public IRenderable,
+	public i_renderable,
 	public i_cleanupable
 {
 
