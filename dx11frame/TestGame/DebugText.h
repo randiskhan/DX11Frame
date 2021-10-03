@@ -4,7 +4,7 @@
 #pragma once
 
 #include "dx11_frame.h"
-#include "IEntity.h"
+#include "i_entity.h"
 
 class DebugText : public i_entity
 {

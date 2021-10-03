@@ -10,7 +10,7 @@
 #define MAX_CYCLES 24
 
 #include "dx11_frame.h"
-#include "IEntity.h"
+#include "i_entity.h"
 
 struct DoublePoint
 {

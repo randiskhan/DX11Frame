@@ -17,9 +17,6 @@
     <ClInclude Include="Interfaces\IRenderable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="Interfaces\IEntity.h">
-      <Filter>Interfaces</Filter>
-    </ClInclude>
     <ClInclude Include="Classes\dx11_frame.h">
       <Filter>Classes</Filter>
     </ClInclude>
@@ -30,6 +27,9 @@
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="Interfaces\i_cleanupable.h">
+      <Filter>Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces\i_entity.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
   </ItemGroup>
