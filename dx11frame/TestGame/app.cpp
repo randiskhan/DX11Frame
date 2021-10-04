@@ -19,13 +19,13 @@ bool app::pre_init()
 	srand(static_cast<unsigned int>(time(nullptr)));  // NOLINT(cert-msc51-cpp)
 
 #if defined(_DEBUG)
-	win32_data_.width = 1600;
-	win32_data_.height = 1600;
+	win32_data_.width = 800;
+	win32_data_.height = 800;
 	directx_data_.start_windowed = true;
 #else
-	win32_data_.width = 1920;
-	win32_data_.height = 1080;
-	_CDirectXData.startWindowed = true;
+	win32_data_.width = 800;
+	win32_data_.height = 800;
+	directx_data_.start_windowed = true;
 #endif
 	directx_data_.back_color = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
 
