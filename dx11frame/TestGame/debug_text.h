@@ -1,23 +1,23 @@
-// DebugText.h
-// Declaration file for DebugText.
+// debug_text.h
+// Declaration file for debug_text.
 
 #pragma once
 
 #include "dx11_frame.h"
 #include "i_entity.h"
 
-class DebugText : public i_entity
+class debug_text final : public i_entity  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 
-	wstring		_msg;
+	wstring		msg_;
 
 public:
-	DebugText(dx11_frame* pCDX11Frame);
-	virtual ~DebugText(void);
+	explicit debug_text(dx11_frame* dx11_frame);
+	~debug_text() override;
 
-	bool	init(void);
-	bool	update(void);
-	bool	render(void);
-	void	cleanup(void);
+	bool	init() override;
+	bool	update() override;
+	bool	render() override;
+	void	cleanup() override;
 
 };

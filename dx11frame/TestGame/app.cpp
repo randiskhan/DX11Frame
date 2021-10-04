@@ -41,7 +41,7 @@ bool app::post_init()
 
 	auto good = true;
 
-	debug_text_.reset(new DebugText(this));
+	debug_text_.reset(new debug_text(this));
 	if (!(debug_text_ && debug_text_->is_init()))
 		good &= false;
 	centered_trochoid_.reset(new centered_trochoid(this));
