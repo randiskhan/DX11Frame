@@ -5,17 +5,17 @@
 
 using namespace dx11_frame_helpers;
 
-cycloid::cycloid(dx11_frame* dx11_frame) : i_entity(dx11_frame)
+hypocycloid::hypocycloid(dx11_frame* dx11_frame) : i_entity(dx11_frame)
 {
-	cycloid::init();
+	hypocycloid::init();
 }
 
-cycloid::~cycloid()
+hypocycloid::~hypocycloid()
 {
-	cycloid::cleanup();
+	hypocycloid::cleanup();
 }
 
-bool		cycloid::init()
+bool		hypocycloid::init()
 {
 
 	auto good = true;
@@ -23,20 +23,20 @@ bool		cycloid::init()
 	auto valid = false;
 	while (!valid)
 	{
-		random_cycloid(cycloid_previous_);
-		valid = cycloid_previous_.calculate_needed_cycles(max_cycles);
+		random_hypocycloid(hypocycloid_previous_);
+		valid = hypocycloid_previous_.calculate_needed_cycles(max_cycles);
 	}
 	valid = false;
 	while (!valid)
 	{
-		random_cycloid(cycloid_next_);
-		valid = cycloid_next_.calculate_needed_cycles(max_cycles);
+		random_hypocycloid(hypocycloid_next_);
+		valid = hypocycloid_next_.calculate_needed_cycles(max_cycles);
 	}
 
 	time_delta_morph_ = 1.0;
-	time_delta_new_cycloid_ = 15.0;
+	time_delta_new_hypocycloid_ = 15.0;
 	time_stamp_morph_ = 0;
-	time_stamp_new_cycloid_ = 0;
+	time_stamp_new_hypocycloid_ = 0;
 
 	primitive_batch_.reset(
 		new PrimitiveBatch<VertexPositionColor>(
@@ -81,7 +81,7 @@ bool		cycloid::init()
 
 }
 
-bool		cycloid::update()
+bool		hypocycloid::update()
 {
 
 	// ReSharper disable once CppLocalVariableMayBeConst
@@ -89,65 +89,65 @@ bool		cycloid::update()
 
 	const auto t = get_cdx11_frame()->get_timer()->get_total_elapsed();
 
-	if (time_stamp_new_cycloid_ + time_delta_new_cycloid_ < t)
+	if (time_stamp_new_hypocycloid_ + time_delta_new_hypocycloid_ < t)
 	{
-		time_stamp_new_cycloid_ = t;
-		cycloid_current_.copy_to(cycloid_previous_);
+		time_stamp_new_hypocycloid_ = t;
+		hypocycloid_current_.copy_to(hypocycloid_previous_);
 		auto valid = false;
 		while (!valid)
 		{
-			random_cycloid(cycloid_next_);
-			valid = cycloid_next_.calculate_needed_cycles(max_cycles);
+			random_hypocycloid(hypocycloid_next_);
+			valid = hypocycloid_next_.calculate_needed_cycles(max_cycles);
 		}
 	}
 	const auto lerp_amt = 
-		(t - time_stamp_new_cycloid_) / (time_delta_new_cycloid_ - 2.0);
-	cycloid_current_.arm_length = interpolate_cos(
-		cycloid_previous_.arm_length, 
-		cycloid_next_.arm_length, 
+		(t - time_stamp_new_hypocycloid_) / (time_delta_new_hypocycloid_ - 2.0);
+	hypocycloid_current_.arm_length = interpolate_cos(
+		hypocycloid_previous_.arm_length, 
+		hypocycloid_next_.arm_length, 
 		lerp_amt);
-	cycloid_current_.radius_2 = interpolate_cos(
-		cycloid_previous_.radius_2, 
-		cycloid_next_.radius_2, 
+	hypocycloid_current_.radius_2 = interpolate_cos(
+		hypocycloid_previous_.radius_2, 
+		hypocycloid_next_.radius_2, 
 		lerp_amt);
-	cycloid_current_.cycles = interpolate_cos(
-		cycloid_previous_.cycles, 
-		cycloid_next_.cycles, 
+	hypocycloid_current_.cycles = interpolate_cos(
+		hypocycloid_previous_.cycles, 
+		hypocycloid_next_.cycles, 
 		lerp_amt);
-	cycloid_current_.r = interpolate_cos(
-		cycloid_previous_.r, 
-		cycloid_next_.r, 
+	hypocycloid_current_.r = interpolate_cos(
+		hypocycloid_previous_.r, 
+		hypocycloid_next_.r, 
 		static_cast<float>(lerp_amt));
-	cycloid_current_.g = interpolate_cos(
-		cycloid_previous_.g, 
-		cycloid_next_.g, 
+	hypocycloid_current_.g = interpolate_cos(
+		hypocycloid_previous_.g, 
+		hypocycloid_next_.g, 
 		static_cast<float>(lerp_amt));
-	cycloid_current_.b = interpolate_cos(
-		cycloid_previous_.b, 
-		cycloid_next_.b, 
+	hypocycloid_current_.b = interpolate_cos(
+		hypocycloid_previous_.b, 
+		hypocycloid_next_.b, 
 		static_cast<float>(lerp_amt));
 
 	calculate_raw_vertices(
-		cycloid_current_,
+		hypocycloid_current_,
 		vertices_raw_,
 		max_vertices);
 	convert_to_screen(
-		cycloid_current_,
+		hypocycloid_current_,
 		vertices_raw_,
 		vertices_,
 		get_cdx11_frame()->get_win32()->get_screen_rect());
-	for (auto i = 0; i < cycloid_current_.number_of_vertices; ++i)
+	for (auto i = 0; i < hypocycloid_current_.number_of_vertices; ++i)
 	{
-		vertices_[i].color.x = cycloid_current_.r;
-		vertices_[i].color.y = cycloid_current_.g;
-		vertices_[i].color.z = cycloid_current_.b;
+		vertices_[i].color.x = hypocycloid_current_.r;
+		vertices_[i].color.y = hypocycloid_current_.g;
+		vertices_[i].color.z = hypocycloid_current_.b;
 	}
 
 	return good;
 
 }
 
-bool		cycloid::render()
+bool		hypocycloid::render()
 {
 
 	// ReSharper disable once CppLocalVariableMayBeConst
@@ -161,8 +161,8 @@ bool		cycloid::render()
 	primitive_batch_->Draw(
 		D3D10_PRIMITIVE_TOPOLOGY_LINESTRIP,
 		vertices_,
-		cycloid_current_.number_of_vertices + 
-			(cycloid_current_.copy_first_to_end ? 1 : 0)
+		hypocycloid_current_.number_of_vertices + 
+			(hypocycloid_current_.copy_first_to_end ? 1 : 0)
 		);
 	primitive_batch_->End();
 
@@ -170,20 +170,20 @@ bool		cycloid::render()
 
 }
 
-void		cycloid::cleanup()
+void		hypocycloid::cleanup()
 {
 	safe_release(i_d3d11_input_layout_);
 }
 
 #pragma region Private methods
 
-void		cycloid::color_vertices_by_angle_position(
-	const cycloid_parameters& cycloid,
+void		hypocycloid::color_vertices_by_angle_position(
+	const hypocycloid_parameters& hypocycloid,
 	double_point raw[],
 	VertexPositionColor vert[]) const
 {
 
-	for (auto i = 0; i < cycloid.number_of_vertices; ++i)
+	for (auto i = 0; i < hypocycloid.number_of_vertices; ++i)
 	{
 		vert[i].color.x = 
 			static_cast<float>(norm_sin(raw[i].a));
@@ -195,13 +195,13 @@ void		cycloid::color_vertices_by_angle_position(
 
 }
 
-void		cycloid::color_vertices_by_polar_coordinates(
-	const cycloid_parameters& cycloid,
+void		hypocycloid::color_vertices_by_polar_coordinates(
+	const hypocycloid_parameters& hypocycloid,
 	double_point raw[],
 	VertexPositionColor vert[]) const
 {
 
-	for (auto i = 0; i < cycloid.number_of_vertices; ++i)
+	for (auto i = 0; i < hypocycloid.number_of_vertices; ++i)
 	{
 		vert[i].color.x = 
 			static_cast<float>(norm_sin(raw[i].p));
@@ -213,8 +213,8 @@ void		cycloid::color_vertices_by_polar_coordinates(
 
 }
 
-void		cycloid::color_vertices_by_random(
-	const cycloid_parameters& cycloid,
+void		hypocycloid::color_vertices_by_random(
+	const hypocycloid_parameters& hypocycloid,
 	VertexPositionColor vert[]) const
 {
 
@@ -224,7 +224,7 @@ void		cycloid::color_vertices_by_random(
 		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
 	const float temp_z = 
 		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
-	for (auto i = 0; i < cycloid.number_of_vertices; ++i)
+	for (auto i = 0; i < hypocycloid.number_of_vertices; ++i)
 	{
 		vert[i].color.x = temp_x;
 		vert[i].color.y = temp_y;
@@ -233,8 +233,8 @@ void		cycloid::color_vertices_by_random(
 
 }
 
-void		cycloid::calculate_raw_vertices(
-	cycloid_parameters &cycloid,
+void		hypocycloid::calculate_raw_vertices(
+	hypocycloid_parameters &hypocycloid,
 	double_point raw[],
 	const int max_vert) const
 {
@@ -242,32 +242,34 @@ void		cycloid::calculate_raw_vertices(
 	double max_dist = 0;
 	// Recalculate the drawing point position.
 	const double recalculate_arm_length = 
-		cycloid_current_.arm_length * cycloid_current_.radius_2;
+		hypocycloid_current_.arm_length * hypocycloid_current_.radius_2;
 
 	// Verify the number of vertices does not exceed our array and max count
 	// for DTK primitive batch.
-	if (cycloid.number_of_vertices > 
-		max_vert - (cycloid.copy_first_to_end ? 1 : 0))
-		cycloid.number_of_vertices = 
-		max_vert - (cycloid.copy_first_to_end ? 1 : 0);
+	if (hypocycloid.number_of_vertices > 
+		max_vert - (hypocycloid.copy_first_to_end ? 1 : 0))
+		hypocycloid.number_of_vertices = 
+		max_vert - (hypocycloid.copy_first_to_end ? 1 : 0);
 
 	// Calculate the raw coordinates, and find max absolute component.
 	auto i = 0;
-	for (; i < cycloid.number_of_vertices; ++i)
+	for (; i < hypocycloid.number_of_vertices; ++i)
 	{
 		raw[i].a =
-			1.0 / static_cast<double>(cycloid.number_of_vertices) * 
-			(i - cycloid.number_of_vertices / 2.0) *
-			XM_2PI * cycloid.cycles;
+			1.0 / static_cast<double>(hypocycloid.number_of_vertices) * 
+			(i - hypocycloid.number_of_vertices / 2.0) *
+			XM_2PI * hypocycloid.cycles;
 		raw[i].x =
-			(cycloid.radius_1 - cycloid.radius_2) * cos(raw[i].a) +
+			(hypocycloid.radius_1 - hypocycloid.radius_2) * cos(raw[i].a) +
 			recalculate_arm_length * 
-			cos((cycloid.radius_1 - cycloid.radius_2) / cycloid.radius_2 * 
+			cos((hypocycloid.radius_1 - hypocycloid.radius_2) / 
+				hypocycloid.radius_2 * 
 				raw[i].a);
 		raw[i].y =
-			(cycloid.radius_1 - cycloid.radius_2) * sin(raw[i].a) -
+			(hypocycloid.radius_1 - hypocycloid.radius_2) * sin(raw[i].a) -
 			recalculate_arm_length * 
-			sin((cycloid.radius_1 - cycloid.radius_2) / cycloid.radius_2 * 
+			sin((hypocycloid.radius_1 - hypocycloid.radius_2) / 
+				hypocycloid.radius_2 * 
 				raw[i].a);
 		raw[i].d = sqrt(pow(raw[i].x, 2) + pow(raw[i].y, 2));
 		raw[i].p = atan2(raw[i].y, raw[i].x);
@@ -275,12 +277,12 @@ void		cycloid::calculate_raw_vertices(
 			raw[i].p = static_cast<double>(XM_2PI) + raw[i].p;
 		max_dist = max(max_dist, raw[i].d);
 	}
-	if (cycloid.copy_first_to_end)
+	if (hypocycloid.copy_first_to_end)
 		// Copy the starting raw vertex to the end of the used array.
 		raw[i] = raw[0];
 
 	for (auto j = 0; 
-	     j < cycloid.number_of_vertices + (cycloid.copy_first_to_end ? 1 : 0); 
+	     j < hypocycloid.number_of_vertices + (hypocycloid.copy_first_to_end ? 1 : 0); 
 	     ++j)
 	{
 		// First normalize the coordinate components.
@@ -295,27 +297,28 @@ void		cycloid::calculate_raw_vertices(
 
 }
 
-void		cycloid::random_cycloid(cycloid_parameters &cycloid) const
+void		hypocycloid::random_hypocycloid(
+	hypocycloid_parameters &hypocycloid) const
 {
 
 	// Generate random radius_2 [0.2, 0.8] in 0.001 increments.
-	cycloid.radius_2 = 
+	hypocycloid.radius_2 = 
 		get_cdx11_frame()->get_rng()->get_rand_int(200, 801) / 1000.0;
 	// Generate random arm length [0.2,2.0] in 0.01 increments.
-	cycloid.arm_length = 
+	hypocycloid.arm_length = 
 		get_cdx11_frame()->get_rng()->get_rand_int(20, 201) / 100.0;
 	// Generate a random color.
-	cycloid.r = 
+	hypocycloid.r = 
 		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
-	cycloid.g = 
+	hypocycloid.g = 
 		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
-	cycloid.b = 
+	hypocycloid.b = 
 		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
 
 }
 
-void		cycloid::convert_to_screen(
-	const cycloid_parameters& cycloid,
+void		hypocycloid::convert_to_screen(
+	const hypocycloid_parameters& cycloid,
 	double_point raw[],
 	VertexPositionColor vert[],
 	const RECT canvas)

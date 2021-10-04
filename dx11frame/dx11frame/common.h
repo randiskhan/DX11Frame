@@ -1,6 +1,7 @@
 //	common.h
 //	Header file with code common to all files.
 
+// ReSharper disable CppUnusedIncludeDirective
 #pragma once
 
 #pragma region Includes & defines

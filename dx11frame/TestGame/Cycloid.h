@@ -28,7 +28,7 @@ struct double_point
 
 };
 
-struct cycloid_parameters
+struct hypocycloid_parameters
 {
 
 	// Parameters for Cycloid.
@@ -52,7 +52,7 @@ struct cycloid_parameters
 
 	float				r, g, b;
 
-	cycloid_parameters::cycloid_parameters()
+	hypocycloid_parameters::hypocycloid_parameters()
 	{
 
 		radius_2 = 0.25;
@@ -65,7 +65,7 @@ struct cycloid_parameters
 
 	}
 
-	bool	cycloid_parameters::calculate_needed_cycles(const int max_cycles)
+	bool	hypocycloid_parameters::calculate_needed_cycles(const int max_cycles)
 	{
 
 		auto found = false;
@@ -95,7 +95,7 @@ struct cycloid_parameters
 
 	}
 
-	void	cycloid_parameters::copy_to(cycloid_parameters& cycloid) const
+	void	hypocycloid_parameters::copy_to(hypocycloid_parameters& cycloid) const
 	{
 
 		cycloid.radius_2 = radius_2;
@@ -113,7 +113,7 @@ struct cycloid_parameters
 };
 
 // ReSharper disable once CommentTypo
-class cycloid final : public i_entity  // NOLINT(cppcoreguidelines-special-member-functions)
+class hypocycloid final : public i_entity  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 
 	unique_ptr<PrimitiveBatch<VertexPositionColor>>	primitive_batch_{};
@@ -125,18 +125,18 @@ class cycloid final : public i_entity  // NOLINT(cppcoreguidelines-special-membe
 	// Array of raw vertices in coordinate [-1, 1] range.
 	double_point				vertices_raw_[max_vertices];
 
-	cycloid_parameters	cycloid_current_;
-	cycloid_parameters	cycloid_next_;
-	cycloid_parameters	cycloid_previous_;
+	hypocycloid_parameters	hypocycloid_current_;
+	hypocycloid_parameters	hypocycloid_next_;
+	hypocycloid_parameters	hypocycloid_previous_;
 
 	double	time_delta_morph_{};
-	double	time_delta_new_cycloid_{};
+	double	time_delta_new_hypocycloid_{};
 	double	time_stamp_morph_{};
-	double	time_stamp_new_cycloid_{};
+	double	time_stamp_new_hypocycloid_{};
 
 public:
-	explicit cycloid(dx11_frame* dx11_frame);
-	~cycloid() override;
+	explicit hypocycloid(dx11_frame* dx11_frame);
+	~hypocycloid() override;
 
 	bool	init() override;
 	bool	update() override;
@@ -145,28 +145,28 @@ public:
 
 private:
 	void	calculate_raw_vertices(
-		cycloid_parameters&,
+		hypocycloid_parameters&,
 		double_point[],
 		int) const;
 	// Color the raw vertices based on the angular position of the inner
-	// circle to the outer circle (angle used in cycloid calculation).
+	// circle to the outer circle (angle used in hypocycloid calculation).
 	void	color_vertices_by_angle_position(
-		const cycloid_parameters&,
+		const hypocycloid_parameters&,
 		double_point [],
 		VertexPositionColor []) const;
 	// Color the raw vertices based on the azimuth of the polar coordinate
 	// of the raw vertex after the quarter turn counter-clockwise.
 	void	color_vertices_by_polar_coordinates(
-		const cycloid_parameters&,
+		const hypocycloid_parameters&,
 		double_point [],
 		VertexPositionColor []) const;
 	// Pick a random color for all vertices.
 	void	color_vertices_by_random(
-		const cycloid_parameters& cycloid,
+		const hypocycloid_parameters& hypocycloid,
 		VertexPositionColor vert[]) const;
-	void	random_cycloid(cycloid_parameters &) const;
+	void	random_hypocycloid(hypocycloid_parameters &) const;
 	static void	convert_to_screen(
-		const cycloid_parameters&,
+		const hypocycloid_parameters&,
 		double_point [],
 		VertexPositionColor [],
 		RECT);
