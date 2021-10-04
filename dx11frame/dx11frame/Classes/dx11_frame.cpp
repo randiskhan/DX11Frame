@@ -62,6 +62,11 @@ bool dx11_frame::init_base()
 
 	if (good) good = pre_init();
 
+	// Random number generation object creation.
+	rng_.reset(new rng());
+	if (!rng_)
+		good = false;
+
 	// DX11Frame object creation.
 	timer_.reset(new timer());
 	if (!(timer_ && timer_->is_init())) 
@@ -177,6 +182,12 @@ SpriteBatch*	dx11_frame::get_sprite_batch() const
 {
 	return sprite_batch_.get();
 }
+
+rng*			dx11_frame::get_rng() const
+{
+	return rng_.get();
+}
+
 
 #pragma endregion
 

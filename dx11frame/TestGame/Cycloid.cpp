@@ -5,268 +5,335 @@
 
 using namespace dx11_frame_helpers;
 
-Cycloid::Cycloid(dx11_frame* pCDX11Frame) : i_entity(pCDX11Frame)
+cycloid::cycloid(dx11_frame* dx11_frame) : i_entity(dx11_frame)
 {
-	Cycloid::init();
+	cycloid::init();
 }
 
-Cycloid::~Cycloid(void)
+cycloid::~cycloid()
 {
-	Cycloid::cleanup();
+	cycloid::cleanup();
 }
 
-bool		Cycloid::init(void)
+bool		cycloid::init()
 {
+
 	auto good = true;
 
 	auto valid = false;
 	while (!valid)
 	{
-		RandomCycloid(_CycloidPrevious);
-		valid = _CycloidPrevious.CalculateNeededCycles(MAX_CYCLES);
+		random_cycloid(cycloid_previous_);
+		valid = cycloid_previous_.calculate_needed_cycles(max_cycles);
 	}
 	valid = false;
 	while (!valid)
 	{
-		RandomCycloid(_CycloidNext);
-		valid = _CycloidNext.CalculateNeededCycles(MAX_CYCLES);
+		random_cycloid(cycloid_next_);
+		valid = cycloid_next_.calculate_needed_cycles(max_cycles);
 	}
 
-	_TimeDeltaMorph = 1.0;
-	_TimeDeltaNewCycloid = 15.0;
-	_TimeStampMorph = 0;
-	_TimeStampNewCycloid = 0;
+	time_delta_morph_ = 1.0;
+	time_delta_new_cycloid_ = 15.0;
+	time_stamp_morph_ = 0;
+	time_stamp_new_cycloid_ = 0;
 
-	HRESULT hr;
-
-	_pPrimtiveBatch.reset(
+	primitive_batch_.reset(
 		new PrimitiveBatch<VertexPositionColor>(
-		get_cdx11_frame()->get_directx()->get_context(), 65535U, 65535U));
-	_pBasicEffect.reset(
+		get_cdx11_frame()->get_directx()->get_context(), 
+			65535U, 
+			65535U));
+	basic_effect_.reset(
 		new BasicEffect(get_cdx11_frame()->get_directx()->get_device()));
 
-	auto r = get_cdx11_frame()->get_win32()->get_screen_rect();
+	const auto r = get_cdx11_frame()->get_win32()->get_screen_rect();
 
-	_pBasicEffect->SetProjection(
+	basic_effect_->SetProjection(
 		XMMatrixOrthographicOffCenterRH(
 		0,
-		(float)r.right,
-		(float)r.bottom,
+		static_cast<float>(r.right),
+		static_cast<float>(r.bottom),
 		0,
 		0,
 		1.0f));
-	_pBasicEffect->SetVertexColorEnabled(true);
+	basic_effect_->SetVertexColorEnabled(true);
 
-	void const* shaderByteCode;
-	size_t byteCodeLength;
+	void const* shader_byte_code;
+	size_t byte_code_length;
 
-	_pBasicEffect->GetVertexShaderBytecode(&shaderByteCode, &byteCodeLength);
+	basic_effect_->GetVertexShaderBytecode(
+		&shader_byte_code, 
+		&byte_code_length);
 
-	hr = get_cdx11_frame()->get_directx()->get_device()->CreateInputLayout(
-		VertexPositionColor::InputElements,
-		VertexPositionColor::InputElementCount,
-		shaderByteCode,
-		byteCodeLength,
-		&_pID3D11InputLayout);
+	const HRESULT hr = 
+		get_cdx11_frame()->get_directx()->get_device()->CreateInputLayout(
+			VertexPositionColor::InputElements,
+			VertexPositionColor::InputElementCount,
+			shader_byte_code,
+			byte_code_length,
+			&i_d3d11_input_layout_);
 	if (FAILED(hr)) good = false;
 
-	for (auto i = 0; i < MAX_VERTICIES; ++i)
-		_vertices[i].color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+	for (auto& vertices : vertices_)
+		vertices.color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	return is_init_ = good;
+
 }
 
-bool		Cycloid::update(void)
+bool		cycloid::update()
 {
+
+	// ReSharper disable once CppLocalVariableMayBeConst
 	auto good = true;
 
-	auto t = get_cdx11_frame()->get_timer()->get_total_elapsed();
+	const auto t = get_cdx11_frame()->get_timer()->get_total_elapsed();
 
-	if (_TimeStampNewCycloid + _TimeDeltaNewCycloid < t)
+	if (time_stamp_new_cycloid_ + time_delta_new_cycloid_ < t)
 	{
-		_TimeStampNewCycloid = t;
-		_CycloidCurrent.CopyTo(_CycloidPrevious);
+		time_stamp_new_cycloid_ = t;
+		cycloid_current_.copy_to(cycloid_previous_);
 		auto valid = false;
 		while (!valid)
 		{
-			RandomCycloid(_CycloidNext);
-			valid = _CycloidNext.CalculateNeededCycles(MAX_CYCLES);
+			random_cycloid(cycloid_next_);
+			valid = cycloid_next_.calculate_needed_cycles(max_cycles);
 		}
 	}
-	auto lerpAmt = (t - _TimeStampNewCycloid) / (_TimeDeltaNewCycloid - 2.0);
-	_CycloidCurrent.ArmLength = interpolate_cos(_CycloidPrevious.ArmLength, _CycloidNext.ArmLength, lerpAmt);
-	_CycloidCurrent.Radius2 = interpolate_cos(_CycloidPrevious.Radius2, _CycloidNext.Radius2, lerpAmt);
-	_CycloidCurrent.Cycles = interpolate_cos(_CycloidPrevious.Cycles, _CycloidNext.Cycles, lerpAmt);
-	_CycloidCurrent.r = interpolate_cos(_CycloidPrevious.r, _CycloidNext.r, (float)lerpAmt);
-	_CycloidCurrent.g = interpolate_cos(_CycloidPrevious.g, _CycloidNext.g, (float)lerpAmt);
-	_CycloidCurrent.b = interpolate_cos(_CycloidPrevious.b, _CycloidNext.b, (float)lerpAmt);
+	const auto lerp_amt = 
+		(t - time_stamp_new_cycloid_) / (time_delta_new_cycloid_ - 2.0);
+	cycloid_current_.arm_length = interpolate_cos(
+		cycloid_previous_.arm_length, 
+		cycloid_next_.arm_length, 
+		lerp_amt);
+	cycloid_current_.radius_2 = interpolate_cos(
+		cycloid_previous_.radius_2, 
+		cycloid_next_.radius_2, 
+		lerp_amt);
+	cycloid_current_.cycles = interpolate_cos(
+		cycloid_previous_.cycles, 
+		cycloid_next_.cycles, 
+		lerp_amt);
+	cycloid_current_.r = interpolate_cos(
+		cycloid_previous_.r, 
+		cycloid_next_.r, 
+		static_cast<float>(lerp_amt));
+	cycloid_current_.g = interpolate_cos(
+		cycloid_previous_.g, 
+		cycloid_next_.g, 
+		static_cast<float>(lerp_amt));
+	cycloid_current_.b = interpolate_cos(
+		cycloid_previous_.b, 
+		cycloid_next_.b, 
+		static_cast<float>(lerp_amt));
 
-	CalculateRawVerticies(
-		_CycloidCurrent,
-		_verticesRaw,
-		MAX_VERTICIES);
-	ConvertToScreen(
-		_CycloidCurrent,
-		_verticesRaw,
-		_vertices,
+	calculate_raw_vertices(
+		cycloid_current_,
+		vertices_raw_,
+		max_vertices);
+	convert_to_screen(
+		cycloid_current_,
+		vertices_raw_,
+		vertices_,
 		get_cdx11_frame()->get_win32()->get_screen_rect());
-	for (auto i = 0; i < _CycloidCurrent.NumberOfVerticies; ++i)
+	for (auto i = 0; i < cycloid_current_.number_of_vertices; ++i)
 	{
-		_vertices[i].color.x = _CycloidCurrent.r;
-		_vertices[i].color.y = _CycloidCurrent.g;
-		_vertices[i].color.z = _CycloidCurrent.b;
+		vertices_[i].color.x = cycloid_current_.r;
+		vertices_[i].color.y = cycloid_current_.g;
+		vertices_[i].color.z = cycloid_current_.b;
 	}
 
 	return good;
+
 }
 
-bool		Cycloid::render(void)
+bool		cycloid::render()
 {
+
+	// ReSharper disable once CppLocalVariableMayBeConst
 	auto good = true;
 
-	_pBasicEffect->Apply(get_cdx11_frame()->get_directx()->get_context());
-	get_cdx11_frame()->get_directx()->get_context()->IASetInputLayout(_pID3D11InputLayout);
+	basic_effect_->Apply(get_cdx11_frame()->get_directx()->get_context());
+	get_cdx11_frame()->get_directx()->get_context()->IASetInputLayout(
+		i_d3d11_input_layout_);
 
-	_pPrimtiveBatch->Begin();
-	_pPrimtiveBatch->Draw(
+	primitive_batch_->Begin();
+	primitive_batch_->Draw(
 		D3D10_PRIMITIVE_TOPOLOGY_LINESTRIP,
-		_vertices,
-		_CycloidCurrent.NumberOfVerticies + (_CycloidCurrent.CopyFirstToEnd ? 1 : 0)
+		vertices_,
+		cycloid_current_.number_of_vertices + 
+			(cycloid_current_.copy_first_to_end ? 1 : 0)
 		);
-	_pPrimtiveBatch->End();
+	primitive_batch_->End();
 
 	return good;
+
 }
 
-void		Cycloid::cleanup(void)
+void		cycloid::cleanup()
 {
-	safe_release(_pID3D11InputLayout);
+	safe_release(i_d3d11_input_layout_);
 }
 
 #pragma region Private methods
 
-void		Cycloid::ColorVerticiesByAnglePosition(
-	CycloidParameters &cycloid,
-	DoublePoint raw[],
-	VertexPositionColor vert[])
+void		cycloid::color_vertices_by_angle_position(
+	const cycloid_parameters& cycloid,
+	double_point raw[],
+	VertexPositionColor vert[]) const
 {
-	for (auto i = 0; i < cycloid.NumberOfVerticies; ++i)
+
+	for (auto i = 0; i < cycloid.number_of_vertices; ++i)
 	{
-		vert[i].color.x = (float)norm_sin(raw[i].a);
-		vert[i].color.y = (float)norm_sin((raw[i].a) + (XM_2PI / 3.0));
-		vert[i].color.z = (float)norm_sin((raw[i].a) + (XM_2PI * 2.0 / 3.0));
+		vert[i].color.x = 
+			static_cast<float>(norm_sin(raw[i].a));
+		vert[i].color.y = 
+			static_cast<float>(norm_sin(raw[i].a + XM_2PI / 3.0));
+		vert[i].color.z = 
+			static_cast<float>(norm_sin(raw[i].a + XM_2PI * 2.0 / 3.0));
 	}
+
 }
 
-void		Cycloid::ColorVerticiesByPolarCoordinates(
-	CycloidParameters &cycloid,
-	DoublePoint raw[],
-	VertexPositionColor vert[])
+void		cycloid::color_vertices_by_polar_coordinates(
+	const cycloid_parameters& cycloid,
+	double_point raw[],
+	VertexPositionColor vert[]) const
 {
-	for (auto i = 0; i < cycloid.NumberOfVerticies; ++i)
+
+	for (auto i = 0; i < cycloid.number_of_vertices; ++i)
 	{
-		vert[i].color.x = (float)norm_sin(raw[i].p);
-		vert[i].color.y = (float)norm_sin((raw[i].p) + (XM_2PI / 3.0));
-		vert[i].color.z = (float)norm_sin((raw[i].p) + (XM_2PI * 2.0 / 3.0));
+		vert[i].color.x = 
+			static_cast<float>(norm_sin(raw[i].p));
+		vert[i].color.y = 
+			static_cast<float>(norm_sin(raw[i].p + XM_2PI / 3.0));
+		vert[i].color.z = 
+			static_cast<float>(norm_sin(raw[i].p + XM_2PI * 2.0 / 3.0));
 	}
+
 }
 
-void		Cycloid::ColorVerticiesByRandom(
-	CycloidParameters &cycloid,
-	VertexPositionColor vert[])
+void		cycloid::color_vertices_by_random(
+	const cycloid_parameters& cycloid,
+	VertexPositionColor vert[]) const
 {
-	float tempx, tempy, tempz;
-	tempx = rand() / (float)RAND_MAX;
-	tempy = rand() / (float)RAND_MAX;
-	tempz = rand() / (float)RAND_MAX;
-	for (auto i = 0; i < cycloid.NumberOfVerticies; ++i)
+
+	const float temp_x = 
+		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
+	const float temp_y = 
+		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
+	const float temp_z = 
+		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
+	for (auto i = 0; i < cycloid.number_of_vertices; ++i)
 	{
-		vert[i].color.x = tempx;
-		vert[i].color.y = tempy;
-		vert[i].color.z = tempz;
+		vert[i].color.x = temp_x;
+		vert[i].color.y = temp_y;
+		vert[i].color.z = temp_z;
 	}
+
 }
 
-void		Cycloid::CalculateRawVerticies(
-	CycloidParameters &cycloid,
-	DoublePoint raw[],
-	int maxVert)
+void		cycloid::calculate_raw_vertices(
+	cycloid_parameters &cycloid,
+	double_point raw[],
+	const int max_vert) const
 {
-	double maxDist = 0, recalcArmLength = 0;
+
+	double max_dist = 0;
 	// Recalculate the drawing point position.
-	recalcArmLength = _CycloidCurrent.ArmLength * _CycloidCurrent.Radius2;
+	const double recalculate_arm_length = 
+		cycloid_current_.arm_length * cycloid_current_.radius_2;
 
-	// Verify the number of verticies does not exceed our array and max count for
-	// DTK primitive batch.
-	if (cycloid.NumberOfVerticies > maxVert - (cycloid.CopyFirstToEnd ? 1 : 0))
-		cycloid.NumberOfVerticies = maxVert - (cycloid.CopyFirstToEnd ? 1 : 0);
+	// Verify the number of vertices does not exceed our array and max count
+	// for DTK primitive batch.
+	if (cycloid.number_of_vertices > 
+		max_vert - (cycloid.copy_first_to_end ? 1 : 0))
+		cycloid.number_of_vertices = 
+		max_vert - (cycloid.copy_first_to_end ? 1 : 0);
 
 	// Calculate the raw coordinates, and find max absolute component.
 	auto i = 0;
-	for (; i < cycloid.NumberOfVerticies; ++i)
+	for (; i < cycloid.number_of_vertices; ++i)
 	{
 		raw[i].a =
-			((1.0 / (double)cycloid.NumberOfVerticies) * (i - (cycloid.NumberOfVerticies / 2.0)) *
-			XM_2PI * cycloid.Cycles);
+			1.0 / static_cast<double>(cycloid.number_of_vertices) * 
+			(i - cycloid.number_of_vertices / 2.0) *
+			XM_2PI * cycloid.cycles;
 		raw[i].x =
-			((cycloid.Radius1 - cycloid.Radius2) * cos(raw[i].a)) +
-			(recalcArmLength * cos(((cycloid.Radius1 - cycloid.Radius2) / cycloid.Radius2) * raw[i].a));
+			(cycloid.radius_1 - cycloid.radius_2) * cos(raw[i].a) +
+			recalculate_arm_length * 
+			cos((cycloid.radius_1 - cycloid.radius_2) / cycloid.radius_2 * 
+				raw[i].a);
 		raw[i].y =
-			((cycloid.Radius1 - cycloid.Radius2) * sin(raw[i].a)) -
-			(recalcArmLength * sin(((cycloid.Radius1 - cycloid.Radius2) / cycloid.Radius2) * raw[i].a));
+			(cycloid.radius_1 - cycloid.radius_2) * sin(raw[i].a) -
+			recalculate_arm_length * 
+			sin((cycloid.radius_1 - cycloid.radius_2) / cycloid.radius_2 * 
+				raw[i].a);
 		raw[i].d = sqrt(pow(raw[i].x, 2) + pow(raw[i].y, 2));
 		raw[i].p = atan2(raw[i].y, raw[i].x);
 		if (abs(raw[i].p) != raw[i].p)
-			raw[i].p = (double)XM_2PI + raw[i].p;
-		maxDist = max(maxDist, raw[i].d);
+			raw[i].p = static_cast<double>(XM_2PI) + raw[i].p;
+		max_dist = max(max_dist, raw[i].d);
 	}
-	if (cycloid.CopyFirstToEnd)
+	if (cycloid.copy_first_to_end)
 		// Copy the starting raw vertex to the end of the used array.
 		raw[i] = raw[0];
 
-	// Use maxDist to make sure all raw points are within a normalized circle
-	// on xy plane. Rotate the coordinates one quarter turn counter clockwise
-	// so zero angle is at top of window.
-	double swap = 0;
-	for (auto i = 0; i < cycloid.NumberOfVerticies + (cycloid.CopyFirstToEnd ? 1 : 0); ++i)
+	for (auto j = 0; 
+	     j < cycloid.number_of_vertices + (cycloid.copy_first_to_end ? 1 : 0); 
+	     ++j)
 	{
 		// First normalize the coordinate components.
-		raw[i].x *= (1.0 / maxDist);
-		raw[i].y *= (1.0 / maxDist);
+		raw[j].x *= 1.0 / max_dist;
+		raw[j].y *= 1.0 / max_dist;
 
 		// Then rotate one quarter turn counter-clockwise.
-		swap = raw[i].x;
-		raw[i].x = -(raw[i].y);
-		raw[i].y = -swap;
+		const double swap = raw[j].x;
+		raw[j].x = -raw[j].y;
+		raw[j].y = -swap;
 	}
+
 }
 
-void		Cycloid::RandomCycloid(CycloidParameters &cycloid)
+void		cycloid::random_cycloid(cycloid_parameters &cycloid) const
 {
-	// Generate random radius2 [0.2, 0.8] in 0.001 increments.
-	cycloid.Radius2 = (rand() % 601 + 200) / 1000.0;
+
+	// Generate random radius_2 [0.2, 0.8] in 0.001 increments.
+	cycloid.radius_2 = 
+		get_cdx11_frame()->get_rng()->get_rand_int(200, 801) / 1000.0;
 	// Generate random arm length [0.2,2.0] in 0.01 increments.
-	cycloid.ArmLength = (rand() % 181 + 20) / 100.0;
+	cycloid.arm_length = 
+		get_cdx11_frame()->get_rng()->get_rand_int(20, 201) / 100.0;
 	// Generate a random color.
-	cycloid.r = rand() / (float)RAND_MAX;
-	cycloid.g = rand() / (float)RAND_MAX;
-	cycloid.b = rand() / (float)RAND_MAX;
+	cycloid.r = 
+		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
+	cycloid.g = 
+		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
+	cycloid.b = 
+		get_cdx11_frame()->get_rng()->get_rand_float(0.0f, 1.0f);
+
 }
 
-void		Cycloid::ConvertToScreen(
-	CycloidParameters &cycloid,
-	DoublePoint raw[],
+void		cycloid::convert_to_screen(
+	const cycloid_parameters& cycloid,
+	double_point raw[],
 	VertexPositionColor vert[],
-	RECT canvas)
+	const RECT canvas)
 {
-	int max = min(canvas.right, canvas.bottom);
-	for (auto i = 0; i < cycloid.NumberOfVerticies + (cycloid.CopyFirstToEnd ? 1 : 0); ++i)
+
+	const int max = min(canvas.right, canvas.bottom);
+	for (auto i = 0; 
+		i < cycloid.number_of_vertices + (cycloid.copy_first_to_end ? 1 : 0); 
+		++i)
 	{
 		vert[i].position.x =
-			(float)(((raw[i].x * 0.95) * max * 0.5) + (canvas.right * 0.5));
+			static_cast<float>(
+				raw[i].x * 0.95 * max * 0.5 + canvas.right * 0.5);
 		vert[i].position.y =
-			(float)(((raw[i].y * 0.95) * max * 0.5) + (canvas.bottom * 0.5));
+			static_cast<float>(
+				raw[i].y * 0.95 * max * 0.5 + canvas.bottom * 0.5);
 	}
+
 }
 
 #pragma endregion

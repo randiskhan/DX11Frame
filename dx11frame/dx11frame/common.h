@@ -49,6 +49,7 @@ using namespace SimpleMath;
 #define _CRTDBG_MAP_ALLOC  // NOLINT(bugprone-reserved-identifier)
 #include <crtdbg.h>
 #endif
+
 #pragma endregion
 
 // Uncomment this line to enable msg_proc in dx11_frame.

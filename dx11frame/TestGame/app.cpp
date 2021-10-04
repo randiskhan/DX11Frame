@@ -44,7 +44,7 @@ bool app::post_init()
 	debug_text_.reset(new DebugText(this));
 	if (!(debug_text_ && debug_text_->is_init()))
 		good &= false;
-	cycloid_.reset(new Cycloid(this));
+	cycloid_.reset(new cycloid(this));
 	if (!(cycloid_ && cycloid_->is_init()))
 		good &= false;
 

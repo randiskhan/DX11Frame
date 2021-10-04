@@ -12,8 +12,12 @@
 #include "directx.h"
 #include "input.h"
 #include "timer.h"
+// Random number generator.
+#include "rng.h"
 
 #pragma endregion
+
+using namespace dx11_frame_helpers;
 
 // Base class for "root" class/object in executable.
 #ifdef MEMBER_MSGPROC
@@ -33,6 +37,8 @@ class dx11_frame  // NOLINT(cppcoreguidelines-special-member-functions)
 	// DirectXTK objects.
 	unique_ptr<SpriteBatch>	sprite_batch_{};
 	unique_ptr<SpriteFont>	debug_font_{};
+	// Random number generator.
+	unique_ptr<rng>			rng_{};
 
 public:
 	dx11_frame();
@@ -47,6 +53,8 @@ public:
 	timer*			get_timer() const;
 	// Get DirectXTK object references.
 	SpriteBatch*	get_sprite_batch() const;
+	// Get random number generator reference.
+	rng*			get_rng() const;
 
 	void			draw_debug_string(
 		const wstring& msg, 

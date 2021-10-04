@@ -32,6 +32,7 @@
     <ClInclude Include="Interfaces\i_updateable.h">
       <Filter>Interfaces</Filter>
     </ClInclude>
+    <ClInclude Include="rng.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Classes\directx.cpp">
