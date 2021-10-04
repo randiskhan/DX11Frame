@@ -1,7 +1,7 @@
 // centered_trochoid.cpp
 // Implementation file for centered_trochoid.
 
-#include "hypocycloid.h"
+#include "centered_trochoid.h"
 
 using namespace dx11_frame_helpers;
 

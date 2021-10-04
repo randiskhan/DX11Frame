@@ -4,11 +4,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="app.cpp" />
-    <ClCompile Include="hypocycloid.cpp" />
+    <ClCompile Include="centered_trochoid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugText.h" />
     <ClInclude Include="app.h" />
-    <ClInclude Include="hypocycloid.h" />
+    <ClInclude Include="centered_trochoid.h" />
   </ItemGroup>
 </Project>

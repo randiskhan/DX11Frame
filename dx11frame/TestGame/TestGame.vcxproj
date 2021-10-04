@@ -90,14 +90,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="app.cpp" />
-    <ClCompile Include="hypocycloid.cpp" />
+    <ClCompile Include="centered_trochoid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DebugText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h" />
+    <ClInclude Include="centered_trochoid.h" />
     <ClInclude Include="DebugText.h" />
-    <ClInclude Include="hypocycloid.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\dx11frame\dx11frame.vcxproj">
