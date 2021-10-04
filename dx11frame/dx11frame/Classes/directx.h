@@ -30,7 +30,6 @@ struct directx_data
 };
 
 // Class for all DirectX rendering objects.
-// ReSharper disable once CommentTypo
 class directx final : public i_initializable  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 

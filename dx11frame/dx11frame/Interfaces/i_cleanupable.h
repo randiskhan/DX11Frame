@@ -1,6 +1,5 @@
 #pragma once
 
-// ReSharper disable once CommentTypo
 class i_cleanupable  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 

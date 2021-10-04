@@ -8,7 +8,6 @@
 
 using namespace std::chrono;
 
-// ReSharper disable once CommentTypo
 class timer final :  // NOLINT(cppcoreguidelines-special-member-functions)
 	public i_initializable, public i_updateable, public i_cleanupable
 {

@@ -4,16 +4,18 @@
 #include "app.h"
 
 int WINAPI WinMain(
-	HINSTANCE	/*hInstance*/,
-	HINSTANCE	/*hPrevInstance*/,
-	LPSTR		/*lpCmdLine*/,
-	int			/*nCmdShow*/)
+	_In_		HINSTANCE	/*hInstance*/,
+	_In_opt_	HINSTANCE	/*hPrevInstance*/,
+	_In_		LPSTR		/*lpCmdLine*/,
+	_In_		int			/*nCmdShow*/)
 {
+
 #if defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-	WPARAM exitmsg = NULL;
-	unique_ptr<app> pCApp(new app());
-	if (pCApp) exitmsg = pCApp->run();
-	return exitmsg;
+	WPARAM exit_msg = NULL;
+	const unique_ptr<app> app_main(new app());
+	if (app_main) exit_msg = app_main->run();
+	return exit_msg;  // NOLINT(bugprone-narrowing-conversions, cppcoreguidelines-narrowing-conversions)
+
 }

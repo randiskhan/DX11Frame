@@ -11,7 +11,6 @@
 
 #pragma comment(lib, "dx11frame.lib")
 
-// ReSharper disable once CommentTypo
 class app final : public dx11_frame  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 

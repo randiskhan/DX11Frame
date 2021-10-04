@@ -115,7 +115,6 @@ struct centered_trochoid_parameters
 
 };
 
-// ReSharper disable once CommentTypo
 class centered_trochoid final : public i_entity  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 

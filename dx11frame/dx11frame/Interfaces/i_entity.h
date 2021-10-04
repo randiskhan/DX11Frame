@@ -2,7 +2,6 @@
 
 #include "dx11_frame.h"
 
-// ReSharper disable once CommentTypo
 class i_entity :  // NOLINT(cppcoreguidelines-special-member-functions)
 	public i_initializable,
 	public i_updateable,

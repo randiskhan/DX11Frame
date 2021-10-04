@@ -45,7 +45,6 @@ using namespace SimpleMath;
 #define WIN32_LEAN_AND_MEAN
 
 #if defined(DEBUG) | defined(_DEBUG)
-// ReSharper disable once CommentTypo
 // ReSharper disable once CppInconsistentNaming
 #define _CRTDBG_MAP_ALLOC  // NOLINT(bugprone-reserved-identifier)
 #include <crtdbg.h>

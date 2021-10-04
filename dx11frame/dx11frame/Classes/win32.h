@@ -10,16 +10,13 @@
 // This macro eliminates the need to pass an HINSTANCE reference
 //	for window creation. Will always use current HINSTANCE.
 #ifndef HINST_THISCOMPONENT
-// ReSharper disable once CommentTypo
 EXTERN_C IMAGE_DOS_HEADER __ImageBase;  // NOLINT(bugprone-reserved-identifier)
-// ReSharper disable once CommentTypo
 // ReSharper disable once IdentifierTypo
 #define HINST_THISCOMPONENT ((HINSTANCE)&__ImageBase)  // NOLINT(cppcoreguidelines-macro-usage)
 #endif
 
 // Interface for handling Win32 messages in an object
 //	that creates this object.
-// ReSharper disable once CommentTypo
 class i_win32_app  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 protected:
@@ -56,7 +53,6 @@ struct win32_data
 
 // Class to encapsulate the code for generating a window in a Win32
 // application.
-// ReSharper disable once CommentTypo
 class win32 final  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 
