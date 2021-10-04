@@ -29,7 +29,7 @@ bool app::pre_init()
 #endif
 	directx_data_.back_color = Vector4(0.1f, 0.1f, 0.1f, 1.0f);
 
-	// Set the path to CAppBase spritefont file.
+	// Set the path to spritefont file.
 	debug_spritefont_path_ = L"assets\\debug.spritefont";
 
 	return good;
@@ -74,8 +74,10 @@ bool app::update()
 	else
 		debug_text_->set_do_render(false);
 
-	if (good && debug_text_->get_do_update()) good &= debug_text_->update();
-	if (good && centered_trochoid_->get_do_update()) good &= centered_trochoid_->update();
+	if (good && debug_text_->get_do_update()) 
+		good &= debug_text_->update();
+	if (good && centered_trochoid_->get_do_update()) 
+		good &= centered_trochoid_->update();
 
 	return good;
 
@@ -87,8 +89,10 @@ bool app::render()
 	auto good = true;
 
 	get_sprite_batch()->Begin();
-	if (good && debug_text_->get_do_render()) good &= debug_text_->render();
-	if (good && centered_trochoid_->get_do_render()) good &= centered_trochoid_->render();
+	if (good && debug_text_->get_do_render()) 
+		good &= debug_text_->render();
+	if (good && centered_trochoid_->get_do_render()) 
+		good &= centered_trochoid_->render();
 	get_sprite_batch()->End();
 
 	return good;

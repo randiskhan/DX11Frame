@@ -31,6 +31,7 @@ public:
 
 struct win32_data
 {
+
 	i_win32_app*	i_win32_app;
 	wstring			wnd_class_name;
 	wstring			wnd_title;
@@ -43,12 +44,13 @@ struct win32_data
 	{
 		i_win32_app = nullptr;
 		wnd_class_name = L"WindowClass";
-		wnd_title = L"DirectX11";
+		wnd_title = L"Spacebar for info - Escape to exit";
 		width = 800;
-		height = 600;
+		height = 800;
 		window_style = (WS_CAPTION);
 		is_window_menu = 0;
 	}
+
 };
 
 // Class to encapsulate the code for generating a window in a Win32
