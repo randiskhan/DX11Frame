@@ -1,5 +1,5 @@
-// Cycloid.h
-// Declaration file for Cycloid.
+// centered_trochoid.h
+// Declaration file for centered_trochoid.
 
 #pragma once
 
@@ -28,10 +28,10 @@ struct double_point
 
 };
 
-struct hypocycloid_parameters
+struct centered_trochoid_parameters
 {
 
-	// Parameters for Cycloid.
+	// Parameters for centered trochoid.
 	// Fixed circle radius: radius_1
 	// Moving circle radius: radius_2
 	// Drawing point distance from center of moving circle: arm_length
@@ -52,7 +52,7 @@ struct hypocycloid_parameters
 
 	float				r, g, b;
 
-	hypocycloid_parameters::hypocycloid_parameters()
+	centered_trochoid_parameters::centered_trochoid_parameters()
 	{
 
 		radius_2 = 0.25;
@@ -65,7 +65,8 @@ struct hypocycloid_parameters
 
 	}
 
-	bool	hypocycloid_parameters::calculate_needed_cycles(const int max_cycles)
+	bool	centered_trochoid_parameters::calculate_needed_cycles(
+		const int max_cycles)
 	{
 
 		auto found = false;
@@ -95,25 +96,27 @@ struct hypocycloid_parameters
 
 	}
 
-	void	hypocycloid_parameters::copy_to(hypocycloid_parameters& cycloid) const
+	void	centered_trochoid_parameters::copy_to(
+		centered_trochoid_parameters& centered_trochoid) const
 	{
 
-		cycloid.radius_2 = radius_2;
-		cycloid.arm_length = arm_length;
-		cycloid.cycles = cycles;
-		cycloid.number_of_vertices = number_of_vertices;
-		cycloid.number_of_vertices_per_cycle = number_of_vertices_per_cycle;
-		cycloid.copy_first_to_end = copy_first_to_end;
-		cycloid.r = r;
-		cycloid.g = g;
-		cycloid.b = b;
+		centered_trochoid.radius_2 = radius_2;
+		centered_trochoid.arm_length = arm_length;
+		centered_trochoid.cycles = cycles;
+		centered_trochoid.number_of_vertices = number_of_vertices;
+		centered_trochoid.number_of_vertices_per_cycle = 
+			number_of_vertices_per_cycle;
+		centered_trochoid.copy_first_to_end = copy_first_to_end;
+		centered_trochoid.r = r;
+		centered_trochoid.g = g;
+		centered_trochoid.b = b;
 
 	}
 
 };
 
 // ReSharper disable once CommentTypo
-class hypocycloid final : public i_entity  // NOLINT(cppcoreguidelines-special-member-functions)
+class centered_trochoid final : public i_entity  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 
 	unique_ptr<PrimitiveBatch<VertexPositionColor>>	primitive_batch_{};
@@ -125,18 +128,18 @@ class hypocycloid final : public i_entity  // NOLINT(cppcoreguidelines-special-m
 	// Array of raw vertices in coordinate [-1, 1] range.
 	double_point				vertices_raw_[max_vertices];
 
-	hypocycloid_parameters	hypocycloid_current_;
-	hypocycloid_parameters	hypocycloid_next_;
-	hypocycloid_parameters	hypocycloid_previous_;
+	centered_trochoid_parameters	centered_trochoid_current_;
+	centered_trochoid_parameters	centered_trochoid_next_;
+	centered_trochoid_parameters	centered_trochoid_previous_;
 
 	double	time_delta_morph_{};
-	double	time_delta_new_hypocycloid_{};
+	double	time_delta_new_centered_trochoid_{};
 	double	time_stamp_morph_{};
-	double	time_stamp_new_hypocycloid_{};
+	double	time_stamp_new_centered_trochoid_{};
 
 public:
-	explicit hypocycloid(dx11_frame* dx11_frame);
-	~hypocycloid() override;
+	explicit centered_trochoid(dx11_frame* dx11_frame);
+	~centered_trochoid() override;
 
 	bool	init() override;
 	bool	update() override;
@@ -145,28 +148,28 @@ public:
 
 private:
 	void	calculate_raw_vertices(
-		hypocycloid_parameters&,
+		centered_trochoid_parameters&,
 		double_point[],
 		int) const;
 	// Color the raw vertices based on the angular position of the inner
-	// circle to the outer circle (angle used in hypocycloid calculation).
+	// circle to the outer circle (angle used in centered_trochoid calculation).
 	void	color_vertices_by_angle_position(
-		const hypocycloid_parameters&,
+		const centered_trochoid_parameters&,
 		double_point [],
 		VertexPositionColor []) const;
 	// Color the raw vertices based on the azimuth of the polar coordinate
 	// of the raw vertex after the quarter turn counter-clockwise.
 	void	color_vertices_by_polar_coordinates(
-		const hypocycloid_parameters&,
+		const centered_trochoid_parameters&,
 		double_point [],
 		VertexPositionColor []) const;
 	// Pick a random color for all vertices.
 	void	color_vertices_by_random(
-		const hypocycloid_parameters& hypocycloid,
+		const centered_trochoid_parameters& centered_trochoid,
 		VertexPositionColor vert[]) const;
-	void	random_hypocycloid(hypocycloid_parameters &) const;
+	void	random_hypocycloid(centered_trochoid_parameters &) const;
 	static void	convert_to_screen(
-		const hypocycloid_parameters&,
+		const centered_trochoid_parameters&,
 		double_point [],
 		VertexPositionColor [],
 		RECT);

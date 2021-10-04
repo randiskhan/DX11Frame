@@ -15,8 +15,8 @@
 class app final : public dx11_frame  // NOLINT(cppcoreguidelines-special-member-functions)
 {
 
-	unique_ptr<DebugText>		debug_text_{};
-	unique_ptr<hypocycloid>			cycloid_{};
+	unique_ptr<DebugText>			debug_text_{};
+	unique_ptr<centered_trochoid>	centered_trochoid_{};
 
 	bool		take_screenshot() const;
 

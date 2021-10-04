@@ -44,13 +44,13 @@ bool app::post_init()
 	debug_text_.reset(new DebugText(this));
 	if (!(debug_text_ && debug_text_->is_init()))
 		good &= false;
-	cycloid_.reset(new hypocycloid(this));
-	if (!(cycloid_ && cycloid_->is_init()))
+	centered_trochoid_.reset(new centered_trochoid(this));
+	if (!(centered_trochoid_ && centered_trochoid_->is_init()))
 		good &= false;
 
 	debug_text_->set_do_update(true);
-	cycloid_->set_do_update(true);
-	cycloid_->set_do_render(true);
+	centered_trochoid_->set_do_update(true);
+	centered_trochoid_->set_do_render(true);
 
 	return good;
 
@@ -75,7 +75,7 @@ bool app::update()
 		debug_text_->set_do_render(false);
 
 	if (good && debug_text_->get_do_update()) good &= debug_text_->update();
-	if (good && cycloid_->get_do_update()) good &= cycloid_->update();
+	if (good && centered_trochoid_->get_do_update()) good &= centered_trochoid_->update();
 
 	return good;
 
@@ -88,7 +88,7 @@ bool app::render()
 
 	get_sprite_batch()->Begin();
 	if (good && debug_text_->get_do_render()) good &= debug_text_->render();
-	if (good && cycloid_->get_do_render()) good &= cycloid_->render();
+	if (good && centered_trochoid_->get_do_render()) good &= centered_trochoid_->render();
 	get_sprite_batch()->End();
 
 	return good;
