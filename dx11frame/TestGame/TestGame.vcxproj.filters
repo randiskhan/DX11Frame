@@ -2,13 +2,13 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="DebugText.cpp" />
     <ClCompile Include="app.cpp" />
     <ClCompile Include="centered_trochoid.cpp" />
+    <ClCompile Include="debug_text.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DebugText.h" />
     <ClInclude Include="app.h" />
     <ClInclude Include="centered_trochoid.h" />
+    <ClInclude Include="debug_text.h" />
   </ItemGroup>
 </Project>

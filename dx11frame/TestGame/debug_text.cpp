@@ -1,7 +1,7 @@
 // DebugText.cpp
 // Implementation file for DebugText.
 
-#include "DebugText.h"
+#include "debug_text.h"
 
 using namespace dx11_frame_helpers;
 
