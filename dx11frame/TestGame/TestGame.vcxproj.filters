@@ -3,12 +3,12 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="DebugText.cpp" />
-    <ClCompile Include="Cycloid.cpp" />
     <ClCompile Include="app.cpp" />
+    <ClCompile Include="hypocycloid.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DebugText.h" />
-    <ClInclude Include="Cycloid.h" />
     <ClInclude Include="app.h" />
+    <ClInclude Include="hypocycloid.h" />
   </ItemGroup>
 </Project>

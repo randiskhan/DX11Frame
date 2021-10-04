@@ -1,7 +1,7 @@
 // Cycloid.cpp
 // Implementation file for Cycloid.
 
-#include "Cycloid.h"
+#include "hypocycloid.h"
 
 using namespace dx11_frame_helpers;
 

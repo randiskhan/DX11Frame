@@ -7,7 +7,7 @@
 
 #include "dx11_frame.h"
 #include "DebugText.h"
-#include "Cycloid.h"
+#include "hypocycloid.h"
 
 #pragma comment(lib, "dx11frame.lib")
 
